@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_restaurant_menu"
+            android:title="@string/menu_home"
+            android:iconTint="@color/white"/>
+        <item
+            android:id="@+id/nav_your_orders"
+            android:icon="@drawable/ic_menu_your_orders"
+            android:title="@string/menu_your_orders"
+            android:iconTint="@color/white"/>
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/send_notification"
+            android:iconTint="@color/white"/>
+
+        <item
+            android:id="@+id/nav_add_shipper"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:title="@string/add_shipper"
+            android:iconTint="@color/white"/>
+
+        <item
+            android:id="@+id/nav_shippers"
+            android:icon="@drawable/ic_person_outline"
+            android:title="@string/shippers"
+            android:iconTint="@color/white"/>
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings"
+            android:iconTint="@color/white"/>
+
+    </group>
+
+    <item android:title="Misc">
+
+        <menu>
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_logout"
+                android:title="@string/menu_log_out"
+                android:iconTint="@color/white"/>
+
+        </menu>
+
+    </item>
+
+</menu>

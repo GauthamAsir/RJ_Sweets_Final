@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#25D0FA</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#000</color>
+
+    <color name="colorBg">#CBEDF6</color>
+
+    <color name="colorBackground">#FFF</color>
+    <color name="colorText">#FF000000</color>
+
+    <color name="dark">#404040</color>
+    <color name="bt_color">#FF5</color>
+    <color name="stroke_color">#FFF</color>
+
+    <color name="tab_indicator">@android:color/tab_indicator_text</color>
+
+    <color name="overlayBackground">#7F333639</color>
+    <color name="overlayActionBar">#0e0d0e</color>
+
+    <color name="white">#FFF</color>
+
+    <color name="bgRowBackground">#FA315B</color>
+
+    <color name="red">#FF00</color>
+
+</resources>
