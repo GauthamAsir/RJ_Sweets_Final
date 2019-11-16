@@ -50,4 +50,50 @@ dependencies {
 
     //Material Themes
     implementation 'com.google.android.material:material:1.0.0'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-firestore:20.2.0'
+
+    //Preference
+    implementation 'androidx.preference:preference:1.1.0-rc01'
+    implementation 'com.google.firebase:firebase-database:18.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:0.4.0'
+
+    //Text Image Generator
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+    //Recycler View
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    //Card View
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //Picasso to load Image
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Elegant Number Button
+    implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
+
+    //SQ Lite
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
+
+    //RetroFit
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    //Paper dB
+    implementation 'io.paperdb:paperdb:2.1'
+
+    //FAB Counter
+    implementation 'com.github.andremion:counterfab:1.2.1'
+
+    //Spots Dialog
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
+
+    //Otp Edit Text
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
+
+    //App Updater
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
 }

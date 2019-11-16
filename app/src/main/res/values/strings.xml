@@ -53,4 +53,6 @@
     <string name="add_shipper">Add Shipper</string>
     <string name="shippers">Shippers</string>
 
+    <string name="login_with_verification_code">Login with verification code</string>
+
 </resources>
