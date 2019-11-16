@@ -115,6 +115,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/login_user_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -128,11 +129,13 @@
                 android:layout_margin="12dp"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/login_user_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/bgRowBackground"
                 android:src="@drawable/ic_check_black"
                 app:borderWidth="0dp"
+                android:onClick="bt_signIn_user"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="12dp"/>
 

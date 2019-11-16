@@ -28,7 +28,7 @@ import agjs.gautham.rjsweets.user.navigation_drawer.home_user.Home;
 import agjs.gautham.rjsweets.user.navigation_drawer.order_user.Orders;
 import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.Settings;
 
-public class Dashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class DashboardUser extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private long back_pressed;
 
@@ -103,7 +103,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 break;
 
             case R.id.nav_login:
-                startActivity(new Intent(Dashboard.this, Login.class));
+                startActivity(new Intent(DashboardUser.this, Login.class));
                 finish();
         }
 
@@ -135,6 +135,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void toast(String msg){
-        Toast.makeText(Dashboard.this,msg,Toast.LENGTH_LONG).show();
+        Toast.makeText(DashboardUser.this,msg,Toast.LENGTH_LONG).show();
     }
 }

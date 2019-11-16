@@ -2,19 +2,13 @@ package agjs.gautham.rjsweets.delivery;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,14 +17,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.view.Window;
 import android.widget.Toast;
 
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.Home;
 
-public class Dashboard extends AppCompatActivity
+public class DashboardDelivery extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     NavigationView navigationView;
@@ -92,7 +85,7 @@ public class Dashboard extends AppCompatActivity
 
         if (menuItem.getItemId() == R.id.nav_logout){
 
-            Toast.makeText(agjs.gautham.rjsweets.delivery.Dashboard.this,"W.I.P LogOut",Toast.LENGTH_LONG).show();
+            Toast.makeText(DashboardDelivery.this,"W.I.P LogOut",Toast.LENGTH_LONG).show();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_delivery, new Home()).commit();
             getSupportActionBar().setTitle(R.string.menu_home);
 

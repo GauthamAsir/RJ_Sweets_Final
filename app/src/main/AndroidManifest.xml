@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".delivery.Dashboard" />
-        <activity android:name=".admin.Dashboard" />
-        <activity android:name=".user.Dashboard" />
+        <activity android:name=".delivery.DashboardDelivery" />
+        <activity android:name=".admin.DashboardAdmin" />
+        <activity android:name=".user.DashboardUser" />
 
         <activity android:name=".login.DeliveryLogin" />
         <activity android:name=".login.LoginAdmin" />

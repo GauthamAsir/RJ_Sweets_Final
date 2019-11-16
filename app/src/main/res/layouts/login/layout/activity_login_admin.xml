@@ -15,7 +15,7 @@
         android:layout_above="@+id/email_container">
 
         <TextView
-            android:id="@+id/headline1"
+            android:id="@+id/headline1_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/headline1"
@@ -26,7 +26,7 @@
             android:textColor="@color/colorText"/>
 
         <TextView
-            android:id="@+id/headline2"
+            android:id="@+id/headline2_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/admin_login"
@@ -49,7 +49,7 @@
         android:layout_centerInParent="true">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signInEmail"
+            android:id="@+id/signInPhoneAdmin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_phone_number"
@@ -95,11 +95,13 @@
         android:layout_marginTop="-20dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/login_admin_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:backgroundTint="@color/bgRowBackground"
             android:src="@drawable/ic_check_black"
+            android:onClick="bt_signIn_phone_admin"
             app:borderWidth="0dp"
             android:layout_margin="12dp"/>
 

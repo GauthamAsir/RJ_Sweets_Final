@@ -21,7 +21,7 @@ import agjs.gautham.rjsweets.admin.navigation_drawer.notification.Notification;
 import agjs.gautham.rjsweets.admin.navigation_drawer.orders.Orders;
 import agjs.gautham.rjsweets.admin.navigation_drawer.shippers.Shippers;
 
-public class Dashboard extends AppCompatActivity
+public class DashboardAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     NavigationView navigationView;
@@ -109,11 +109,11 @@ public class Dashboard extends AppCompatActivity
                 break;
 
             case R.id.nav_settings:
-                Toast.makeText(Dashboard.this,"W.I.P Settings",Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardAdmin.this,"W.I.P Settings",Toast.LENGTH_LONG).show();
                 break;
 
             case R.id.nav_logout:
-                Toast.makeText(Dashboard.this,"W.I.P LogOut",Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardAdmin.this,"W.I.P LogOut",Toast.LENGTH_LONG).show();
                 break;
         }
 

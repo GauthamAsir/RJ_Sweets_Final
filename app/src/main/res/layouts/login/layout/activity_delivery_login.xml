@@ -15,7 +15,7 @@
         android:layout_above="@+id/email_container">
 
         <TextView
-            android:id="@+id/headline1"
+            android:id="@+id/headline1_delivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/headline1"
@@ -26,7 +26,7 @@
             android:textColor="@color/colorText"/>
 
         <TextView
-            android:id="@+id/headline2"
+            android:id="@+id/headline2_delivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/delivery_login"
@@ -49,7 +49,7 @@
         android:layout_centerInParent="true">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signInEmail"
+            android:id="@+id/signInPhoneDelivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_phone_number"
@@ -67,7 +67,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/signInPass"
+            android:id="@+id/signInPassDelivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_pass"
@@ -95,12 +95,14 @@
         android:layout_marginTop="-20dp">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/login_delivery_bt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:backgroundTint="@color/bgRowBackground"
             android:src="@drawable/ic_check_black"
             app:borderWidth="0dp"
+            android:onClick="bt_signIn_phone_delivery"
             android:layout_margin="12dp"/>
 
     </LinearLayout>
@@ -114,7 +116,7 @@
         android:focusableInTouchMode="true">
 
         <CheckBox
-            android:id="@+id/remember"
+            android:id="@+id/rememberDelivery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.CompoundButton.CheckBox"
@@ -125,7 +127,7 @@
             android:text="@string/remember_me"/>
 
         <Button
-            android:id="@+id/forgot_pass"
+            android:id="@+id/forgot_pass_delivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
@@ -136,7 +138,5 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
     </LinearLayout>
-
-
 
 </RelativeLayout>
