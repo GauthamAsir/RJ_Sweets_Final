@@ -55,4 +55,6 @@
 
     <string name="login_with_verification_code">Login with verification code</string>
 
+    <string name="enter_otp">Verification Code</string>
+
 </resources>

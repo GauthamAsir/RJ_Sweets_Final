@@ -27,10 +27,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +45,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.User;
@@ -52,11 +57,12 @@ import io.paperdb.Paper;
 public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private TextInputLayout sEmail_Phone, sPass, reset_email;
+    private TextInputLayout sEmail_Phone, sPass, reset_email, otp_code;
 
     private Button forgotPass, login_user_otp;
     private CheckBox remember;
     private long back_pressed;
+    private String verificationId;
 
     int phone_flag = 0;
 
@@ -83,6 +89,8 @@ public class Login extends AppCompatActivity {
                 .setMessage("Sending E-Mail ...")
                 .setTheme(R.style.DialogCustom)
                 .build();
+
+        mAuth = FirebaseAuth.getInstance();
 
         Paper.init(this);
 
@@ -356,6 +364,146 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public void login_otp(View view){
+
+        if (validatePhone()){
+
+            final AlertDialog dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setCancelable(false)
+                    .setMessage("Just a sec")
+                    .setTheme(R.style.DialogCustom)
+                    .build();
+
+            dialog.show();
+
+            final String phone = sEmail_Phone.getEditText().getText().toString();
+            final String spno = "+91" + sEmail_Phone.getEditText().getText().toString();
+
+            //Init Firebase
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference databse_user = database.getReference("User");
+
+            databse_user.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.child(phone).exists()){
+
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+
+                        final View exp = LayoutInflater.from(Login.this).inflate(R.layout.otp_activity,null);
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
+                        alertDialog.setTitle("Verification");
+                        alertDialog.setMessage("Enter Otp Sent to your number");
+                        alertDialog.setIcon(R.drawable.ic_phone_iphone);
+                        alertDialog.setView(exp);
+                        alertDialog.setCancelable(false);
+
+                        otp_code = exp.findViewById(R.id.otp_verify);
+
+                        alertDialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                        final AlertDialog dialog = alertDialog.create();
+                        dialog.show();
+
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dialog.show();
+                                String code = otp_code.getEditText().getText().toString();
+                                verifyCode(code);
+
+                            }
+                        });
+
+                        sendVerificationCode(spno);
+                    }else {
+                        toast("User doesn't exists");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+    }
+
+    private void sendVerificationCode(String number){
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                number,
+                60,
+                TimeUnit.SECONDS,
+                TaskExecutors.MAIN_THREAD,
+                mCallBack
+        );
+    }
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
+            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            verificationId = s;
+        }
+
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            String code = phoneAuthCredential.getSmsCode();
+
+            otp_code.getEditText().setText(code);
+
+            if (code != null){
+                verifyCode(code);
+            }
+        }
+
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    private void verifyCode(String code){
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        signinwithCredential(credential);
+    }
+
+    private void signinwithCredential(PhoneAuthCredential credential){
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()){
+
+                            Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
+                            startActivity(new Intent(Login.this,DashboardUser.class));
+
+                        } else {
+                            if (pdialog.isShowing()){
+                                pdialog.dismiss();
+                            }
+                            toast("Login Failed");
+                        }
+                    }
+                });
+    }
+
     //Email Validation
     boolean validateEmail(){
         String email = sEmail_Phone.getEditText().getText().toString().trim();
@@ -457,5 +605,18 @@ public class Login extends AppCompatActivity {
 
     private void toast(String msg){
         Toast.makeText(Login.this,msg,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        View view = findViewById(R.id.login_container);
+        if (back_pressed + 2000 > System.currentTimeMillis()){
+            finish();
+            moveTaskToBack(true);
+        }else {
+            Snackbar.make(view, "Press Again to Exit", Snackbar.LENGTH_LONG).show();
+            back_pressed = System.currentTimeMillis();
+        }
     }
 }

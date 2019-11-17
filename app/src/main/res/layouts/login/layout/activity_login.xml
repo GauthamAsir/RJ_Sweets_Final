@@ -125,6 +125,7 @@
                 android:textAllCaps="false"
                 android:drawablePadding="12dp"
                 android:textAlignment="textStart"
+                android:onClick="login_otp"
                 android:layout_alignParentStart="true"
                 android:layout_margin="12dp"/>
 
