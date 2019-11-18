@@ -50,6 +50,7 @@ import java.util.concurrent.TimeUnit;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.SignUp;
 import agjs.gautham.rjsweets.user.DashboardUser;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
@@ -596,6 +597,10 @@ public class Login extends AppCompatActivity {
 
     public void bt_skip(View view){
         startActivity(new Intent(Login.this, DashboardUser.class));
+    }
+
+    public void bt_signup(View view){
+        startActivity(new Intent(Login.this, SignUp.class));
     }
 
     void hideKeyboard(){
