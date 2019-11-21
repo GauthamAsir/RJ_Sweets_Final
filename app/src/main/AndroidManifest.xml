@@ -21,6 +21,11 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".SignUp"/>
 
+        <activity android:name=".user.SweetsDetail"/>
+        <activity android:name=".user.Address"/>
+        <activity android:name=".user.NewAddress"/>
+        <activity android:name=".user.PlaceOrder"/>
+
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

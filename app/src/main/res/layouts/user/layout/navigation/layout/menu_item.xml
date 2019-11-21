@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    app:cardElevation="4dp"
+    android:padding="6dp"
+    app:cardCornerRadius="6dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/c1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/menu_image"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/menu_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Test"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:background="@color/overlayBackground"
+            android:gravity="center|start"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/menu_available_quantity"
+        android:scaleType="centerCrop"
+        android:background="@color/overlayBackground"
+        android:text="Out Of Stock"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+</androidx.cardview.widget.CardView>

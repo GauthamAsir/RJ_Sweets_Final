@@ -54,7 +54,52 @@
     <string name="shippers">Shippers</string>
 
     <string name="login_with_verification_code">Login with verification code</string>
-
     <string name="enter_otp">Verification Code</string>
+
+    <string name="no_internet">No Internet Connection</string>
+    <string name="enter_your_address">Enter Your Address</string>
+    <string name="comment">Comment</string>
+    <string name="order_details">Order Details</string>
+    <string name="save_this_address_for_future_orders">Save this Address for future Orders</string>
+    <string name="change_password">Change Password</string>
+    <string name="edit_address">Edit Your Address</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="check_for_updates">Check for Updates</string>
+
+    <string name="street_address">Street Address</string>
+    <string name="line1">Flat / House No. / Floor / Building</string>
+    <string name="line2">Colony / Street / Locality</string>
+    <string name="eg_landmark">Eg. Near SIES College College Sion</string>
+    <string name="pincode">6 digits [0-9] pincode</string>
+    <string name="address_city">Mumbai</string>
+    <string name="state">Maharashtra</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="delivered">Delivered</string>
+    <string name="cancel_order">Cancel Order</string>
+
+    <string name="view_order_details">View Order Details</string>
+    <string name="product_details">Product Details</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="order_total">Order Total</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_time">Order Time</string>
+    <string name="order_status">Order Status</string>
+    <string name="view_reason">View Reason</string>
+    <string name="place_order">Place Order</string>
+
+    <string name="payment_info">Payment Info</string>
+    <string name="payment_method">Payment Method</string>
+
+    <string name="contributors">Contributors</string>
+    <string name="gautham">Gautham</string>
+    <string name="founder_designer">Developer/Designer</string>
+    <string name="jebastin">Jebastin</string>
+    <string name="adhi">Adhi</string>
+    <string name="developer">Developer</string>
+    <string name="notifications">Notifications</string>
+    <string name="subscribe_news">Subscribe News</string>
+    <string name="view_placed_order">View Placed Order</string>
+    <string name="view_delivered_order">View Delivered Order</string>
+    <string name="view_rejected_order">View Rejected Order</string>
 
 </resources>
