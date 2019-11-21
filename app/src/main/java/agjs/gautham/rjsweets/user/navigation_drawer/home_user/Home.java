@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.Map;
@@ -38,6 +40,7 @@ import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
+import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.user.SweetsDetail;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
@@ -144,7 +147,7 @@ public class Home extends Fragment {
             }
         });
 
-        /*FirebaseInstanceId.getInstance().getInstanceId()
+        FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -153,7 +156,7 @@ public class Home extends Fragment {
                         }
                         updateToken(task.getResult().getToken());
                     }
-                });*/
+                });
 
         return root;
 
@@ -175,7 +178,7 @@ public class Home extends Fragment {
         navigationView.setCheckedItem(R.id.nav_your_cart);
     }
 
-    /*private void updateToken(final String token) {
+    private void updateToken(final String token) {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -203,7 +206,7 @@ public class Home extends Fragment {
                 }
             });
         }
-    }*/
+    }
 
     private void loadMenu(View root) {
 

@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.Remote.RetroFitClient;
 
 public class Common {
+
+    public static User currentUser;
 
     public static String USER_EMAIL = "Email";
     public static String USER_PASS = "Pass";
