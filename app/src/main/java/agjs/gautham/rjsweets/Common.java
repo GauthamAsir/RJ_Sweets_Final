@@ -21,6 +21,8 @@ public class Common {
     public static String USER_Phone = "123";
     public static String Name = "123";
 
+    public static String topicName = "News";
+
     public static String USER_ADDRESS_LINE1= "Address_Line1";
     public static String USER_ADDRESS_LINE2= "Address_Line2";
     public static String USER_ADDRESS_LANDMARK= "Address_Landmark";
