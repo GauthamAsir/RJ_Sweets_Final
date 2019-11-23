@@ -65,6 +65,9 @@ public class Login extends AppCompatActivity {
     private long back_pressed;
     private String verificationId;
 
+    private String otp_mail;
+    private String otp_pass;
+
     int phone_flag = 0;
 
     android.app.AlertDialog pdialog, pdialog2;
@@ -202,10 +205,7 @@ public class Login extends AppCompatActivity {
                     hideKeyboard();
                     pdialog.show();
 
-
                     final String pass = sPass.getEditText().getText().toString();
-
-                    mAuth = FirebaseAuth.getInstance();
 
                     mAuth.signInWithEmailAndPassword(mail, pass.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -395,6 +395,11 @@ public class Login extends AppCompatActivity {
                             dialog.dismiss();
                         }
 
+                        User user = dataSnapshot.child(phone).getValue(User.class);
+
+                        otp_mail = user.getEmail();
+                        otp_pass = user.getPassword();
+
                         final View exp = LayoutInflater.from(Login.this).inflate(R.layout.otp_activity,null);
 
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
@@ -492,8 +497,19 @@ public class Login extends AppCompatActivity {
 
                         if (task.isSuccessful()){
 
-                            Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
-                            startActivity(new Intent(Login.this,DashboardUser.class));
+                            if (otp_mail!=null && otp_pass!=null) {
+
+                                mAuth.signInWithEmailAndPassword(otp_mail,otp_pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                        Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
+                                        startActivity(new Intent(Login.this,DashboardUser.class));
+
+                                    }
+                                });
+
+                            }
 
                         } else {
                             if (pdialog.isShowing()){
