@@ -154,7 +154,7 @@ public class Home extends Fragment {
                         if (!task.isSuccessful()){
                             Log.w(TAG, "getInstanceId failed", task.getException());
                         }
-                        updateToken(task.getResult().getToken());
+                        //updateToken(task.getResult().getToken());
                     }
                 });
 
@@ -178,7 +178,7 @@ public class Home extends Fragment {
         navigationView.setCheckedItem(R.id.nav_your_cart);
     }
 
-    private void updateToken(final String token) {
+    /*private void updateToken(final String token) {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -206,7 +206,7 @@ public class Home extends Fragment {
                 }
             });
         }
-    }
+    }*/
 
     private void loadMenu(View root) {
 

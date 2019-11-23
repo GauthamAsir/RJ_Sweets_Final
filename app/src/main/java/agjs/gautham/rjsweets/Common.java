@@ -47,5 +47,19 @@ public class Common {
         return RetroFitClient.getClient(BASE_URL).create(APIService.class);
     }
 
+    public static String convertCodeToStatus(String status) {
+        switch (status) {
+            case "0":
+                return "Placed";
+            case "1":
+                return "On the Way";
+            case "2":
+                return "Delivered";
+            case "3":
+                return "Rejected";
+            default:
+                return "Rejected Default";
+        }
+    }
 
 }

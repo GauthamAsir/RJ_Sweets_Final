@@ -26,6 +26,11 @@
         <activity android:name=".user.NewAddress"/>
         <activity android:name=".user.PlaceOrder"/>
 
+        <activity android:name=".user.navigation_drawer.order_user.OrderDelivered"/>
+        <activity android:name=".user.navigation_drawer.order_user.OrderRejected"/>
+        <activity android:name=".user.navigation_drawer.order_user.OrderPlaced"/>
+        <activity android:name=".user.navigation_drawer.order_user.OrderDetail"/>
+
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
