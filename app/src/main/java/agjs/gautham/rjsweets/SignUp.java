@@ -288,6 +288,9 @@ public class SignUp extends AppCompatActivity {
                     adCode.setError("Enter Valid Code");
                     adCode.requestFocus();
                 }else {
+                    if (vdialog.isShowing()){
+                        vdialog.dismiss();
+                    }
                     verifyCode(code);
                 }
             }
