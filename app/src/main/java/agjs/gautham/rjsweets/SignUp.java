@@ -255,6 +255,7 @@ public class SignUp extends AppCompatActivity {
         adCode.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         alertDialog.setView(adCode); //Adding Editext To Alert Dialog
+        alertDialog.setCancelable(false);
 
         alertDialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
             @Override
