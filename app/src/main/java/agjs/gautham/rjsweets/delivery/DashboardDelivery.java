@@ -20,11 +20,7 @@ public class DashboardDelivery extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard_delivery);
 
         BottomNavigationView navView = findViewById(R.id.nav_view_delivery);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home_delivery, R.id.navigation_settings_delivery)
-                .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_delivery);
 
         NavigationUI.setupWithNavController(navView, navController);
