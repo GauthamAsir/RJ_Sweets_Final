@@ -100,6 +100,8 @@ public class DeliveryLogin extends AppCompatActivity {
                         if (user.getPassword().equals(localPass)) {
 
                             if (checkBox.isChecked()){
+                                Paper.book().destroy();
+                                Paper.book().write(Common.loginType,"2");
                                 Paper.book().write(Common.USER_EMAIL,localPhone);
                                 Paper.book().write(Common.USER_PASS,localPass);
                             }

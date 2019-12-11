@@ -102,4 +102,15 @@
     <string name="view_delivered_order">View Delivered Order</string>
     <string name="view_rejected_order">View Rejected Order</string>
 
+    <!-- Delivery Strings -->
+    <string name="title_home">Home</string>
+    <string name="settings">Settings</string>
+    <string name="view_picked_order">View Picked Order</string>
+    <string name="logout">LogOut</string>
+
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="direction">Direction</string>
+    <string name="details">Details</string>
+
 </resources>

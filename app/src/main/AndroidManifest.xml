@@ -10,33 +10,45 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Start of Delivery Activities-->
         <activity android:name=".delivery.DashboardDelivery" />
-        <activity android:name=".admin.DashboardAdmin" />
-        <activity android:name=".user.DashboardUser" />
-
         <activity android:name=".login.DeliveryLogin" />
+        <activity android:name=".delivery.ui.Home.OrderPicked"/>
+        <activity android:name=".delivery.ui.Home.OrderDelivered"/>
+        <activity android:name=".delivery.ui.Home.OrderPlaced"/>
+        <activity android:name=".delivery.ui.Home.OrderRejected"/>
+        <activity android:name=".delivery.OrderDetailDelivery"/>
+        <!-- End of Delivery Activities-->
+
+        <!-- Start of Admin Activities-->
+        <activity android:name=".admin.DashboardAdmin" />
         <activity android:name=".login.LoginAdmin" />
+        <!-- End of Admin Activities-->
+
+        <!-- Start of User Activities-->
+        <activity android:name=".user.DashboardUser" />
+        <activity android:name=".user.SweetsDetail" />
+        <activity android:name=".user.Address" />
+        <activity android:name=".user.NewAddress" />
+        <activity android:name=".user.PlaceOrder" />
+        <activity android:name=".user.navigation_drawer.order_user.OrderDelivered" />
+        <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />
+        <activity android:name=".user.navigation_drawer.order_user.OrderPlaced" />
+        <activity android:name=".user.navigation_drawer.order_user.OrderDetail" />
+        <!-- End of User Activities-->
+
+        <!-- Start of Common Activities-->
         <activity android:name=".login.Login" />
-
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SignUp"/>
-
-        <activity android:name=".user.SweetsDetail"/>
-        <activity android:name=".user.Address"/>
-        <activity android:name=".user.NewAddress"/>
-        <activity android:name=".user.PlaceOrder"/>
-
-        <activity android:name=".user.navigation_drawer.order_user.OrderDelivered"/>
-        <activity android:name=".user.navigation_drawer.order_user.OrderRejected"/>
-        <activity android:name=".user.navigation_drawer.order_user.OrderPlaced"/>
-        <activity android:name=".user.navigation_drawer.order_user.OrderDetail"/>
-
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SignUp" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- End of Common Activities -->
 
     </application>
 

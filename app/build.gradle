@@ -98,4 +98,7 @@ dependencies {
 
     //Otp Edit Text
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
+
+    //Swipe Button
+    implementation 'com.github.gratusik:AGIKSwipeButton:1.0.1'
 }

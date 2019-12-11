@@ -253,8 +253,14 @@ public class Login extends AppCompatActivity {
                                 });
 
                                 if (remember.isChecked()){
+                                    Paper.book().destroy();
+                                    Paper.book().write(Common.loginType,"0");
                                     Paper.book().write(Common.USER_EMAIL,mail);
                                     Paper.book().write(Common.USER_PASS,pass);
+                                }
+
+                                if (pdialog.isShowing()){
+                                    pdialog.dismiss();
                                 }
 
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
@@ -266,6 +272,7 @@ public class Login extends AppCompatActivity {
                                     pdialog.dismiss();
                                 }
                                 if (remember.isChecked()){
+                                    Paper.book().destroy();
                                     Paper.book().delete(Common.USER_EMAIL);
                                     Paper.book().delete(Common.USER_PASS);
                                 }
@@ -316,6 +323,8 @@ public class Login extends AppCompatActivity {
                                             }
 
                                             if (remember.isChecked()){
+                                                Paper.book().destroy();
+                                                Paper.book().write(Common.loginType,"0");
                                                 Paper.book().write(Common.USER_EMAIL,mail);
                                                 Paper.book().write(Common.USER_PASS,pass);
                                             }

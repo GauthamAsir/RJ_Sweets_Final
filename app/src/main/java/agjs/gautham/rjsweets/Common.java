@@ -23,6 +23,8 @@ public class Common {
 
     public static String topicName = "News";
 
+    public static String loginType = "";
+
     public static String USER_ADDRESS_LINE1= "Address_Line1";
     public static String USER_ADDRESS_LINE2= "Address_Line2";
     public static String USER_ADDRESS_LANDMARK= "Address_Landmark";
@@ -31,6 +33,12 @@ public class Common {
     public static List<SweetOrder> list = new ArrayList<>();
 
     private static final String BASE_URL = "https://fcm.googleapis.com/";
+
+    public static final String fcmUrl = "https://fcm.googleapis.com/";
+
+    public static APIService getFCMClient(){
+        return FCMRetroFitClient.getClient(fcmUrl).create(APIService.class);
+    }
 
     public static boolean isConnectedToInternet(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
