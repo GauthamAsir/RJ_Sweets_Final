@@ -137,6 +137,12 @@ public class LoginAdmin extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(LoginAdmin.this,Login.class));
+    }
+
     //Password Validation
     boolean validatePass() {
         String pass = sPass.getEditText().getText().toString();
@@ -150,6 +156,7 @@ public class LoginAdmin extends AppCompatActivity {
             return true;
         }
     }
+
     //Password Validation
     boolean validatePhone() {
         String phone = sPhone.getEditText().getText().toString();

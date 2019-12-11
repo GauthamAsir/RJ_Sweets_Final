@@ -131,6 +131,12 @@ public class DeliveryLogin extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(DeliveryLogin.this,Login.class));
+    }
+
     //Password Validation
     boolean validatePass() {
         String pass = sPass.getEditText().getText().toString();
