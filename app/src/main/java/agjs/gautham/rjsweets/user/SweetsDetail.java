@@ -44,6 +44,7 @@ public class SweetsDetail extends AppCompatActivity {
     String sweetId="";
     String phone = Common.USER_Phone;
     String avaQuantity="";
+    String appType="";
 
     FirebaseDatabase database;
     DatabaseReference sweet;
@@ -75,7 +76,11 @@ public class SweetsDetail extends AppCompatActivity {
         if (getIntent() != null){
             sweetId = getIntent().getStringExtra("SweetId");
             avaQuantity = getIntent().getStringExtra("AvailableQuantity");
+            appType = getIntent().getStringExtra("AppType");
+
         }
+
+
 
         sweet_description = findViewById(R.id.sweets_description_user);
         sweet_name = findViewById(R.id.sweets_name_user);
@@ -90,6 +95,15 @@ public class SweetsDetail extends AppCompatActivity {
 
         buyNow = findViewById(R.id.bt_buyNow_user);
         btnCart = findViewById(R.id.btn_cart_user);
+
+        if (appType.equals("admin")){
+            numberButton.setVisibility(View.GONE);
+            btnCart.hide();
+            buyNow.setVisibility(View.GONE);
+        } else {
+            numberButton.setVisibility(View.VISIBLE);
+            buyNow.setVisibility(View.VISIBLE);
+        }
 
         numberButton.setRange(1,Integer.parseInt(avaQuantity));
         numberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {

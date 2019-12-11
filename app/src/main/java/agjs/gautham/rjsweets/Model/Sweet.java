@@ -13,12 +13,13 @@ public class Sweet {
 
     }
 
-    public Sweet(String description, String discount, String image, String name, String price) {
+    public Sweet(String description, String discount, String image, String name, String price, String avaQuantity) {
         Description = description;
         Discount = discount;
         Image = image;
         Name = name;
         Price = price;
+        AvaQuantity = avaQuantity;
     }
 
     public String getDescription() {

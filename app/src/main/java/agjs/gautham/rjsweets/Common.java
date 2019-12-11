@@ -30,6 +30,12 @@ public class Common {
     public static String USER_ADDRESS_LANDMARK= "Address_Landmark";
     public static String USER_ADDRESS_Pincode= "Address_Pincode";
 
+    public static final String UPDATE = "Update";
+    public static final String UPDATE_IMAGE = "Update Image";
+    public static final String DELETE = "Delete";
+
+    public static String PHONE_KEY = "Phone";
+
     public static List<SweetOrder> list = new ArrayList<>();
 
     private static final String BASE_URL = "https://fcm.googleapis.com/";

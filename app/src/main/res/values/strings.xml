@@ -113,4 +113,23 @@
     <string name="direction">Direction</string>
     <string name="details">Details</string>
 
+    <!-- Admin Strings -->
+    <string name="enter_sweet_name">Sweet Name</string>
+    <string name="select">Select Image</string>
+    <string name="upload">Upload</string>
+    <string name="sweet_description">Sweet Description</string>
+    <string name="discount">Discount</string>
+    <string name="enter_price">Price</string>
+    <string name="title_activity_tracking_order">TrackingOrder</string>
+
+    <string name="available_quantity">Available Quantity</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="enter_user_name">Enter User Name</string>
+    <string name="enter_shipper_phone_number">Enter Shipper Phone Number</string>
+    <string name="enter_shipper_name">Enter Shipper Name</string>
+    <string name="enter_shipper_email">Enter Shipper Email</string>
+    <string name="enter_shipper_password">Enter Shipper Password</string>
+    <string name="update">Update</string>
+
 </resources>
