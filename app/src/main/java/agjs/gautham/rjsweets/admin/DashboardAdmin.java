@@ -1,6 +1,10 @@
 package agjs.gautham.rjsweets.admin;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
@@ -19,13 +23,19 @@ import agjs.gautham.rjsweets.admin.navigation_drawer.add_shippers.AddShippers;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.Home;
 import agjs.gautham.rjsweets.admin.navigation_drawer.notification.Notification;
 import agjs.gautham.rjsweets.admin.navigation_drawer.orders.Orders;
+import agjs.gautham.rjsweets.admin.navigation_drawer.settings.Settings;
 import agjs.gautham.rjsweets.admin.navigation_drawer.shippers.Shippers;
+import agjs.gautham.rjsweets.login.Login;
+import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 
 public class DashboardAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     NavigationView navigationView;
     private long back_pressed;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +65,6 @@ public class DashboardAdmin extends AppCompatActivity
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (!navigationView.getMenu().findItem(R.id.nav_home).isChecked()){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-            getSupportActionBar().setTitle(R.string.menu_home);
-        }
-        else {
-            if (back_pressed + 2000 > System.currentTimeMillis()){
-                finish();
-                moveTaskToBack(true);
-            }else {
-                Snackbar.make(drawer, "Press Again to Exit", Snackbar.LENGTH_LONG).show();
-                back_pressed = System.currentTimeMillis();
-            }
-        }
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -109,11 +97,51 @@ public class DashboardAdmin extends AppCompatActivity
                 break;
 
             case R.id.nav_settings:
-                Toast.makeText(DashboardAdmin.this,"W.I.P Settings",Toast.LENGTH_LONG).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
+                getSupportActionBar().setTitle(R.string.settings);
                 break;
 
             case R.id.nav_logout:
-                Toast.makeText(DashboardAdmin.this,"W.I.P LogOut",Toast.LENGTH_LONG).show();
+
+                final AlertDialog dlg = new SpotsDialog.Builder()
+                        .setContext(DashboardAdmin.this)
+                        .setCancelable(false)
+                        .setMessage("Logging You Out !...")
+                        .build();
+
+                final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                builder.setTitle("Log Out !");
+                builder.setMessage("Do you really want to Log Out ?");
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dlg.show();
+
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+
+                                Paper.book().destroy();
+                                Intent logout = new Intent(DashboardAdmin.this, Login.class);
+                                logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(logout);
+                                finish();
+                            }
+                        }, 1500);
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Return To Resumed Fragments
+                    }
+                });
+
+                androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
                 break;
         }
 
@@ -121,4 +149,27 @@ public class DashboardAdmin extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (!navigationView.getMenu().findItem(R.id.nav_home).isChecked()){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportActionBar().setTitle(R.string.menu_home);
+        }
+        else {
+            if (back_pressed + 2000 > System.currentTimeMillis()){
+                finish();
+                moveTaskToBack(true);
+            }else {
+                Snackbar.make(drawer, "Press Again to Exit", Snackbar.LENGTH_LONG).show();
+                back_pressed = System.currentTimeMillis();
+            }
+        }
+    }
+
 }
