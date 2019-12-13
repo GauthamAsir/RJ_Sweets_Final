@@ -96,13 +96,17 @@ public class SweetsDetail extends AppCompatActivity {
         buyNow = findViewById(R.id.bt_buyNow_user);
         btnCart = findViewById(R.id.btn_cart_user);
 
-        if (appType.equals("admin")){
-            numberButton.setVisibility(View.GONE);
-            btnCart.hide();
-            buyNow.setVisibility(View.GONE);
-        } else {
-            numberButton.setVisibility(View.VISIBLE);
-            buyNow.setVisibility(View.VISIBLE);
+        if(appType != null){
+
+            if (appType.equals("admin")){
+                numberButton.setVisibility(View.GONE);
+                btnCart.hide();
+                buyNow.setVisibility(View.GONE);
+            } else {
+                numberButton.setVisibility(View.VISIBLE);
+                buyNow.setVisibility(View.VISIBLE);
+            }
+
         }
 
         numberButton.setRange(1,Integer.parseInt(avaQuantity));

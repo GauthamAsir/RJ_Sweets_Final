@@ -23,6 +23,10 @@
         <!-- Start of Admin Activities-->
         <activity android:name=".admin.DashboardAdmin" />
         <activity android:name=".login.LoginAdmin" />
+        <activity android:name=".admin.OrderDeliveredAdmin"/>
+        <activity android:name=".admin.OrderPlacedAdmin"/>
+        <activity android:name=".admin.OrderRejectedAdmin"/>
+        <activity android:name=".admin.OrderDetailAdmin"/>
         <!-- End of Admin Activities-->
 
         <!-- Start of User Activities-->

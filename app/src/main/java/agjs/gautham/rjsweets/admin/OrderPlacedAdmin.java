@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets.delivery.ui.Home;
+package agjs.gautham.rjsweets.admin;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,14 +36,13 @@ import agjs.gautham.rjsweets.Model.Sender;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
-import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
+import agjs.gautham.rjsweets.admin.ViewHolder.OrderViewHolderAdmin;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderPlaced extends AppCompatActivity {
+public class OrderPlacedAdmin extends AppCompatActivity {
 
     AlertDialog dialog;
 
@@ -62,15 +59,15 @@ public class OrderPlaced extends AppCompatActivity {
 
     RecyclerView.LayoutManager layoutManager;
 
-    private FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery> adapter;
+    private FirebaseRecyclerAdapter<Request, OrderViewHolderAdmin> adapter;
 
     private static final String[] status = {"Confirming","Placed","On the way","Shipped","Delivered","Rejected"};
     private static final String[] statusCode = {"0","1","2","3","4","5"};
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.orders_placed);
+        setContentView(R.layout.activity_order_placed_admin);
 
         Toolbar toolbar = findViewById(R.id.toolbar_placed);
         toolbar.setTitle("Placed Order");
@@ -95,7 +92,6 @@ public class OrderPlaced extends AppCompatActivity {
         requests = database.getReference("Requests");
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser mUser = mAuth.getCurrentUser();
 
         textView = findViewById(R.id.order_empty);
 
@@ -119,21 +115,21 @@ public class OrderPlaced extends AppCompatActivity {
 
     private void loadOrders() {
 
-        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery>(
+        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderAdmin>(
                 Request.class,
-                R.layout.order_layout_admin_delivery,
-                OrderViewHolderDelivery.class,
+                R.layout.order_layout_admin,
+                OrderViewHolderAdmin.class,
                 requests
         ) {
             @Override
-            protected void populateViewHolder(OrderViewHolderDelivery orderViewHolder, final Request request, final int i) {
+            protected void populateViewHolder(OrderViewHolderAdmin orderViewHolder, final Request request, final int i) {
 
                 final String OrderId, OrderStatus;
 
                 OrderId = adapter.getRef(i).getKey();
                 OrderStatus = Common.convertCodeToStatus(request.getStatus());
 
-                if (request.getStatus().equals("0")){
+                if (request.getStatus().equals("0") || request.getStatus().equals("1")){
 
                     textView.setVisibility(View.GONE);
 
@@ -151,18 +147,18 @@ public class OrderPlaced extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
+                    /*orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             showUpdateDialog(OrderId,
                                     adapter.getItem(i));
                         }
-                    });
+                    });*/
 
                     orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent orderDetail = new Intent(OrderPlaced.this, OrderDetailDelivery.class);
+                            Intent orderDetail = new Intent(OrderPlacedAdmin.this, OrderDetailAdmin.class);
                             orderDetail.putExtra("OrderId",adapter.getRef(i).getKey());
                             orderDetail.putExtra("OrderStatus",request.getStatus());
                             startActivity(orderDetail);
@@ -191,7 +187,7 @@ public class OrderPlaced extends AppCompatActivity {
                 dialog.dismiss();
             }
             textView.setVisibility(View.VISIBLE);
-            textView.setText("Don't Panic! You Don't No Orders Have been  Placed");
+            textView.setText("Don't Panic! You Don't No Orders Have been Placed");
         }
 
         adapter.notifyDataSetChanged();
@@ -205,9 +201,9 @@ public class OrderPlaced extends AppCompatActivity {
         alertDialog.setMessage("Please Choose Status");
 
         LayoutInflater inflater = getLayoutInflater();
-        final View view = inflater.inflate(R.layout.update_order_delivery,null);
+        final View view = inflater.inflate(R.layout.update_order,null);
 
-        spinner = view.findViewById(R.id.statusSpinner_delivery);
+        spinner = view.findViewById(R.id.statusSpinner);
 
         spinner.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,status));
         alertDialog.setView(view);
@@ -220,15 +216,15 @@ public class OrderPlaced extends AppCompatActivity {
                 String status1 = statusCode[spinner.getSelectedItemPosition()];
                 item.setStatus(status1);
 
-                /*if (status1.equals("4")){
-                    item.setDeliveredBy(Common.USER_Phone);
-                }*/
+                if (status1.equals("4")){
+                    item.setPickedBy(Common.PHONE_KEY);
+                }
 
                 adapter.notifyDataSetChanged();     //Added to update item size
                 requests.child(localKey).setValue(item);
 
                 if (status1.equals("5")){
-                    //item.setDeliveredBy(Common.USER_Phone);
+                    item.setPickedBy(Common.PHONE_KEY);
                     showDeleteDialog(localKey,item);
                 }else {
                     sendOrderStatusToUser(localKey,item,status1);
@@ -262,9 +258,9 @@ public class OrderPlaced extends AppCompatActivity {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                             if (response.body().success == 1){
-                                                Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlacedAdmin.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send Notification but Order Updated",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlacedAdmin.this,"Failed To send Notification but Order Updated",Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         @Override
@@ -284,15 +280,15 @@ public class OrderPlaced extends AppCompatActivity {
 
     private void showDeleteDialog(final String key, final Request item) {
 
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPlaced.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPlacedAdmin.this);
         alertDialog.setTitle("Delete Order !");
         alertDialog.setMessage("Please Enter Your Reason");
         alertDialog.setCancelable(true);
 
-        LayoutInflater inflater = OrderPlaced.this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.delete_order_delivery,null);
+        LayoutInflater inflater = OrderPlacedAdmin.this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.delete_order,null);
 
-        editText = view.findViewById(R.id.delete_reason_text_delivery);
+        editText = view.findViewById(R.id.delete_reason_text);
         alertDialog.setView(view);
 
         final String localKey = key;
@@ -331,9 +327,9 @@ public class OrderPlaced extends AppCompatActivity {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                             if (response.body().success == 1){
-                                                Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlacedAdmin.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send Notification but Order Deleted",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlacedAdmin.this,"Failed To send Notification but Order Deleted",Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         @Override
