@@ -225,9 +225,9 @@ public class PlaceOrder extends AppCompatActivity {
                                     if (response.code() == 200 ) {
 
                                         if (response.body().success == 1) {
-                                            Log.d("Notification Status","Success");
+                                            Log.d("SendNotification Status","Success");
                                         } else {
-                                            Log.d("Notification Status","Failed");
+                                            Log.d("SendNotification Status","Failed");
                                         }
                                     }
                                 }

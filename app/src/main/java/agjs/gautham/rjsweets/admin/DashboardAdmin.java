@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.add_shippers.AddShippers;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.Home;
-import agjs.gautham.rjsweets.admin.navigation_drawer.notification.Notification;
+import agjs.gautham.rjsweets.admin.navigation_drawer.notification.SendNotification;
 import agjs.gautham.rjsweets.admin.navigation_drawer.orders.Orders;
 import agjs.gautham.rjsweets.admin.navigation_drawer.settings.Settings;
 import agjs.gautham.rjsweets.admin.navigation_drawer.shippers.Shippers;
@@ -77,7 +76,7 @@ public class DashboardAdmin extends AppCompatActivity
                 break;
 
             case R.id.nav_notifications:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Notification()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SendNotification()).commit();
                 getSupportActionBar().setTitle(R.string.send_notification);
                 break;
 

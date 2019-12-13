@@ -195,7 +195,7 @@ public class OrderDetailAdmin extends AppCompatActivity {
                                             if (response.body().success == 1){
                                                 Toast.makeText(OrderDetailAdmin.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
-                                                Toast.makeText(OrderDetailAdmin.this,"Failed To send Notification but Order Updated",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderDetailAdmin.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         @Override

@@ -74,7 +74,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         Notification.Builder builder = helper.rjSweetsChannelNotification(title,content,pendingIntent,defaultSoundUri);
 
-        //Generating Random Notification ID to show all notification
+        //Generating Random SendNotification ID to show all notification
         helper.getManager().notify(new Random().nextInt(), builder.build());
     }
 }

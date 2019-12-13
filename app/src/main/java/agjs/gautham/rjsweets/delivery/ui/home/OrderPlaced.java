@@ -264,7 +264,7 @@ public class OrderPlaced extends AppCompatActivity {
                                             if (response.body().success == 1){
                                                 Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send Notification but Order Updated",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlaced.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         @Override
@@ -333,7 +333,7 @@ public class OrderPlaced extends AppCompatActivity {
                                             if (response.body().success == 1){
                                                 Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send Notification but Order Deleted",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(OrderPlaced.this,"Failed To send SendNotification but Order Deleted",Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         @Override

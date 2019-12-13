@@ -670,7 +670,7 @@ public class Settings extends Fragment {
         final View notifi = LayoutInflater.from(getActivity()).inflate(R.layout.notification_settings,null);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setView(notifi);
-        alertDialog.setTitle("Notification Settings");
+        alertDialog.setTitle("SendNotification Settings");
 
         final CheckBox notify_checkbox = notifi.findViewById(R.id.checkbox_notification);
 
