@@ -400,9 +400,7 @@ public class Login extends AppCompatActivity {
 
                     if (dataSnapshot.child(phone).exists()){
 
-                        if (dialog.isShowing()){
-                            dialog.dismiss();
-                        }
+                        dialog.show();
 
                         User user = dataSnapshot.child(phone).getValue(User.class);
 
@@ -435,13 +433,17 @@ public class Login extends AppCompatActivity {
 
                                 dialog.show();
                                 String code = otp_code.getEditText().getText().toString();
-                                verifyCode(code);
+
+                                if (!code.isEmpty()){
+                                    verifyCode(code);
+                                }
 
                             }
                         });
 
                         sendVerificationCode(spno);
                     }else {
+                        dialog.dismiss();
                         toast("User doesn't exists");
                     }
                 }
@@ -499,6 +501,15 @@ public class Login extends AppCompatActivity {
 
     private void signinwithCredential(PhoneAuthCredential credential){
 
+        final AlertDialog dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setCancelable(false)
+                .setMessage("Just a sec")
+                .setTheme(R.style.DialogCustom)
+                .build();
+
+        dialog.show();
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -514,6 +525,9 @@ public class Login extends AppCompatActivity {
 
                                         Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
                                         startActivity(new Intent(Login.this,DashboardUser.class));
+                                        if (dialog.isShowing()){
+                                            dialog.dismiss();
+                                        }
 
                                     }
                                 });
@@ -523,6 +537,10 @@ public class Login extends AppCompatActivity {
                         } else {
                             if (pdialog.isShowing()){
                                 pdialog.dismiss();
+                            }
+
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
                             }
                             toast("Login Failed");
                         }
