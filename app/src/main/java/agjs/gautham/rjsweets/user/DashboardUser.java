@@ -84,6 +84,22 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
+        if (getIntent() != null){
+
+            String e = getIntent().getStringExtra("Execute_Settings");
+
+            if (e != null){
+
+                if (e.equals("1")){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
+                    getSupportActionBar().setTitle(R.string.menu_settings);
+                }
+
+            }
+        }
+
+
+
         menu = navigationView.getMenu();
 
         if (Common.isConnectedToInternet(getBaseContext())) {

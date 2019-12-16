@@ -1,6 +1,10 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.order_user;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,9 +22,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
+import agjs.gautham.rjsweets.Model.Sweet;
+import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.login.Login;
+import agjs.gautham.rjsweets.user.DashboardUser;
+import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.Settings;
+import dmax.dialog.SpotsDialog;
 
 public class OrderDetail extends AppCompatActivity {
 
@@ -77,7 +90,7 @@ public class OrderDetail extends AppCompatActivity {
             String orderName = getIntent().getStringExtra("OrderUserName");
             String orderTime = getIntent().getStringExtra("OrderTime");
             String orderDate = getIntent().getStringExtra("OrderDate");
-            String orderStatus = getIntent().getStringExtra("OrderStatus");
+            final String orderStatus = getIntent().getStringExtra("OrderStatus");
             String paymentMethod = getIntent().getStringExtra("OrderPaymentMethod");
 
             //Set Value to recycler view
@@ -105,7 +118,7 @@ public class OrderDetail extends AppCompatActivity {
 
             cancelOrder = findViewById(R.id.btnCancelOrder);
 
-            if (orderStatus.equals("4") | orderStatus.equals("5")){
+            if (orderStatus.equals("2") | orderStatus.equals("3")){
                 cancelOrder.setVisibility(View.GONE);
             }else {
                 cancelOrder.setVisibility(View.VISIBLE);
@@ -115,7 +128,136 @@ public class OrderDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    Toast.makeText(OrderDetail.this,"This function is teporarily disabled",Toast.LENGTH_LONG).show();
+                    if (orderStatus.equals("1")){
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderDetail.this);
+                        alertDialog.setTitle("Error");
+                        alertDialog.setMessage("This Order can't be cancelled, as your order is out for delivery. Please contact support for more details");
+                        alertDialog.setIcon(R.drawable.ic_error_outline);
+                        alertDialog.setCancelable(false);
+
+                        alertDialog.setPositiveButton("Support", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
+                                //getSupportActionBar().setTitle(R.string.menu_settings);
+
+                                Intent intent = new Intent(OrderDetail.this, DashboardUser.class);
+                                intent.putExtra("Execute_Settings","1");
+                                startActivity(intent);
+
+                            }
+                        }).setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        final AlertDialog dialog = alertDialog.create();
+                        dialog.show();
+
+                    } else {
+
+                         final AlertDialog pdialog = new SpotsDialog.Builder()
+                                .setContext(OrderDetail.this)
+                                .setCancelable(false)
+                                .setMessage("Registering You In ...")
+                                .setTheme(R.style.DialogCustom)
+                                .build();
+
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderDetail.this);
+                        alertDialog.setTitle("Confirmation");
+                        alertDialog.setMessage("Do You Really Want To Cancel This Order. This can't be undone");
+                        alertDialog.setIcon(R.drawable.ic_error_outline);
+                        alertDialog.setCancelable(false);
+
+                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                pdialog.show();
+
+                                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        Request request = dataSnapshot.child(order_id_value).getValue(Request.class);
+
+                                        List list = request.getSweetOrders();
+
+                                        List<SweetOrder> myOrders = list;
+
+                                        for (int i = 0; i < myOrders.size(); i++){
+
+                                            SweetOrder sweetOrder = myOrders.get(i);
+
+                                            final String pid = sweetOrder.getProductId();
+
+                                            final String Orderquantity = sweetOrder.getQuantity();
+
+                                            final DatabaseReference databaseReference1 = database.getReference("Sweets");
+
+                                            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                    String avaQuantity = dataSnapshot.child(pid).child("AvaQuantity").getValue(String.class);
+
+                                                    int finalQuantity = Integer.parseInt(Orderquantity) + Integer.parseInt(avaQuantity);
+
+                                                    databaseReference1.child(pid).child("AvaQuantity").setValue(String.valueOf(finalQuantity));
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                            //Toast.makeText(OrderDetail.this,pid,Toast.LENGTH_LONG).show();
+
+                                            Log.d("TEST",pid);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                if (pdialog.isShowing()){
+                                    pdialog.dismiss();
+                                }
+
+                                databaseReference.child(order_id_value).child("status").setValue("3");
+
+                                databaseReference.child(order_id_value).child("reason").setValue("Cancelled by user " + Common.Name + "(" +Common.USER_Phone+")");
+
+                                Toast.makeText(OrderDetail.this,"Order Cancelled Successfully",Toast.LENGTH_LONG).show();
+
+                                startActivity(new Intent(OrderDetail.this, DashboardUser.class));
+
+                            }
+                        });
+
+                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+
+                            }
+                        });
+
+                        final AlertDialog dialog = alertDialog.create();
+                        dialog.show();
+
+                    }
                 }
             });
 
@@ -139,6 +281,7 @@ public class OrderDetail extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finish();
         overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit );
     }
 }

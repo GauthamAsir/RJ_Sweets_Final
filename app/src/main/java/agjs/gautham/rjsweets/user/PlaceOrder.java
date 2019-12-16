@@ -167,7 +167,7 @@ public class PlaceOrder extends AppCompatActivity {
                     if (Integer.parseInt(avaQuantity) >= Integer.parseInt(orderQuantity)){
 
                         finalQantity = Integer.parseInt(avaQuantity) - Integer.parseInt(orderQuantity);
-
+                        Log.d("Final Quantity", String.valueOf(finalQantity));
                         sweets.child(id).child("AvaQuantity").setValue(String.valueOf(finalQantity));
 
                     }else {

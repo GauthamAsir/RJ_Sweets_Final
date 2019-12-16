@@ -57,6 +57,8 @@ public class SweetsDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sweets_detail);
 
+        Paper.init(this);
+
         //Firebase
         database = FirebaseDatabase.getInstance();
         sweet = database.getReference("Sweets");
