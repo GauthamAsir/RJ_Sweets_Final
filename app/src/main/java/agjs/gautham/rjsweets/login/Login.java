@@ -264,6 +264,7 @@ public class Login extends AppCompatActivity {
                                 }
 
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
@@ -332,6 +333,7 @@ public class Login extends AppCompatActivity {
                                             Common.USER_Phone = mail;
 
                                             Intent intent = new Intent(Login.this, DashboardUser.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                             finish();
                                             overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
@@ -524,7 +526,9 @@ public class Login extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                                         Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
-                                        startActivity(new Intent(Login.this,DashboardUser.class));
+                                        Intent intent = new Intent(Login.this, DashboardUser.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
                                         if (dialog.isShowing()){
                                             dialog.dismiss();
                                         }
