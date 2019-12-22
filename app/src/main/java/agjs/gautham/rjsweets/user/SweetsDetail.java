@@ -2,6 +2,7 @@ package agjs.gautham.rjsweets.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
+import agjs.gautham.rjsweets.Model.SavedAddress;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
@@ -139,8 +141,6 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View view) {
                         if (mUser != null) {
 
-                            Toast.makeText(SweetsDetail.this, "Please Select an Address", Toast.LENGTH_SHORT).show();
-
                             String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
                             String savedAddressLine2 = Paper.book().read(Common.USER_ADDRESS_LINE2);
                             String savedAddressLandmark = Paper.book().read(Common.USER_ADDRESS_LANDMARK);
@@ -159,11 +159,15 @@ public class SweetsDetail extends AppCompatActivity {
 
                             if (savedAddressLine1 != null && savedAddressLine2 != null && savedAddressLandmark != null
                                     && savedAddressPincode != null) {
+
+                                Toast.makeText(SweetsDetail.this, "Please Select an Address", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SweetsDetail.this, Address.class);
                                 intent.putExtra("Price",currentSweet.getPrice());
                                 startActivity(intent);
                                 finish();
                             }else {
+
+                                Toast.makeText(SweetsDetail.this, "Enter a new Address", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SweetsDetail.this, NewAddress.class);
                                 intent.putExtra("Price",currentSweet.getPrice());
                                 startActivity(intent);

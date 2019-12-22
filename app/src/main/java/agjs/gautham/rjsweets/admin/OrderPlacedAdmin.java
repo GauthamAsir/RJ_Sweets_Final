@@ -168,7 +168,7 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                     /*orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrder.class);
+                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrderDelivery.class);
                             trackingOrder.putExtra("Address",request.getAddress());
                             trackingOrder.putExtra("Phone",request.getPhone());
                             startActivity(trackingOrder);

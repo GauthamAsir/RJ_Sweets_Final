@@ -8,7 +8,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.R;
@@ -75,6 +85,7 @@ public class NewAddress extends AppCompatActivity {
                     + addressLandmark+", "+ addressCity +", "+ addressState +"-"+ addressPincode;
 
             if (addressCheckbox.isChecked()){
+
                 Paper.book().write(Common.USER_ADDRESS_LINE1,addressLine1);
                 Paper.book().write(Common.USER_ADDRESS_LINE2,addressLine2);
                 Paper.book().write(Common.USER_ADDRESS_LANDMARK,addressLandmark);

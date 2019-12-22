@@ -2,34 +2,51 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="agjs.gautham.rjsweets">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/cupcake"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Start of Delivery Activities-->
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".TrackingOrder"
+            android:label="@string/title_activity_tracking_order" /> <!-- Start of Delivery Activities -->
         <activity android:name=".delivery.DashboardDelivery" />
         <activity android:name=".login.DeliveryLogin" />
-        <activity android:name=".delivery.ui.Home.OrderPicked"/>
-        <activity android:name=".delivery.ui.Home.OrderDelivered"/>
-        <activity android:name=".delivery.ui.Home.OrderPlaced"/>
-        <activity android:name=".delivery.ui.Home.OrderRejected"/>
-        <activity android:name=".delivery.OrderDetailDelivery"/>
-        <!-- End of Delivery Activities-->
-
-        <!-- Start of Admin Activities-->
+        <activity android:name=".delivery.ui.Home.OrderPicked" />
+        <activity android:name=".delivery.ui.Home.OrderDelivered" />
+        <activity android:name=".delivery.ui.Home.OrderPlaced" />
+        <activity android:name=".delivery.ui.Home.OrderRejected" />
+        <activity android:name=".delivery.OrderDetailDelivery" /> <!-- End of Delivery Activities -->
+        <!-- Start of Admin Activities -->
         <activity android:name=".admin.DashboardAdmin" />
         <activity android:name=".login.LoginAdmin" />
-        <activity android:name=".admin.OrderDeliveredAdmin"/>
-        <activity android:name=".admin.OrderPlacedAdmin"/>
-        <activity android:name=".admin.OrderRejectedAdmin"/>
-        <activity android:name=".admin.OrderDetailAdmin"/>
-        <!-- End of Admin Activities-->
-
-        <!-- Start of User Activities-->
+        <activity android:name=".admin.OrderDeliveredAdmin" />
+        <activity android:name=".admin.OrderPlacedAdmin" />
+        <activity android:name=".admin.OrderRejectedAdmin" />
+        <activity android:name=".admin.OrderDetailAdmin" /> <!-- End of Admin Activities -->
+        <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
         <activity android:name=".user.SweetsDetail" />
         <activity android:name=".user.Address" />
@@ -38,10 +55,8 @@
         <activity android:name=".user.navigation_drawer.order_user.OrderDelivered" />
         <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />
         <activity android:name=".user.navigation_drawer.order_user.OrderPlaced" />
-        <activity android:name=".user.navigation_drawer.order_user.OrderDetail" />
-        <!-- End of User Activities-->
-
-        <!-- Start of Common Activities-->
+        <activity android:name=".user.navigation_drawer.order_user.OrderDetail" /> <!-- End of User Activities -->
+        <!-- Start of Common Activities -->
         <activity android:name=".login.Login" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUp" />
@@ -52,8 +67,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- End of Common Activities -->
-
     </application>
 
 </manifest>

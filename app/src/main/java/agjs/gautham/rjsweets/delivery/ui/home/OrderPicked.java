@@ -1,6 +1,7 @@
 package agjs.gautham.rjsweets.delivery.ui.Home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.TrackingOrder;
 import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
 import dmax.dialog.SpotsDialog;
 
 public class OrderPicked extends AppCompatActivity {
@@ -126,12 +127,28 @@ public class OrderPicked extends AppCompatActivity {
                         }
                     });
 
+                    orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            /*Uri gmmIntentUri = Uri.parse("geo:0,0?q="+request.getAddress());
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);*/
+
+                            Intent trackingOrder = new Intent(OrderPicked.this, TrackingOrder.class);
+                            trackingOrder.putExtra("Address",request.getAddress());
+                            trackingOrder.putExtra("Phone",request.getPhone());
+                            startActivity(trackingOrder);
+                        }
+                    });
+
                     if (dialog.isShowing()){
                         dialog.dismiss();
                     }
 
                     orderViewHolder.btnedit.setVisibility(View.GONE);
-                    orderViewHolder.btndirection.setVisibility(View.GONE);
+                    //orderViewHolder.btndirection.setVisibility(View.GONE);
 
                 }else {
                     orderViewHolder.itemView.setVisibility(View.GONE);

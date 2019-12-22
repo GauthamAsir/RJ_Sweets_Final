@@ -137,6 +137,9 @@ public class OrderPlaced extends AppCompatActivity {
 
                     textView.setVisibility(View.GONE);
 
+                    orderViewHolder.btndirection.setVisibility(View.GONE);
+                    orderViewHolder.btnedit.setVisibility(View.GONE);
+
                     orderViewHolder.itemView.setVisibility(View.VISIBLE);
                     orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -172,7 +175,7 @@ public class OrderPlaced extends AppCompatActivity {
                     /*orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrder.class);
+                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrderDelivery.class);
                             trackingOrder.putExtra("Address",request.getAddress());
                             trackingOrder.putExtra("Phone",request.getPhone());
                             startActivity(trackingOrder);
