@@ -176,13 +176,13 @@ public class OrderDetailDelivery extends AppCompatActivity {
 
                             //Make New Payload
                             Notification notification = new Notification
-                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets");
+                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets Final");
                             Sender content = new Sender(token.getToken(),notification);
                             mService.sendNotification(content)
                                     .enqueue(new Callback<MyResponse>() {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.body().success == 1){
+                                            if (response.isSuccessful()){
                                                 Toast.makeText(OrderDetailDelivery.this,"Order was updated",Toast.LENGTH_LONG).show();
                                             }else {
                                                 Toast.makeText(OrderDetailDelivery.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
