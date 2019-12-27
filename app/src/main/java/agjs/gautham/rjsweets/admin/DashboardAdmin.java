@@ -152,7 +152,7 @@ public class DashboardAdmin extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_admin);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!navigationView.getMenu().findItem(R.id.nav_home).isChecked()){
