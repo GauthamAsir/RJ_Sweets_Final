@@ -286,7 +286,7 @@ public class OrderPlacedAdmin extends AppCompatActivity {
         alertDialog.setCancelable(true);
 
         LayoutInflater inflater = OrderPlacedAdmin.this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.delete_order,null);
+        final View view = inflater.inflate(R.layout.activity_reject_order_reason,null);
 
         editText = view.findViewById(R.id.delete_reason_text);
         alertDialog.setView(view);

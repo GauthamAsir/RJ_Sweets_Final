@@ -39,13 +39,17 @@
         <activity android:name=".delivery.ui.Home.OrderPlaced" />
         <activity android:name=".delivery.ui.Home.OrderRejected" />
         <activity android:name=".delivery.OrderDetailDelivery" /> <!-- End of Delivery Activities -->
+
         <!-- Start of Admin Activities -->
         <activity android:name=".admin.DashboardAdmin" />
         <activity android:name=".login.LoginAdmin" />
         <activity android:name=".admin.OrderDeliveredAdmin" />
         <activity android:name=".admin.OrderPlacedAdmin" />
         <activity android:name=".admin.OrderRejectedAdmin" />
-        <activity android:name=".admin.OrderDetailAdmin" /> <!-- End of Admin Activities -->
+        <activity android:name=".admin.OrderDetailAdmin" />
+        <activity android:name=".admin.RejectOrderReason"/>
+        <!-- End of Admin Activities -->
+
         <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
         <activity android:name=".user.SweetsDetail" />
@@ -56,6 +60,7 @@
         <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />
         <activity android:name=".user.navigation_drawer.order_user.OrderPlaced" />
         <activity android:name=".user.navigation_drawer.order_user.OrderDetail" /> <!-- End of User Activities -->
+
         <!-- Start of Common Activities -->
         <activity android:name=".login.Login" />
         <activity android:name=".MainActivity" />

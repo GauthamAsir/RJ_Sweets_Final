@@ -2,6 +2,7 @@ package agjs.gautham.rjsweets.admin;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +33,6 @@ import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.admin.ViewHolder.OrderDetailAdapterAdmin;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,7 +118,11 @@ public class OrderDetailAdmin extends AppCompatActivity {
                     reject.setEnabled(false);
                     reject.setThumbImage(null);
                     reject.setText("Order Rejected");
-                    rejectOrder();
+                    Intent intent = new Intent(OrderDetailAdmin.this,RejectOrderReason.class);
+                    intent.putExtra("OrderId",order_id_value);
+                    intent.putExtra("OrderStatus", order_status);
+                    startActivity(intent);
+                    //rejectOrder();
                 }
 
                 @Override
@@ -144,7 +148,7 @@ public class OrderDetailAdmin extends AppCompatActivity {
         alertDialog.setCancelable(false);
 
         LayoutInflater inflater = OrderDetailAdmin.this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.delete_order,null);
+        final View view = inflater.inflate(R.layout.activity_reject_order_reason,null);
 
         editText = view.findViewById(R.id.delete_reason_text);
         alertDialog.setView(view);
@@ -152,13 +156,13 @@ public class OrderDetailAdmin extends AppCompatActivity {
         alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                Toast.makeText(OrderDetailAdmin.this,"Rejected",Toast.LENGTH_LONG).show();
             }
         });
 
-        final AlertDialog dialog =alertDialog.create();
+        /*AlertDialog dialogf = alertDialog.create();
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        dialogf.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -171,7 +175,7 @@ public class OrderDetailAdmin extends AppCompatActivity {
                     sendOrderStatusToUser();
                 }
             }
-        });
+        });*/
     }
 
     private void sendOrderStatusToUser() {
