@@ -76,17 +76,6 @@ public class Shippers extends Fragment {
                 shipperViewHolder.shipperPhone.setText(shippers.getPhone());
                 shipperViewHolder.shipperEmail.setText(shippers.getEmail());
 
-                shipperViewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-
-                        String shipperId = adapter.getRef(position).getKey();
-
-                        Toast.makeText(getActivity(),"CLick", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
             }
         };
         recycler_menu.setAdapter(adapter);
