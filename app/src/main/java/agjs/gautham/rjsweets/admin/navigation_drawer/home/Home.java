@@ -296,13 +296,6 @@ public class Home extends Fragment {
                 Picasso.get().load(model.getImage())
                         .into(menuViewHolder.imageView);
 
-                menuViewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        //TODO
-                    }
-                });
-
                 if (dlg.isShowing()){
                     dlg.dismiss();
                 }
