@@ -84,8 +84,6 @@ public class SweetsDetail extends AppCompatActivity {
 
         }
 
-
-
         sweet_description = findViewById(R.id.sweets_description_user);
         sweet_name = findViewById(R.id.sweets_name_user);
         sweet_price = findViewById(R.id.sweets_price_user);

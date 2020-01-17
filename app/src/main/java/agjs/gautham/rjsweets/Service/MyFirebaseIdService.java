@@ -37,7 +37,13 @@ public class MyFirebaseIdService extends FirebaseMessagingService {
     private void updateTokenToFirebase(String tokenRefreshed) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference tokens = db.getReference("Tokens");
-        Token token = new Token(tokenRefreshed, false); //Sending From Client App So False
-        tokens.child(Common.currentUser.getPhone()).setValue(token);
+
+        if (Common.loginType.equals("1") | Common.loginType.equals("2")){
+            Token token = new Token(tokenRefreshed, true); //Sending From Server/Delivery App So True
+            tokens.child(Common.currentUser.getPhone()).setValue(token);
+        } else {
+            Token token = new Token(tokenRefreshed, false); //Sending From Client App So False
+            tokens.child(Common.currentUser.getPhone()).setValue(token);
+        }
     }
 }

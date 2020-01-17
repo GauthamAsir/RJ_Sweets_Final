@@ -1,5 +1,6 @@
 package agjs.gautham.rjsweets.delivery.ui.Home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -131,15 +133,37 @@ public class OrderPicked extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 
-                            /*Uri gmmIntentUri = Uri.parse("geo:0,0?q="+request.getAddress());
-                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                            mapIntent.setPackage("com.google.android.apps.maps");
-                            startActivity(mapIntent);*/
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPicked.this);
+                            alertDialog.setTitle("Select an Option");
 
-                            Intent trackingOrder = new Intent(OrderPicked.this, TrackingOrder.class);
-                            trackingOrder.putExtra("Address",request.getAddress());
-                            trackingOrder.putExtra("Phone",request.getPhone());
-                            startActivity(trackingOrder);
+                            alertDialog.setPositiveButton("Show in Maps", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+request.getAddress());
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    startActivity(mapIntent);
+
+                                }
+                            });
+
+                            alertDialog.setNegativeButton("In App", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent trackingOrder = new Intent(OrderPicked.this, TrackingOrder.class);
+                                    trackingOrder.putExtra("Address",request.getAddress());
+                                    trackingOrder.putExtra("Phone",request.getPhone());
+                                    startActivity(trackingOrder);
+
+                                }
+                            });
+
+                            alertDialog.create();
+                            alertDialog.show();
+
+
                         }
                     });
 

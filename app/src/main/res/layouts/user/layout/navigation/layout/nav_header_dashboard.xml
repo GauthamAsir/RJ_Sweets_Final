@@ -18,7 +18,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
         android:textColor="@color/white"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textSize="24sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 

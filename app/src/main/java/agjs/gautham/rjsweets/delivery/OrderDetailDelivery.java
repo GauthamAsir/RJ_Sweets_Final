@@ -159,6 +159,7 @@ public class OrderDetailDelivery extends AppCompatActivity {
 
     private void pickUp() {
 
+        sendOrderStatusToUser(order_id_value,"1");
         databaseReference.child(order_id_value).child("picked").setValue("1");
         databaseReference.child(order_id_value).child("pickedBy").setValue(Common.USER_Phone);
         databaseReference.child(order_id_value).child("status").setValue("1");
@@ -176,16 +177,23 @@ public class OrderDetailDelivery extends AppCompatActivity {
 
                             //Make New Payload
                             Notification notification = new Notification
-                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets Final");
+                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets");
                             Sender content = new Sender(token.getToken(),notification);
                             mService.sendNotification(content)
                                     .enqueue(new Callback<MyResponse>() {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.isSuccessful()){
-                                                Toast.makeText(OrderDetailDelivery.this,"Order was updated",Toast.LENGTH_LONG).show();
-                                            }else {
-                                                Toast.makeText(OrderDetailDelivery.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
+
+                                            if (response.code() == 200){
+
+                                                if (response.body().success==1){
+                                                    Log.d("test",response.message());
+                                                    Toast.makeText(OrderDetailDelivery.this,"Order was updated",Toast.LENGTH_LONG).show();
+                                                }else {
+                                                    Log.d("test","heryr "+response.body().success);
+                                                    Toast.makeText(OrderDetailDelivery.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
+                                                }
+
                                             }
                                         }
                                         @Override

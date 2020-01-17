@@ -39,6 +39,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         firestore = FirebaseFirestore.getInstance();
 
+        //To get Phone Number
         if (mUser != null) {
             String email = mUser.getEmail();
 

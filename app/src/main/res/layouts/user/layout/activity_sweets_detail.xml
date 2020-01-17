@@ -30,11 +30,12 @@
                     android:id="@+id/toolbar_sweets_user"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:title="RJ Sweets"
-                    app:titleTextColor="@color/white"
+                    app:title="@string/app_name"
                     android:background="@color/overlayBackground"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    android:theme="@style/ToolbarTheme"/>
+                    android:theme="@style/ToolbarTheme">
+
+                </androidx.appcompat.widget.Toolbar>
 
                 <ImageView
                     android:id="@+id/img_sweets_user"
@@ -145,7 +146,7 @@
                         android:orientation="horizontal">
 
                         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                            android:layout_width="100dp"
+                            android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:id="@+id/number_button_user"
                             android:layout_marginTop="8dp"

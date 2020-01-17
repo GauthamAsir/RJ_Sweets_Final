@@ -30,8 +30,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".TrackingOrder"
-            android:label="@string/title_activity_tracking_order" /> <!-- Start of Delivery Activities -->
+            android:name=".TrackingOrder" /> <!-- Start of Delivery Activities -->
         <activity android:name=".delivery.DashboardDelivery" />
         <activity android:name=".login.DeliveryLogin" />
         <activity android:name=".delivery.ui.Home.OrderPicked" />
@@ -65,7 +64,8 @@
         <activity android:name=".login.Login" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUp" />
-        <activity android:name=".Splash">
+        <activity android:name=".Splash"
+            android:theme="@style/MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
