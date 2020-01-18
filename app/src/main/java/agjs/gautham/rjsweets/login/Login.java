@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -264,6 +265,8 @@ public class Login extends AppCompatActivity {
                                     pdialog.dismiss();
                                 }
 
+                                Paper.book().write("sub_new","true");
+                                FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 Common.loginType = "0";
@@ -336,6 +339,9 @@ public class Login extends AppCompatActivity {
                                             Common.loginType = "0";
                                             Common.USER_Phone = mail;
                                             Paper.book().write(Common.PHONE_KEY,mail);
+
+                                            Paper.book().write("sub_new","true");
+                                            FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
 
                                             Intent intent = new Intent(Login.this, DashboardUser.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

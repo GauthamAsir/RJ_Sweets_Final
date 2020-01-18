@@ -691,7 +691,6 @@ public class Settings extends Fragment {
                     Paper.book().write("sub_new","true");
                 }else {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Common.topicName);
-
                     Paper.book().write("sub_new","false");
                 }
             }
