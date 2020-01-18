@@ -108,6 +108,7 @@ public class DeliveryLogin extends AppCompatActivity {
 
                             Intent intent = new Intent(DeliveryLogin.this, DashboardDelivery.class);
                             Common.USER_Phone = localPhone;
+                            Common.loginType = "2";
                             startActivity(intent);
                             finish();
                         } else {

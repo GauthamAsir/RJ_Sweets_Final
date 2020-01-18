@@ -333,6 +333,7 @@ public class Login extends AppCompatActivity {
                                                 Paper.book().write(Common.USER_PASS,pass);
                                             }
 
+                                            Common.loginType = "0";
                                             Common.USER_Phone = mail;
                                             Paper.book().write(Common.PHONE_KEY,mail);
 

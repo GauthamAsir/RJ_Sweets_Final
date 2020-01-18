@@ -29,6 +29,11 @@ import java.util.concurrent.Executor;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Helper.NotificationHelper;
 import agjs.gautham.rjsweets.Model.Token;
+import agjs.gautham.rjsweets.admin.DashboardAdmin;
+import agjs.gautham.rjsweets.delivery.DashboardDelivery;
+import agjs.gautham.rjsweets.login.DeliveryLogin;
+import agjs.gautham.rjsweets.login.Login;
+import agjs.gautham.rjsweets.login.LoginAdmin;
 import agjs.gautham.rjsweets.user.DashboardUser;
 
 public class FirebaseMessagingServiceCustom extends com.google.firebase.messaging.FirebaseMessagingService {
@@ -48,17 +53,132 @@ public class FirebaseMessagingServiceCustom extends com.google.firebase.messagin
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         String title = notification.getTitle();
         String content = notification.getBody();
-        Intent intent = new Intent(this, DashboardUser.class);
-        intent.putExtra(Common.USER_Phone, Common.USER_Phone);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationHelper helper = new NotificationHelper(this);
+        switch (Common.loginType) {
+            case "0":
 
-        Notification.Builder builder = helper.rjSweetsChannelNotification(title,content,pendingIntent,defaultSoundUri);
+                if (Common.currentUser != null) {
 
-        //Generating Random SendNotification ID to show all notification
-        helper.getManager().notify(new Random().nextInt(), builder.build());
+                    Intent intent = new Intent(this, DashboardUser.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                } else {
+
+                    Intent intent = new Intent(this, Login.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                }
+
+                break;
+            case "1":
+
+                if (Common.currentUser != null) {
+
+                    Intent intent = new Intent(this, DashboardAdmin.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                } else {
+
+                    Intent intent = new Intent(this, LoginAdmin.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                }
+
+
+                break;
+            case "2":
+
+                if (Common.currentUser != null) {
+
+                    Intent intent = new Intent(this, DashboardDelivery.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                } else {
+
+                    Intent intent = new Intent(this, DeliveryLogin.class);
+                    intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                    NotificationHelper helper = new NotificationHelper(this);
+
+                    Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                    //Generating Random SendNotification ID to show all notification
+                    helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                }
+
+                break;
+
+            default:
+
+                Intent intent = new Intent(this, Login.class);
+                intent.putExtra(Common.USER_Phone, Common.USER_Phone);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+                NotificationHelper helper = new NotificationHelper(this);
+
+                Notification.Builder builder = helper.rjSweetsChannelNotification(title, content, pendingIntent, defaultSoundUri);
+
+                //Generating Random SendNotification ID to show all notification
+                helper.getManager().notify(new Random().nextInt(), builder.build());
+
+                break;
+        }
+
     }
 }
