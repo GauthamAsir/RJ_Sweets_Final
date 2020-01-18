@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Common;
@@ -153,7 +154,7 @@ public class OrderDetailDelivery extends AppCompatActivity {
         databaseReference.child(order_id_value).child("status").setValue("2");
 
         sendOrderStatusToUser(order_id_value, "2");
-        startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));
+        //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));  Makes user as server
 
     }
 
@@ -163,11 +164,12 @@ public class OrderDetailDelivery extends AppCompatActivity {
         databaseReference.child(order_id_value).child("picked").setValue("1");
         databaseReference.child(order_id_value).child("pickedBy").setValue(Common.USER_Phone);
         databaseReference.child(order_id_value).child("status").setValue("1");
-        startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));
+        //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));   Makes user as server
     }
 
     private void sendOrderStatusToUser(final String localKey, final String status1) {
         DatabaseReference tokens = database.getReference("Tokens");
+
         tokens.orderByKey().equalTo(request.getPhone())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -177,30 +179,28 @@ public class OrderDetailDelivery extends AppCompatActivity {
 
                             //Make New Payload
                             Notification notification = new Notification
-                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets");
+                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets Final");
                             Sender content = new Sender(token.getToken(),notification);
                             mService.sendNotification(content)
                                     .enqueue(new Callback<MyResponse>() {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
 
-                                            if (response.code() == 200){
-
-                                                if (response.body().success==1){
-                                                    Log.d("test",response.message());
-                                                    Toast.makeText(OrderDetailDelivery.this,"Order was updated",Toast.LENGTH_LONG).show();
-                                                }else {
-                                                    Log.d("test","heryr "+response.body().success);
-                                                    Toast.makeText(OrderDetailDelivery.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
-                                                }
-
+                                            if (response.isSuccessful()){
+                                                Log.d("test",response.message());
+                                                Toast.makeText(OrderDetailDelivery.this,"Order updated",Toast.LENGTH_LONG).show();
+                                            }else {
+                                                Log.d("test","heryr "+response.body().success);
+                                                Toast.makeText(OrderDetailDelivery.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
                                             }
+
                                         }
                                         @Override
                                         public void onFailure(Call<MyResponse> call, Throwable t) {
                                             Log.e("ERROR",t.getMessage());
                                         }
                                     });
+
                         }
                     }
 

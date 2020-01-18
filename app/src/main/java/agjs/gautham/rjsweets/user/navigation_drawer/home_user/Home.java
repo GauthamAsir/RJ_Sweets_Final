@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.andremion.counterfab.CounterFab;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +42,7 @@ import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
+import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.user.SweetsDetail;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
@@ -62,7 +64,7 @@ public class Home extends Fragment {
 
     private CounterFab fab;
 
-    private String uPhone = Common.USER_Phone;
+
 
     private FirebaseUser mUser;
 
@@ -147,16 +149,14 @@ public class Home extends Fragment {
             }
         });
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()){
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                        }
-                        //updateToken(task.getResult().getToken());
-                    }
-                });
+        //Update Token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String tokenRefreshed = instanceIdResult.getToken();
+                updateToken(tokenRefreshed);
+            }
+        });
 
         return root;
 
@@ -178,7 +178,7 @@ public class Home extends Fragment {
         navigationView.setCheckedItem(R.id.nav_your_cart);
     }
 
-    /*private void updateToken(final String token) {
+    private void updateToken(final String token) {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -199,6 +199,10 @@ public class Home extends Fragment {
                             assert userInfo != null;
                             FirebaseDatabase db = FirebaseDatabase.getInstance();
                             DatabaseReference tokens = db.getReference("Tokens");
+
+                            String uPhone = (String) userInfo.get("Number");
+                            Common.USER_Phone = uPhone;
+
                             Token data = new Token(token, false); //Sending From Client App So False
                             tokens.child(uPhone).setValue(data);
                         }
@@ -206,7 +210,7 @@ public class Home extends Fragment {
                 }
             });
         }
-    }*/
+    }
 
     private void loadMenu(View root) {
 

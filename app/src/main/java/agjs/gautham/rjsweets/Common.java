@@ -19,7 +19,7 @@ import agjs.gautham.rjsweets.delivery.IGeoCoordinates;
 
 public class Common {
 
-    public static User currentUser;
+    public static User currentUser = new User();
 
     public static String USER_EMAIL = "Email";
     public static String USER_PASS = "Pass";

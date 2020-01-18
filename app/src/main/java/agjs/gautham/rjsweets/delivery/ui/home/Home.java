@@ -10,6 +10,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import agjs.gautham.rjsweets.Common;
+import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 
 public class Home extends Fragment {
@@ -53,6 +61,22 @@ public class Home extends Fragment {
             }
         });
 
+        //Update Token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String tokenRefreshed = instanceIdResult.getToken();
+                updateToken(tokenRefreshed);
+            }
+        });
+
         return root;
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Tokens");
+        Token data = new Token(token, true); //Sending From Delivery App So True
+        tokens.child(Common.USER_Phone).setValue(data);
     }
 }

@@ -73,12 +73,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name="agjs.gautham.rjsweets.Service.MyFirebaseIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name="agjs.gautham.rjsweets.Service.FirebaseMessagingService">
+
+        <service android:name="agjs.gautham.rjsweets.Service.FirebaseMessagingServiceCustom">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -121,8 +121,8 @@ public class OrderDetailAdmin extends AppCompatActivity {
                     Intent intent = new Intent(OrderDetailAdmin.this,RejectOrderReason.class);
                     intent.putExtra("OrderId",order_id_value);
                     intent.putExtra("OrderStatus", order_status);
+                    intent.putExtra("OrderPhNumber",request.getPhone());
                     startActivity(intent);
-                    //rejectOrder();
                 }
 
                 @Override
@@ -133,88 +133,5 @@ public class OrderDetailAdmin extends AppCompatActivity {
         }else {
             reject.setVisibility(View.GONE);
         }
-
     }
-
-    private void rejectOrder() {
-        showDeleteDialog();
-    }
-
-    private void showDeleteDialog() {
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderDetailAdmin.this);
-        alertDialog.setTitle("Delete Order !");
-        alertDialog.setMessage("Please Enter Your Reason");
-        alertDialog.setCancelable(false);
-
-        LayoutInflater inflater = OrderDetailAdmin.this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.activity_reject_order_reason,null);
-
-        editText = view.findViewById(R.id.delete_reason_text);
-        alertDialog.setView(view);
-
-        alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(OrderDetailAdmin.this,"Rejected",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        /*AlertDialog dialogf = alertDialog.create();
-
-        dialogf.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String reason = editText.getText().toString();
-                if (!reason.isEmpty()){
-                    databaseReference.child(order_id_value).child("picked").setValue("0");
-                    databaseReference.child(order_id_value).child("pickedBy").setValue(Common.PHONE_KEY);
-                    databaseReference.child(order_id_value).child("status").setValue("3");
-
-                    sendOrderStatusToUser();
-                }
-            }
-        });*/
-    }
-
-    private void sendOrderStatusToUser() {
-
-        DatabaseReference tokens = database.getReference("Tokens");
-        tokens.orderByKey().equalTo(Common.PHONE_KEY)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                            Token token = postSnapshot.getValue(Token.class);
-
-                            //Make New Payload
-                            Notification notification = new Notification
-                                    ("Your Order "+order_id_value+" is "+Common.convertCodeToStatus(order_status) ,"RJ Sweets");
-                            Sender content = new Sender(token.getToken(),notification);
-                            mService.sendNotification(content)
-                                    .enqueue(new Callback<MyResponse>() {
-                                        @Override
-                                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.body().success == 1){
-                                                Toast.makeText(OrderDetailAdmin.this,"Order was updated",Toast.LENGTH_LONG).show();
-                                            }else {
-                                                Toast.makeText(OrderDetailAdmin.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                                            Log.e("ERROR",t.getMessage());
-                                        }
-                                    });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
 }

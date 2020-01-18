@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, DashboardAdmin.class);
                     Common.USER_Phone = phone;
                     intent.putExtra("Number",phone);
+                    Common.loginType = "1";
                     startActivity(intent);
                     finish();
 
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     Common.USER_Phone = phone;
                     Toast.makeText(MainActivity.this,"Signed In",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, DashboardDelivery.class);
+                    Common.loginType = "2";
                     startActivity(intent);
                     finish();
 
@@ -156,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     dialog.dismiss();
                     Intent intent = new Intent(MainActivity.this, DashboardUser.class);
+                    Common.loginType = "0";
+                    Common.USER_Phone = Paper.book().read(Common.PHONE_KEY);
                     startActivity(intent);
                     finish();
                     overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit );

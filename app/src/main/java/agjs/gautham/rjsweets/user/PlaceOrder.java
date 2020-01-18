@@ -216,7 +216,7 @@ public class PlaceOrder extends AppCompatActivity {
                     Token serverToken = postSnapshot.getValue(Token.class);
 
                     //Create Raw PayLoad To Send
-                    Notification notification = new Notification("You Have New Order" + order_number, "RJ Sweets");
+                    Notification notification = new Notification("You Have New Order" + order_number, "RJ Sweets Final");
                     Sender content = new Sender(serverToken.getToken(), notification);
                     mService.sendNotification(content)
                             .enqueue(new Callback<MyResponse>() {
@@ -224,7 +224,7 @@ public class PlaceOrder extends AppCompatActivity {
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if (response.code() == 200 ) {
 
-                                        if (response.body().success == 1) {
+                                        if (response.isSuccessful()) {
                                             Log.d("SendNotification Status","Success");
                                         } else {
                                             Log.d("SendNotification Status","Failed");

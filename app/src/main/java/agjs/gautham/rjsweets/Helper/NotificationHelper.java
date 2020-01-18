@@ -13,7 +13,7 @@ import agjs.gautham.rjsweets.R;
 public class NotificationHelper extends ContextWrapper {
 
     private static final String RJSWEETS_CHANNEL_ID = "agjs.gautham.rjsweets.RJSweets";
-    private static final String RJSWEETS_CHANNEL_NAME = "RJ SWEETS Final";
+    private static final String RJSWEETS_CHANNEL_NAME = "RJ Sweets Final";
 
     private NotificationManager manager;
 

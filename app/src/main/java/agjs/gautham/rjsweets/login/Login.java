@@ -242,6 +242,7 @@ public class Login extends AppCompatActivity {
                                                             databaseReference.child(uPhone).child("password").setValue(pass);
 
                                                             Common.USER_Phone = uPhone;
+                                                            Paper.book().write(Common.PHONE_KEY,uPhone);
                                                         }
                                                     }
                                                 }
@@ -265,6 +266,8 @@ public class Login extends AppCompatActivity {
 
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                Common.loginType = "0";
+
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
@@ -331,6 +334,7 @@ public class Login extends AppCompatActivity {
                                             }
 
                                             Common.USER_Phone = mail;
+                                            Paper.book().write(Common.PHONE_KEY,mail);
 
                                             Intent intent = new Intent(Login.this, DashboardUser.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -344,6 +348,7 @@ public class Login extends AppCompatActivity {
                                             if (remember.isChecked()){
                                                 Paper.book().delete(Common.USER_EMAIL);
                                                 Paper.book().delete(Common.USER_PASS);
+                                                Paper.book().destroy();
                                             }
                                             Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }

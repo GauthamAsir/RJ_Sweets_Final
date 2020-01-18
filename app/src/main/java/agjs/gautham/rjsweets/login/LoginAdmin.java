@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -106,7 +107,9 @@ public class LoginAdmin extends AppCompatActivity {
                                     Paper.book().write(Common.USER_PASS, localPass);
                                 }
 
+                                Common.loginType = "1";
                                 Common.USER_Phone = localPhone;
+                                Log.d("ADMIN",Common.USER_Phone);
                                 Intent intent = new Intent(LoginAdmin.this, DashboardAdmin.class);
                                 startActivity(intent);
                                 finish();

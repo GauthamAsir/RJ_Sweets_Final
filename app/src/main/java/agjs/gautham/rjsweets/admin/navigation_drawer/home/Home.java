@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -100,8 +101,14 @@ public class Home extends Fragment {
 
         loadMenu();
 
-        //Send Token
-        updateToken(FirebaseInstanceId.getInstance().getToken());
+        //Update Token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String tokenRefreshed = instanceIdResult.getToken();
+                updateToken(tokenRefreshed);
+            }
+        });
 
         return root;
     }
@@ -110,7 +117,7 @@ public class Home extends Fragment {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference tokens = db.getReference("Tokens");
         Token data = new Token(token, true); //Sending From Server App So True
-        tokens.child(Common.PHONE_KEY).setValue(data);
+        tokens.child(Common.USER_Phone).setValue(data);
     }
 
     private void showDialog() {

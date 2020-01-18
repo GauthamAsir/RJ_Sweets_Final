@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class RejectOrderReason extends AppCompatActivity {
 
     TextInputLayout r;
-    String order_id_value, order_status;
+    String order_id_value, order_status, order_p_number;
 
     FirebaseDatabase database;
     DatabaseReference databaseReference;
@@ -54,6 +54,7 @@ public class RejectOrderReason extends AppCompatActivity {
         if (getIntent() != null) {
             order_id_value = getIntent().getStringExtra("OrderId");
             order_status = getIntent().getStringExtra("OrderStatus");
+            order_p_number = getIntent().getStringExtra("OrderPhNumber");
         }
 
         r = findViewById(R.id.delete_reason_text);
@@ -78,7 +79,7 @@ public class RejectOrderReason extends AppCompatActivity {
     private void sendOrderStatusToUser() {
 
         DatabaseReference tokens = database.getReference("Tokens");
-        tokens.orderByKey().equalTo(Common.USER_Phone)
+        tokens.orderByKey().equalTo(order_p_number)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -87,20 +88,22 @@ public class RejectOrderReason extends AppCompatActivity {
 
                             //Make New Payload
                             Notification notification = new Notification
-                                    ("Your Order "+order_id_value+" is "+Common.convertCodeToStatus("3") ,"RJ Sweets");
+                                    ("Your Order "+order_id_value+" is "+Common.convertCodeToStatus("3") ,"RJ Sweets Final");
                             Sender content = new Sender(token.getToken(),notification);
                             mService.sendNotification(content)
                                     .enqueue(new Callback<MyResponse>() {
                                         @Override
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.body().success == 1){
+                                            if (response.isSuccessful()){
 
                                                 startActivity(new Intent(RejectOrderReason.this,DashboardAdmin.class));
+                                                Log.d("Order Notification Admin","Success  "+order_p_number);
                                                 Toast.makeText(RejectOrderReason.this,"Order was updated",Toast.LENGTH_LONG).show();
 
                                             }else {
 
                                                 startActivity(new Intent(RejectOrderReason.this,DashboardAdmin.class));
+                                                Log.d("Order Notification Admin","Failed");
                                                 Toast.makeText(RejectOrderReason.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
 
                                             }
