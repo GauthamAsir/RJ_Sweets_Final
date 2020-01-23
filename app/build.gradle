@@ -102,6 +102,10 @@ dependencies {
 
     //Swipe Button
     implementation 'com.github.gratusik:AGIKSwipeButton:1.0.1'
+
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    //Ring Progress Bar
+    implementation 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
 }

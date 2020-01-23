@@ -64,8 +64,6 @@ public class Home extends Fragment {
 
     private CounterFab fab;
 
-
-
     private FirebaseUser mUser;
 
     private android.app.AlertDialog dialog;

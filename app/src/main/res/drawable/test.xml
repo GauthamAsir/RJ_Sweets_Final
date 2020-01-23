@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:right="20dp"
+        android:width="18dp"
+        android:height="18dp">
+        <bitmap
+            android:src="@drawable/vector"
+            android:gravity="start" />
+    </item>
+    <item android:width="18dp"
+        android:height="18dp"
+        android:left="40dp">
+        <bitmap android:src="@drawable/vector"
+            android:gravity="end" />
+    </item>
+</layer-list>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/progress_order"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:cardBackgroundColor="@color/progress_on"
+        android:layout_alignParentTop="true">
+
+        <ProgressBar
+            android:id="@+id/pg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress"/>
+
+        <TextView
+            android:id="@+id/order_placed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/order_placed"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/brown"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/home"
+        android:layout_below="@+id/progress_order">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:text="@string/your_order_is_under_process"
+                android:textAlignment="center"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:id="@+id/container1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="50dp"
+                        android:padding="6dp"
+                        android:text="@string/order_id"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/orderId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="50dp"
+                        android:padding="6dp"
+                        android:text="@string/order_id"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_weight="1"
+                        android:padding="6dp"
+                        android:text="@string/user_name"
+                        android:textAlignment="center"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_weight="1"
+                        android:padding="6dp"
+                        android:text="@string/user_name"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:padding="6dp"
+                        android:text="@string/order_total"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/orderTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:padding="6dp"
+                        android:text="@string/order_total"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="6dp"
+                        android:text="@string/pay_with"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="21sp" />
+
+                    <TextView
+                        android:id="@+id/pay_with"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="6dp"
+                        android:text="@string/pay_on_delivery"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textSize="21sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textSize="22sp"
+        android:background="@drawable/back_button"
+        android:visibility="gone"
+        android:text="@string/home"/>
+
+</RelativeLayout>

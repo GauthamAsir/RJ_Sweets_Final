@@ -25,4 +25,9 @@
 
     <color name="red">#FF00</color>
 
+    <color name="progress_on">#EBEB00</color>
+    <color name="progress_done">#32CD32</color>
+
+    <color name="brown">#7b2e00</color>
+
 </resources>

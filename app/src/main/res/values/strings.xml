@@ -131,5 +131,21 @@
     <string name="enter_shipper_email">Enter Shipper Email</string>
     <string name="enter_shipper_password">Enter Shipper Password</string>
     <string name="update">Update</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="cancel">Cancel</string>
+    <string name="reject">Reject</string>
+
+    <string name="change_address">Change Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="pay_with">Pay With</string>
+    <string name="pay_on_delivery">Pay On Delivery</string>
+    <string name="user_name">Deliver To</string>
+    <string name="order_id">Order ID</string>
+    <string name="home">Home</string>
+    <string name="your_order_is_under_process">Your Order is under Process waiting for Confirmation from Server</string>
+
+    <string name="back">Back</string>
+    <string name="rupee">₹</string>
+    <string name="order_placed">Order Placed</string>
 
 </resources>
