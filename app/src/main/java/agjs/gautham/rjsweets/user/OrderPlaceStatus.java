@@ -209,15 +209,14 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
                     //sweet = dataSnapshot.getValue(Sweet.class);
 
-                    avaQuantity = dataSnapshot.child("AvaQuantity").getValue(String.class);
+                    avaQuantity = dataSnapshot.child("avaQuantity").getValue(String.class);
 
 
                     if (Integer.parseInt(avaQuantity) >= Integer.parseInt(orderQuantity)){
 
-                        Log.d("HEYyyy","PASS");
                         finalQantity = Integer.parseInt(avaQuantity) - Integer.parseInt(orderQuantity);
                         Log.d("Final Quantity", String.valueOf(finalQantity));
-                        sweets.child(id).child("AvaQuantity").setValue(String.valueOf(finalQantity));
+                        sweets.child(id).child("avaQuantity").setValue(String.valueOf(finalQantity));
 
                     }else {
                         toast("Some Sweet Quantity is more than the Available Quantity, Your Order May get Rejected, Sorry For Inconvenience ");

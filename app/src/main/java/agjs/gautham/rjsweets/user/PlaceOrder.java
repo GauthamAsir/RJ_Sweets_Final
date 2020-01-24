@@ -273,7 +273,7 @@ public class PlaceOrder extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    avaQuantity = dataSnapshot.child("AvaQuantity").getValue(String.class);
+                    avaQuantity = dataSnapshot.child("avaQuantity").getValue(String.class);
 
                     String sweetName = dataSnapshot.child("name").getValue(String.class);
 

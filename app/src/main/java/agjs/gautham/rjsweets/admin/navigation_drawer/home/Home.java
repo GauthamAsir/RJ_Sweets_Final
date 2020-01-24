@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +39,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import agjs.gautham.rjsweets.Common;
@@ -62,10 +68,11 @@ public class Home extends Fragment {
 
     //Add New Menu Item
     TextInputLayout sweetName, sweetDescription, sweetPrice, sweetDiscount, sweetAvaQuantity;
-    Button bt_select;
+    Button bt_select,bt_update;
 
     Uri saveUri;
     private final int PICK_IMAGE_REQUEST= 71;
+    ImageView img;
 
     AlertDialog.Builder alertDialog;
 
@@ -138,6 +145,24 @@ public class Home extends Fragment {
         alertDialog.setView(add_new_menu_item);
         alertDialog.setIcon(R.drawable.ic_sweet_add);
 
+        img = add_new_menu_item.findViewById(R.id.imgs);
+
+        bt_select = add_new_menu_item.findViewById(R.id.bt_select);
+        bt_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+            }
+        });
+
+        bt_update = add_new_menu_item.findViewById(R.id.bt_update);
+        bt_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage();
+            }
+        });
+
         alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -186,18 +211,38 @@ public class Home extends Fragment {
                                 Toast.makeText(getActivity(), "Uploaded !", Toast.LENGTH_SHORT).show();
                                 imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
-                                    public void onSuccess(Uri uri) {
+                                    public void onSuccess(final Uri uri) {
 
-                                        newSweet = new Sweet(description,
-                                                discount,
-                                                uri.toString(),
-                                                name,
-                                                price,
-                                                avaQuantity);
+                                        sweets.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                        sweets.push().setValue(newSweet);
-                                        View view = getActivity().findViewById(R.id.fragment_container);
-                                        Snackbar.make(view,name+" Added Succesfully", Snackbar.LENGTH_SHORT).show();
+                                                int size = (int) dataSnapshot.getChildrenCount();
+                                                Log.d("SIZE",String.valueOf(size));
+
+                                                newSweet = new Sweet(description,
+                                                        discount,
+                                                        uri.toString(),
+                                                        name,
+                                                        price,
+                                                        avaQuantity);
+
+                                                String id = String.valueOf(size + Integer.parseInt("2"));
+
+                                                sweets.child(id).push();
+                                                sweets.child(id).setValue(newSweet);
+                                                View view = getActivity().findViewById(R.id.fragment_container);
+                                                dialog.dismiss();
+                                                Snackbar.make(view,name+" Added Succesfully", Snackbar.LENGTH_SHORT).show();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+
                                     }
                                 });
                             }
@@ -230,6 +275,7 @@ public class Home extends Fragment {
                 && data != null && data.getData() != null ){
 
             saveUri = data.getData();
+            Picasso.get().load(saveUri).into(img);
             bt_select.setText("Image Selected");
         }
     }
@@ -371,115 +417,5 @@ public class Home extends Fragment {
             }
         });
         alertDialog.show();
-    }
-
-    private void showUpdateDialog(final String key, final Sweet item) {
-        alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("Update Sweet");
-        alertDialog.setMessage("Please Fill The Information's");
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View add_new_menu_item = inflater.inflate(R.layout.add_new_menu_item, null);
-
-        sweetName = add_new_menu_item.findViewById(R.id.edtName);
-        sweetDescription = add_new_menu_item.findViewById(R.id.edtDescription);
-        sweetDiscount = add_new_menu_item.findViewById(R.id.edtDiscount);
-        sweetPrice = add_new_menu_item.findViewById(R.id.edtPrice);
-        sweetAvaQuantity = add_new_menu_item.findViewById(R.id.edtAvaQuantity);
-
-        sweetName.getEditText().setText(item.getName());
-        sweetDescription.getEditText().setText(item.getDescription());
-        sweetDiscount.getEditText().setText(item.getDiscount());
-        sweetPrice.getEditText().setText(item.getPrice());
-        sweetAvaQuantity.getEditText().setText(item.getAvaQuantity());
-
-        bt_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseImage();
-            }
-        });
-
-        alertDialog.setView(add_new_menu_item);
-        alertDialog.setIcon(R.drawable.ic_sweet_add);
-
-        alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                changeImage(item, key);
-            }
-        });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        alertDialog.show();
-    }
-
-    private void changeImage(final Sweet item, final String key) {
-        if (saveUri != null){
-            final ProgressDialog dialog = new ProgressDialog(getActivity());
-            dialog.setMessage("Uploading...");
-            dialog.show();
-
-            String imageName = UUID.randomUUID().toString();
-            final StorageReference imageFolder = storageReference.child("sweets/"+imageName);
-
-            final String name = sweetName.getEditText().getText().toString();
-            final String description = sweetDescription.getEditText().getText().toString();
-            final String discount = sweetDiscount.getEditText().getText().toString();
-            final String price = sweetPrice.getEditText().getText().toString();
-            final String avaQuantity = sweetAvaQuantity.getEditText().getText().toString();
-
-            if (validateName(name) && validateDescription(description)
-                    && validateDiscount(discount) && validatePrice(price) && validateDiscount(avaQuantity)) {
-
-                imageFolder.putFile(saveUri)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                dialog.dismiss();
-                                Toast.makeText(getActivity(), "Uploaded !", Toast.LENGTH_SHORT).show();
-                                imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-
-                                        newSweet = new Sweet(description,
-                                                discount,
-                                                uri.toString(),
-                                                name,
-                                                price,
-                                                avaQuantity);
-
-                                        sweets.child(key).setValue(newSweet);
-
-                                        View view = getActivity().findViewById(R.id.fragment_container);
-                                        Snackbar.make(view,name+" Updated Succesfully", Snackbar.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        dialog.dismiss();
-                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        dialog.setMessage("Uploading " + progress + "%");
-                    }
-                });
-            } else {
-                dialog.dismiss();
-                Toast.makeText(getActivity(), "Update Failed, Fields were Empty", Toast.LENGTH_SHORT).show();
-            }
-        }else {
-            Toast.makeText(getActivity(), "Update Failed, No Images Selected", Toast.LENGTH_SHORT).show();
-        }
     }
 }

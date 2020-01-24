@@ -215,6 +215,7 @@
         android:paddingEnd="6dp"
         android:background="@drawable/button_background"
         android:textSize="18sp"
-        android:layout_gravity="bottom|end" />
+        android:layout_gravity="bottom|end"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
