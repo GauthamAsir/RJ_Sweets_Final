@@ -2,7 +2,6 @@ package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,13 +41,10 @@ import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
-import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.user.SweetsDetail;
+import agjs.gautham.rjsweets.SweetsDetail;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import dmax.dialog.SpotsDialog;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Home extends Fragment {
 

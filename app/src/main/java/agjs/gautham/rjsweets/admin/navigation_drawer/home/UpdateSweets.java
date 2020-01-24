@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.R;
@@ -36,6 +38,7 @@ public class UpdateSweets extends AppCompatActivity {
     private DatabaseReference sweets;
 
     String key, image_url;
+    ImageView imgs;
 
     Sweet item;
 
@@ -56,38 +59,44 @@ public class UpdateSweets extends AppCompatActivity {
         sweetPrice = findViewById(R.id.edtPrice);
         sweetAvaQuantity = findViewById(R.id.edtAvaQuantity);
 
+        imgs = findViewById(R.id.imgs);
+
         bt_select = findViewById(R.id.bt_select);
-        bt_select.setVisibility(View.GONE);
 
         if (getIntent() != null) {
             key = getIntent().getStringExtra("Key");
             image_url = getIntent().getStringExtra("Url");
+            Picasso.get().load(image_url).into(imgs);
+
+            sweets.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    item = dataSnapshot.child(key).getValue(Sweet.class);
+
+                    sweetName.getEditText().setText(item.getName());
+                    sweetDescription.getEditText().setText(item.getDescription());
+                    sweetDiscount.getEditText().setText(item.getDiscount());
+                    sweetPrice.getEditText().setText(item.getPrice());
+                    sweetAvaQuantity.getEditText().setText(item.getAvaQuantity());
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
 
-        sweets.addListenerForSingleValueEvent(new ValueEventListener() {
+        bt_select.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                item = dataSnapshot.child(key).getValue(Sweet.class);
-
-                sweetName.getEditText().setText(item.getName());
-                sweetDescription.getEditText().setText(item.getDescription());
-                sweetDiscount.getEditText().setText(item.getDiscount());
-                sweetPrice.getEditText().setText(item.getPrice());
-                sweetAvaQuantity.getEditText().setText(item.getAvaQuantity());
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onClick(View v) {
+                chooseImage();
             }
         });
 
-
-
         bt_update = findViewById(R.id.bt_update);
-
         bt_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

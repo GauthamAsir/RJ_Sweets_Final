@@ -42,7 +42,7 @@ import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.user.SweetsDetail;
+import agjs.gautham.rjsweets.SweetsDetail;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.MenuViewHolder;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

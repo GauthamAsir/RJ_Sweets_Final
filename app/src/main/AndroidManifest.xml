@@ -49,11 +49,12 @@
         <activity android:name=".admin.OrderRejectedAdmin" />
         <activity android:name=".admin.OrderDetailAdmin" />
         <activity android:name=".admin.RejectOrderReason"/>
+        <activity android:name=".admin.navigation_drawer.home.UpdateSweets"/>
         <!-- End of Admin Activities -->
 
         <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
-        <activity android:name=".user.SweetsDetail" />
+        <activity android:name=".SweetsDetail" />
         <activity android:name=".user.Address" />
         <activity android:name=".user.NewAddress" />
         <activity android:name=".user.PlaceOrder" />

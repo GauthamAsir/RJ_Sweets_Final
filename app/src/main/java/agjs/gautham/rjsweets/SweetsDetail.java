@@ -1,8 +1,11 @@
-package agjs.gautham.rjsweets.user;
+package agjs.gautham.rjsweets;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,8 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,14 +30,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import agjs.gautham.rjsweets.Common;
+import java.util.UUID;
+
 import agjs.gautham.rjsweets.Database.Database;
-import agjs.gautham.rjsweets.Model.SavedAddress;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
-import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
+import agjs.gautham.rjsweets.user.Address;
+import agjs.gautham.rjsweets.user.NewAddress;
+import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
 public class SweetsDetail extends AppCompatActivity {
@@ -41,18 +55,22 @@ public class SweetsDetail extends AppCompatActivity {
     FloatingActionButton btnCart;
     ElegantNumberButton numberButton;
 
-    Button buyNow;
+    Button buyNow, edit_admin;
 
     String sweetId="";
     String phone = Common.USER_Phone;
     String avaQuantity="";
     String appType="";
+    String img_url="";
 
     FirebaseDatabase database;
     DatabaseReference sweet;
 
     Sweet currentSweet;
     Toolbar toolbar;
+
+    Uri saveUri;
+    private final int PICK_IMAGE_REQUEST= 71;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +115,7 @@ public class SweetsDetail extends AppCompatActivity {
 
         buyNow = findViewById(R.id.bt_buyNow_user);
         btnCart = findViewById(R.id.btn_cart_user);
+        edit_admin = findViewById(R.id.edit_admin);
 
         if(appType != null){
 
@@ -104,12 +123,25 @@ public class SweetsDetail extends AppCompatActivity {
                 numberButton.setVisibility(View.GONE);
                 btnCart.hide();
                 buyNow.setVisibility(View.GONE);
+                edit_admin.setVisibility(View.VISIBLE);
+
             } else {
                 numberButton.setVisibility(View.VISIBLE);
                 buyNow.setVisibility(View.VISIBLE);
+                edit_admin.setVisibility(View.GONE);
             }
 
         }
+
+        edit_admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SweetsDetail.this, UpdateSweets.class);
+                intent.putExtra("Key",sweetId);
+                intent.putExtra("Url",img_url);
+                startActivity(intent);
+            }
+        });
 
         numberButton.setRange(1,Integer.parseInt(avaQuantity));
         numberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -233,6 +265,8 @@ public class SweetsDetail extends AppCompatActivity {
 
                 Picasso.get().load(currentSweet.getImage())
                         .into(sweet_image);
+
+                img_url = currentSweet.getImage();
 
                 sweet_price.setText(currentSweet.getPrice());
                 sweet_name.setText(currentSweet.getName());

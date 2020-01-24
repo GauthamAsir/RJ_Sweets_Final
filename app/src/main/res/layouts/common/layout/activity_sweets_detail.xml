@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.SweetsDetail">
+    tools:context=".SweetsDetail">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout_user"
@@ -203,5 +203,18 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/edit_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:drawableStart="@drawable/ic_edit_black"
+        android:text="@string/edit"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:background="@drawable/button_background"
+        android:textSize="18sp"
+        android:layout_gravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
