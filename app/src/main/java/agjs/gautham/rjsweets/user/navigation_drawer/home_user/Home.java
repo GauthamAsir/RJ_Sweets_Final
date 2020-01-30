@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -227,6 +228,8 @@ public class Home extends Fragment {
                     if (dialog.isShowing()){
                         dialog.dismiss();
                     }
+
+                    menuViewHolder.root.setAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.fade_scale_transmission));
 
                     if (model.getAvaQuantity().equals("0")){
                         menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);

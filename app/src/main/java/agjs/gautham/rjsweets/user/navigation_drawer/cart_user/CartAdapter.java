@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,13 +62,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
         DatabaseReference sweets = database.getReference("Sweets");
         final List<String> q = new ArrayList<>();
 
+        holder.root_cart.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transmission));
+
         String pos = String.valueOf(listData.get(position).getProductId());
 
         sweets.child(pos).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                final int maxRange = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("AvaQuantity").getValue(String.class)));
+                final int maxRange = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("avaQuantity").getValue(String.class)));
                 holder.bt_quantity.setRange(1,maxRange);
             }
 

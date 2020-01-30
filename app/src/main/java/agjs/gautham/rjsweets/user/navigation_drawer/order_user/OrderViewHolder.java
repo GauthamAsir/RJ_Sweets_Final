@@ -16,7 +16,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
     public TextView txtOrderId, txtOrderStatus, txtOrderPhone, txtOrderAddress, txtOrderTime, txtOrderDate, deliveredStatus;
     public ImageView orderStatusImage;
     public Button bt_orderDetails, bt_orderDetailsReason;
-    public CardView orderDetailsReasonContainer;
+    public CardView orderDetailsReasonContainer, root_order;
 
     public OrderViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -35,5 +35,7 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
         bt_orderDetailsReason = itemView.findViewById(R.id.order_details_reason);
 
         orderDetailsReasonContainer = itemView.findViewById(R.id.order_details_reason_container);
+
+        root_order = itemView.findViewById(R.id.root_order);
     }
 }

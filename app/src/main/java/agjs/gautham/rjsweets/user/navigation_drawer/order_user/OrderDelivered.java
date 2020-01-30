@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -113,6 +114,8 @@ public class OrderDelivered extends AppCompatActivity {
                 OrderUserName = request.getName();
                 OrderTime = request.getTime();
                 OrderDate = request.getDate();
+
+                orderViewHolder.root_order.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_scale_transmission));
 
                 if (request.getStatus().equals("2")){
 

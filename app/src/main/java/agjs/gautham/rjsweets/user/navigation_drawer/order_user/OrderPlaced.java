@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -100,6 +101,8 @@ public class OrderPlaced extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(OrderViewHolder orderViewHolder, final Request request, final int i) {
+
+                orderViewHolder.root_order.setAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_scale_transmission));
 
                 final String OrderId, OrderStatus, OrderTotal, OrderAddress, OrderComment, OrderUserName, OrderTime, OrderDate;
 

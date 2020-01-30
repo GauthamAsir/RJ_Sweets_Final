@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
@@ -20,6 +21,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder{
     public LinearLayout view_foreground;
     public ElegantNumberButton bt_quantity;
     public ImageView cart_image, delete_f;
+    public CardView root_cart;
 
     public void setTxt_cart_name(TextView txt_cart_name) {
         this.txt_cart_name = txt_cart_name;
@@ -35,6 +37,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder{
 
         view_background = itemView.findViewById(R.id.view_background);
         view_foreground = itemView.findViewById(R.id.view_foreground);
+        root_cart = itemView.findViewById(R.id.root_cart);
     }
 
 }
