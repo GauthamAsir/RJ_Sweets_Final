@@ -50,6 +50,7 @@
         <activity android:name=".admin.OrderDetailAdmin" />
         <activity android:name=".admin.RejectOrderReason"/>
         <activity android:name=".admin.navigation_drawer.home.UpdateSweets"/>
+        <activity android:name=".admin.OrderSearchAdmin"/>
         <!-- End of Admin Activities -->
 
         <!-- Start of User Activities -->

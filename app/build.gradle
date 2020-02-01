@@ -9,7 +9,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 29
         versionCode 3
-        versionName "3.1"
+        versionName "3.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -108,5 +108,7 @@ dependencies {
 
     //Ring Progress Bar
     implementation 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
+
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
 
 }

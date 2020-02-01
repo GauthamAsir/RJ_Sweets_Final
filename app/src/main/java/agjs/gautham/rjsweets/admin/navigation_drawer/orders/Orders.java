@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.OrderDeliveredAdmin;
 import agjs.gautham.rjsweets.admin.OrderPlacedAdmin;
 import agjs.gautham.rjsweets.admin.OrderRejectedAdmin;
+import agjs.gautham.rjsweets.admin.OrderSearchAdmin;
 
 public class Orders extends Fragment {
 
@@ -24,6 +26,7 @@ public class Orders extends Fragment {
         Button view_placed_order = root.findViewById(R.id.view_placed_order);
         Button view_delivered_order = root.findViewById(R.id.view_delivered_order);
         Button view_rejected_order = root.findViewById(R.id.view_rejected_order);
+        Button view_search_order = root.findViewById(R.id.view_search_order);
 
         view_placed_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +46,13 @@ public class Orders extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), OrderRejectedAdmin.class));
+            }
+        });
+
+        view_search_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), OrderSearchAdmin.class));
             }
         });
 

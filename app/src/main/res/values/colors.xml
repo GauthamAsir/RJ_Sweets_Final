@@ -28,6 +28,8 @@
     <color name="progress_on">#EBEB00</color>
     <color name="progress_done">#32CD32</color>
 
-    <color name="brown">#7b2e00</color>
+    <color name="brown">#964B00</color>
+
+    <color name="holo_orange">#ffffbb33</color>
 
 </resources>
