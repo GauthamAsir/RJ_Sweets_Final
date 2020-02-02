@@ -33,8 +33,6 @@ public class UpdateSweets extends AppCompatActivity {
     Uri saveUri;
     private final int PICK_IMAGE_REQUEST= 71;
 
-    FirebaseStorage storage;
-    StorageReference storageReference;
     private DatabaseReference sweets;
 
     String key, image_url;
@@ -118,6 +116,7 @@ public class UpdateSweets extends AppCompatActivity {
                             avaQuantity);
 
                     sweets.child(key).setValue(newSweet);
+
                     Toast.makeText(UpdateSweets.this,"Updated Succesfully",Toast.LENGTH_LONG).show();
                     finish();
 

@@ -1,7 +1,6 @@
 package agjs.gautham.rjsweets.admin.navigation_drawer.home;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,8 +38,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import agjs.gautham.rjsweets.Common;
@@ -49,6 +46,7 @@ import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.SweetsDetail;
+import agjs.gautham.rjsweets.admin.ViewHolder.MenuViewHolderAdmin;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.MenuViewHolder;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
@@ -61,7 +59,7 @@ public class Home extends Fragment {
 
     private RecyclerView recycler_menu;
 
-    private FirebaseRecyclerAdapter<Sweet, MenuViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Sweet, MenuViewHolderAdmin> adapter;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -75,6 +73,7 @@ public class Home extends Fragment {
     ImageView img;
 
     AlertDialog.Builder alertDialog;
+    AlertDialog alert;
 
     Sweet newSweet;
 
@@ -176,7 +175,9 @@ public class Home extends Fragment {
             }
         });
 
-        alertDialog.show();
+        alert = alertDialog.create();
+        alert.show();
+
     }
 
     private void uploadImage() {
@@ -232,6 +233,7 @@ public class Home extends Fragment {
                                                 sweets.child(id).push();
                                                 sweets.child(id).setValue(newSweet);
                                                 View view = getActivity().findViewById(R.id.fragment_container);
+                                                alert.dismiss();
                                                 dialog.dismiss();
                                                 Snackbar.make(view,name+" Added Succesfully", Snackbar.LENGTH_SHORT).show();
 
@@ -340,10 +342,10 @@ public class Home extends Fragment {
                 .build();
 
         dlg.show();
-        adapter = new FirebaseRecyclerAdapter<Sweet, MenuViewHolder>
-                (Sweet.class, R.layout.menu_item, MenuViewHolder.class, sweets) {
+        adapter = new FirebaseRecyclerAdapter<Sweet, MenuViewHolderAdmin>
+                (Sweet.class, R.layout.menu_item, MenuViewHolderAdmin.class, sweets) {
             @Override
-            protected void populateViewHolder(MenuViewHolder menuViewHolder, final Sweet model, int i) {
+            protected void populateViewHolder(MenuViewHolderAdmin menuViewHolder, final Sweet model, int i) {
 
                 menuViewHolder.txtMenuName.setText(model.getName());
                 Picasso.get().load(model.getImage())
@@ -362,12 +364,14 @@ public class Home extends Fragment {
                 menuViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
+
                         Intent sweetsDetail = new Intent(getActivity(), SweetsDetail.class);
                         sweetsDetail.putExtra("SweetId", adapter.getRef(position).getKey());
                         sweetsDetail.putExtra("AvailableQuantity",model.getAvaQuantity());
                         sweetsDetail.putExtra("AppType","admin");
                         startActivity(sweetsDetail);
                         getActivity().overridePendingTransition(R.anim.slide_up, R.anim.slide_down );
+
                     }
                 });
             }
@@ -389,8 +393,6 @@ public class Home extends Fragment {
 
         }else if (item.getTitle().equals(Common.DELETE)){
             showDeleteDialog(adapter.getRef(item.getOrder()).getKey());
-        }else if (item.getTitle().equals(Common.UPDATE_IMAGE)){
-            Toast.makeText(getActivity(),"W.I.P",Toast.LENGTH_LONG).show();
         }
 
         return super.onContextItemSelected(item);

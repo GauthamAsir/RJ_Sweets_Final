@@ -1,11 +1,9 @@
 package agjs.gautham.rjsweets;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,16 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,21 +25,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.util.UUID;
 
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.admin.DashboardAdmin;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
 import agjs.gautham.rjsweets.user.Address;
 import agjs.gautham.rjsweets.user.NewAddress;
-import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
 public class SweetsDetail extends AppCompatActivity {
@@ -68,9 +57,6 @@ public class SweetsDetail extends AppCompatActivity {
 
     Sweet currentSweet;
     Toolbar toolbar;
-
-    Uri saveUri;
-    private final int PICK_IMAGE_REQUEST= 71;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -135,6 +135,8 @@
     <string name="cancel">Cancel</string>
     <string name="reject">Reject</string>
 
+    <string name="delete">Delete</string>
+
     <string name="change_address">Change Address</string>
     <string name="order_summary">Order Summary</string>
     <string name="pay_with">Pay With</string>

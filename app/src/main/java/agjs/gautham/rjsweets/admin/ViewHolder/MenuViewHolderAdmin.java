@@ -12,9 +12,10 @@ import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.R;
 
-public class MenuViewHolderAdmin extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
+public class MenuViewHolderAdmin extends RecyclerView.ViewHolder implements View.OnClickListener,
+        View.OnCreateContextMenuListener {
 
-    public TextView txtMenuName;
+    public TextView txtMenuName, txtAvailableQuantity;
     public ImageView imageView;
 
     private ItemClickListener itemClickListener;
@@ -24,8 +25,9 @@ public class MenuViewHolderAdmin extends RecyclerView.ViewHolder implements View
         txtMenuName = itemView.findViewById(R.id.menu_name);
         imageView = itemView.findViewById(R.id.menu_image);
 
-        itemView.setOnCreateContextMenuListener(this);
+        txtAvailableQuantity = itemView.findViewById(R.id.menu_available_quantity);
 
+        itemView.setOnCreateContextMenuListener(this);
         itemView.setOnClickListener(this);
     }
 
@@ -42,7 +44,6 @@ public class MenuViewHolderAdmin extends RecyclerView.ViewHolder implements View
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
         contextMenu.setHeaderTitle("Select an Action");
         contextMenu.add(0,0,getAdapterPosition(), Common.UPDATE);
-        contextMenu.add(0,0,getAdapterPosition(), Common.DELETE);
-        contextMenu.add(0,0,getAdapterPosition(),Common.UPDATE_IMAGE);
+        contextMenu.add(0,1,getAdapterPosition(), Common.DELETE);
     }
 }
