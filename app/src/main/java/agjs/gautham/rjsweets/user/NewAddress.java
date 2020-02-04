@@ -119,7 +119,7 @@ public class NewAddress extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(NewAddress.this, "Back is Not Allowed", Toast.LENGTH_LONG).show();
+        super.onBackPressed();
     }
 
     private boolean validatepincode(String addressPincode) {
