@@ -252,7 +252,7 @@ public class Home extends Fragment {
             };
 
             fab.setCount(new Database(getActivity()).getCountCart());
-
+            recycler_menu.setHasFixedSize(true);
             recycler_menu.setAdapter(adapter);
         }else {
             internetStatus.setVisibility(View.VISIBLE);
