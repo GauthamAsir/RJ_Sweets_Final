@@ -3,12 +3,19 @@ package agjs.gautham.rjsweets;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -43,16 +51,31 @@ import dmax.dialog.SpotsDialog;
 
 public class SignUp extends AppCompatActivity {
 
-    private TextInputLayout tname, temail, tpass, trepass, tphone;
+    private TextInputLayout tname, temail, tpass, tphone;
     private String pass2;
     private String verificationId;
 
-    FirebaseFirestore firestore;
+    private ImageView name_img, email_img, pass_img, pno_img;
+    private LinearLayout name_parent, email_parent, pass_parent, pno_parent;
+    private Button status0, status1, status2, status3, status4, next_signup;
+    private RelativeLayout root;
+    private Snackbar snackbar;
+    private View snackView;
+    private TextView tv;
+
+    private String final_name, final_email, final_pass, final_pno;
+
+    private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    DatabaseReference databse_user;
 
     private int phoneFlag = 0;
 
     android.app.AlertDialog dialog, vdialog;
+
+    private int status = 0;
+    Animation slidein, slideout, back_slidein, back_slideout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,57 +96,69 @@ public class SignUp extends AppCompatActivity {
                 .setTheme(R.style.DialogCustom)
                 .build();
 
+        slideout = AnimationUtils.loadAnimation(SignUp.this, R.anim.slide_out_left);
+        slidein = AnimationUtils.loadAnimation(SignUp.this, R.anim.slide_in_right);
+
+        back_slidein = AnimationUtils.loadAnimation(SignUp.this,R.anim.slide_in_left);
+        back_slideout = AnimationUtils.loadAnimation(SignUp.this,R.anim.slide_out_right);
+
+        //Init Firebase
+        database = FirebaseDatabase.getInstance();
+        databse_user = database.getReference("User");
+
         tname = findViewById(R.id.signUpName);
         tpass = findViewById(R.id.signUpPass);
-        trepass = findViewById(R.id.signUpRePass);
         temail = findViewById(R.id.signUpEmail);
         tphone = findViewById(R.id.signUpPhone);
+
+        name_img = findViewById(R.id.name);
+        email_img = findViewById(R.id.email);
+        pass_img = findViewById(R.id.pass);
+        pno_img = findViewById(R.id.pno_img);
+        next_signup = findViewById(R.id.next_signup);
+
+        name_parent = findViewById(R.id.name_container_parent);
+        email_parent = findViewById(R.id.email_container_parent);
+        pass_parent = findViewById(R.id.pass_container_parent);
+        pno_parent = findViewById(R.id.pno_container_parent);
+
+        status0 = findViewById(R.id.status0);
+        status1 = findViewById(R.id.status1);
+        status2 = findViewById(R.id.status2);
+        status3 = findViewById(R.id.status3);
+        status4 = findViewById(R.id.status4);
+
+        root = findViewById(R.id.root);
+
+        snackbar = Snackbar.make(root,"Enter Valid Details",Snackbar.LENGTH_SHORT);
+        snackView = snackbar.getView();
+        tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
 
         mAuth = FirebaseAuth.getInstance();
 
     }
 
-    public void bt_signup_user(View view){
+    public void bt_signup_user(){
 
         if (Common.isConnectedToInternet(getBaseContext())){
 
-            if (!validateName() | !validatePass() | !validateEmail() | !validatePhone()) {
+            if (final_name.isEmpty() | final_email.isEmpty() | final_pass.isEmpty() | final_pno.isEmpty()) {
                 return;
             }
 
-            pass2 = trepass.getEditText().getText().toString();
-            final String spno = tphone.getEditText().getText().toString();
+            if (phoneFlag!=0){
+                return;
+            }
 
             dialog.show();
 
-            //Init Firebase
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference databse_user = database.getReference("User");
-
-            databse_user.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.child(spno).exists()){
-
-                        if (dialog.isShowing()){
-                            dialog.dismiss();
-                        }
-                        toast("Phone Number is Already Registered");
-                        phoneFlag = 1;
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
             if (phoneFlag == 0){
 
-                String phoneNumber = "+" + "91" + spno;
+                String phoneNumber = "+" + "91" + final_pno;
                 sendVerificationCode(phoneNumber);
+                if (dialog.isShowing())
+                    dialog.dismiss();
                 showAlertDialog();
             }
 
@@ -159,13 +194,10 @@ public class SignUp extends AppCompatActivity {
 
                             dialog.show();
 
-                            final String semail = temail.getEditText().getText().toString();
-                            final String spass1 = tpass.getEditText().getText().toString();
-                            final String susername = tname.getEditText().getText().toString();
-                            final String spno = tphone.getEditText().getText().toString();
-
-                            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            final DatabaseReference databse_user = database.getReference("User");
+                            final String semail = final_email;
+                            final String spass1 = final_pass;
+                            final String susername = final_name;
+                            final String spno = final_pno;
 
                             mAuth.createUserWithEmailAndPassword(semail, spass1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
@@ -192,7 +224,9 @@ public class SignUp extends AppCompatActivity {
                                                     if (dialog.isShowing()){
                                                         dialog.dismiss();
                                                     }
-                                                    startActivity(new Intent(SignUp.this, DashboardUser.class));
+                                                    startActivity(new Intent(SignUp.this, DashboardUser.class)
+                                                            .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                                 }else {
                                                     if (dialog.isShowing()){
                                                         dialog.dismiss();
@@ -298,6 +332,200 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    public void bt_continue_name(View view) {
+
+        if (Common.isConnectedToInternet(getBaseContext())){
+
+            if (validateName()){
+
+                out(name_parent);
+                in(email_parent);
+                status = 0;
+                status1.setVisibility(View.VISIBLE);
+                final_name = tname.getEditText().getText().toString();
+
+            } else {
+
+                snackbar.setText("Enter Valid Details");
+                snackbar.show();
+
+            }
+
+        } else {
+
+            snackbar.setText("No Internet Connection");
+            snackbar.show();
+
+        }
+
+    }
+
+    public void bt_back_name(View view) {
+        // Disabled
+    }
+
+    public void bt_continue_email(View view) {
+
+        if (Common.isConnectedToInternet(getBaseContext())){
+
+            if (validateEmail()){
+
+                out(email_parent);
+                in(pass_parent);
+                status2.setVisibility(View.VISIBLE);
+                status = 1;
+                final_email = temail.getEditText().getText().toString();
+
+            }else {
+                snackbar.setText("Enter Valid Details");
+                snackbar.show();
+            }
+
+        }else {
+            snackbar.setText("No Internet Connection");
+            snackbar.show();
+        }
+    }
+
+    public void bt_back_email(View view) {
+
+        status = 0;
+        back_out(email_parent);
+        back_in(name_parent);
+        status2.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void bt_continue_pass(View view) {
+
+        if (Common.isConnectedToInternet(getBaseContext())){
+
+            String pass = tpass.getEditText().getText().toString();
+
+            if (!pass.isEmpty()){
+
+                if (pass.length()<=5){
+
+                    snackbar.setText("Password cant be less than 5 letter");
+                    snackbar.show();
+
+                }else {
+
+                    final_pass = tpass.getEditText().getText().toString();
+                    out(pass_parent);
+                    in(pno_parent);
+                    status3.setVisibility(View.VISIBLE);
+                    status = 2;
+
+                }
+            }else {
+                snackbar.setText("Enter Valid Details");
+                snackbar.show();
+            }
+
+        }else {
+            snackbar.setText("No Internet Connection");
+            snackbar.show();
+        }
+
+    }
+
+    public void bt_back_pass(View view) {
+
+        status = 1;
+        back_out(pass_parent);
+        back_in(email_parent);
+        status3.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void bt_continue_pno(View view) {
+
+        if (Common.isConnectedToInternet(getBaseContext())){
+
+            if (validatePhone()){
+
+                dialog.show();
+
+                final_pno = tphone.getEditText().getText().toString();
+
+                databse_user.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.child(final_pno).exists()){
+
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+                            snackbar.setText("Phone Number is Already Registered");
+                            snackbar.show();
+                            phoneFlag = 1;
+                        } else {
+
+                            phoneFlag = 0;
+                            status4.setVisibility(View.VISIBLE);
+                            status = 3;
+                            bt_signup_user();
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }else {
+                snackbar.setText("Enter Valid Details");
+                snackbar.show();
+            }
+
+        }else {
+            snackbar.setText("No Internet Connection");
+            snackbar.show();
+        }
+
+    }
+
+    public void bt_back_pno(View view) {
+
+        status = 2;
+        back_out(pno_parent);
+        back_in(pass_parent);
+        status4.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void out(LinearLayout l1) {
+
+        l1.setAnimation(slideout);
+        l1.setVisibility(View.GONE);
+
+    }
+
+    private void in(LinearLayout l1){
+
+        l1.setAnimation(slidein);
+        l1.setVisibility(View.VISIBLE);
+        status1.setVisibility(View.VISIBLE);
+    }
+
+    private void back_out(LinearLayout l1){
+
+        l1.setAnimation(back_slideout);
+        l1.setVisibility(View.GONE);
+
+    }
+
+    private void back_in(LinearLayout l1){
+
+        l1.setAnimation(back_slidein);
+        l1.setVisibility(View.VISIBLE);
+
+    }
+
     //Name Validation
     boolean validateName(){
         String username = tname.getEditText().getText().toString();
@@ -313,33 +541,6 @@ public class SignUp extends AppCompatActivity {
             tname.setError(null);
             tname.clearFocus();
             hideKeyboard(tname);
-            return true;
-        }
-    }
-
-    // Password Validation
-    boolean validatePass(){
-        String pass1 = tpass.getEditText().getText().toString();
-        pass2 = trepass.getEditText().getText().toString();
-
-        if (pass1.isEmpty()){
-            tpass.setError("Field Can't be Empty");
-            trepass.requestFocus();
-            return false;
-        }else if (pass2.isEmpty()){
-            trepass.setError("Field Can't be Empty");
-            trepass.requestFocus();
-            return false;
-        }else if (!pass1.equals(pass2)){
-            trepass.setError("Password Miss-Match");
-            trepass.requestFocus();
-            return false;
-        }else {
-            trepass.setError(null);
-            hideKeyboard(trepass);
-            hideKeyboard(tpass);
-            tpass.clearFocus();
-            trepass.clearFocus();
             return true;
         }
     }
@@ -394,5 +595,4 @@ public class SignUp extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(t1.getWindowToken(), 0);
     }
-
 }

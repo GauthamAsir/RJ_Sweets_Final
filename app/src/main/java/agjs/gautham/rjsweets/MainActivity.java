@@ -7,6 +7,11 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getSupportActionBar().hide();
 
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -49,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         Paper.init(this);
+
+        ImageView imageView = findViewById(R.id.img);
+        TextView textView = findViewById(R.id.welcome);
+        TextView textView1 = findViewById(R.id.welcome1);
+        Button button = findViewById(R.id.next);
+        Animation fadein = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein);
+
+        imageView.startAnimation(fadein);
+        textView.startAnimation(fadein);
+        textView1.startAnimation(fadein);
+        button.startAnimation(fadein);
 
         String user = Paper.book().read(Common.USER_EMAIL);
         String pwd = Paper.book().read(Common.USER_PASS);

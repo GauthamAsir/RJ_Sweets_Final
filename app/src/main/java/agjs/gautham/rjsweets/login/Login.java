@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,14 +99,6 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         Paper.init(this);
-
-        TextView headline1 = findViewById(R.id.headline1);
-        TextView headline2 = findViewById(R.id.headline2);
-
-        Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/NABILA.TTF");
-
-        headline1.setTypeface(typeface);
-        headline2.setTypeface(typeface);
 
         Animation fadein = AnimationUtils.loadAnimation(Login.this, R.anim.fadein);
 

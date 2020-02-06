@@ -1,43 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".SignUp"
+    android:id="@+id/root">
 
-    <TextView
+    <ImageView
         android:id="@+id/signup_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/profile"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
+        android:layout_height="60dp"
+        android:src="@drawable/signup_img"
         android:layout_marginTop="30dp"
-        android:textColor="@color/colorText" />
+        android:scaleType="centerInside"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/container2"/>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/font"
+    <LinearLayout
+        android:id="@+id/container2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_margin="24dp">
 
         <LinearLayout
+            android:id="@+id/name_container_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:src="@drawable/ic_person_outline"
+                style="@style/buttonBorderless"
+                android:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="Name"
+                android:fontFamily="@font/wilkey"
+                android:textSize="42sp"
+                android:textAlignment="center"
+                android:textColor="@color/white"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpName"
                 style="@style/textInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:hint="@string/enter_name"
                 app:counterEnabled="true"
                 app:counterMaxLength="20"
                 app:errorEnabled="true"
-                app:hintEnabled="true">
+                app:hintEnabled="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/editTextInput"
@@ -49,6 +76,64 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/continue_name"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_continue_name"
+                    android:clickable="true"/>
+
+                <ImageView
+                    android:id="@+id/back_name"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_arrow_left_black_48dp"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_back_name"
+                    android:clickable="true"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/email_container_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:src="@drawable/ic_email_black_24dp"
+                style="@style/buttonBorderless"
+                android:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="E-Mail"
+                android:fontFamily="@font/wilkey"
+                android:textSize="42sp"
+                android:textAlignment="center"
+                android:textColor="@color/white"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpEmail"
                 style="@style/textInput"
@@ -56,7 +141,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 app:errorEnabled="true"
-                app:hintEnabled="true">
+                app:hintEnabled="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/editTextInput"
@@ -67,6 +156,64 @@
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/continue_email"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_continue_email"
+                    android:clickable="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/back_email"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_arrow_left_black_48dp"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_back_email"
+                    android:clickable="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pass_container_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:src="@drawable/password_img"
+                style="@style/buttonBorderless"
+                android:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/text_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="Password"
+                android:fontFamily="@font/wilkey"
+                android:textSize="42sp"
+                android:textAlignment="center"
+                android:textColor="@color/white"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpPass"
                 style="@style/textInput"
@@ -75,7 +222,11 @@
                 android:hint="@string/enter_pass"
                 app:errorEnabled="true"
                 app:hintEnabled="true"
-                app:passwordToggleEnabled="true">
+                app:passwordToggleEnabled="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/editTextInput"
@@ -85,23 +236,63 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signUpRePass"
-                style="@style/textInput"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/re_enter_pass"
-                app:errorEnabled="true"
-                app:hintEnabled="true"
-                app:passwordToggleEnabled="true">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/editTextInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:id="@+id/continue_pass"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_continue_pass"
+                    android:clickable="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/back_pass"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_arrow_left_black_48dp"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_back_pass"
+                    android:clickable="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pno_container_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/pno_img"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:src="@drawable/ic_local_phone_black"
+                style="@style/buttonBorderless"
+                android:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/text_pno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:text="Phone Number"
+                android:fontFamily="@font/wilkey"
+                android:textSize="42sp"
+                android:textAlignment="center"
+                android:textColor="@color/white"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpPhone"
@@ -112,7 +303,11 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="10"
                 app:errorEnabled="true"
-                app:hintEnabled="true">
+                app:hintEnabled="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/editTextInput"
@@ -123,18 +318,100 @@
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/next_signup"
-                style="@style/buttonBorderless"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:text="@string/next"
-                android:onClick="bt_signup_user"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/continue_pno"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_continue_pno"
+                    android:clickable="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/back_pno"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:tint="@color/white"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_arrow_left_black_48dp"
+                    android:background="@drawable/button_background"
+                    android:onClick="bt_back_pno"
+                    android:clickable="true"/>
+
+                <Button
+                    android:id="@+id/next_signup"
+                    style="@style/buttonBorderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/signup"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/status0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_light" />
+
+        <Button
+            android:id="@+id/status1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_light"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/status2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_light"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/status3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_light"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/status4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_light"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

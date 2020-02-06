@@ -10,9 +10,10 @@
     android:gravity="center">
 
     <ImageView
+        android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:srcCompat="@drawable/rjsweets_logo" />
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/main_logo" />
 
     <TextView
         android:id="@+id/welcome1"
@@ -21,10 +22,8 @@
         android:text="@string/welcome"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center"
-        android:textColor="@color/colorText"
-        android:padding="4dp" />
+        android:padding="4dp"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/welcome"
@@ -33,10 +32,7 @@
         android:text="@string/start"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center"
-        android:padding="4dp"
-        android:textColor="@color/colorText"/>
+        android:padding="4dp" />
 
     <Button
         android:id="@+id/next"
@@ -45,7 +41,9 @@
         android:text="@string/next"
         style="@style/buttonBorderless"
         android:onClick="bt_next"
-        android:padding="4dp"
-        android:layout_gravity="center"/>
+        android:padding="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_margin="4dp" />
 
 </LinearLayout>

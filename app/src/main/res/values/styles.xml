@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/aldrich</item>
+        <item name="android:textColor">@color/colorText</item>
 
     </style>
 
@@ -22,7 +23,7 @@
     <style name="buttonBorderless" parent="Widget.AppCompat.Button">
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/button_background</item>
     </style>
 
@@ -37,8 +38,8 @@
         <item name="android:layout_marginEnd">12dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:color">@color/colorPrimary</item>
-        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="android:color">@color/brown</item>
+        <item name="boxStrokeColor">@color/brown</item>
         <item name="hintTextAppearance">@style/TextViewInputStyle</item>
 
     </style>
@@ -47,8 +48,8 @@
         <item name="android:textSize">18sp</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:color">@color/colorPrimary</item>
-        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="android:color">@color/brown</item>
+        <item name="boxStrokeColor">@color/brown</item>
         <item name="hintTextAppearance">@style/TextViewInputStyle</item>
 
     </style>
@@ -89,7 +90,7 @@
     </style>
 
     <style name="ExpandedAppBar" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/brown</item>
         <item name="android:textStyle">normal</item>
     </style>
 
