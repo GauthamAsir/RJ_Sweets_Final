@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import agjs.gautham.rjsweets.R;
 
@@ -22,26 +26,45 @@ public class Orders extends Fragment {
         Button view_delivered_order = root.findViewById(R.id.view_delivered_order_user);
         Button view_rejected_order = root.findViewById(R.id.view_rejected_order_user);
 
-        view_placed_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),OrderPlaced.class));
-            }
-        });
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser mUser = mAuth.getCurrentUser();
 
-        view_delivered_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),OrderDelivered.class));
-            }
-        });
+        if (mUser != null){
 
-        view_rejected_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),OrderRejected.class));
-            }
-        });
+            view_placed_order.setClickable(true);
+            view_delivered_order.setClickable(true);
+            view_rejected_order.setClickable(true);
+
+            view_placed_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(),OrderPlaced.class));
+                }
+            });
+
+            view_delivered_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(),OrderDelivered.class));
+                }
+            });
+
+            view_rejected_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(),OrderRejected.class));
+                }
+            });
+
+        } else {
+
+            Toast.makeText(getActivity(),"Please Sign-In To View Orders",Toast.LENGTH_SHORT).show();
+
+            view_placed_order.setClickable(false);
+            view_delivered_order.setClickable(false);
+            view_rejected_order.setClickable(false);
+
+        }
 
         return root;
     }
