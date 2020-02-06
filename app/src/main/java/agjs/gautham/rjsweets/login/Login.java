@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -668,11 +669,21 @@ public class Login extends AppCompatActivity {
     public void onBackPressed() {
 
         View view = findViewById(R.id.login_container);
+
+        //Snackbar
+        Snackbar snackbar = Snackbar.make(view, "Press Again to Exit", Snackbar.LENGTH_SHORT);
+        View snackView = snackbar.getView();
+        TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
+
         if (back_pressed + 2000 > System.currentTimeMillis()){
             finish();
             moveTaskToBack(true);
+            System.exit(1);
+            android.os.Process.killProcess(android.os.Process.myPid());
         }else {
-            Snackbar.make(view, "Press Again to Exit", Snackbar.LENGTH_LONG).show();
+            snackbar.setText("Press Again to Exit");
+            snackbar.show();
             back_pressed = System.currentTimeMillis();
         }
     }

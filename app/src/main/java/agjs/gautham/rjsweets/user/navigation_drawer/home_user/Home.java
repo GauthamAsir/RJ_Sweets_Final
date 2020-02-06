@@ -1,6 +1,7 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -94,6 +96,12 @@ public class Home extends Fragment {
                 ContextCompat.getColor(getActivity(),android.R.color.holo_blue_dark));
 
         fab = root.findViewById(R.id.btn_cart_user);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fabOnClick();
+            }
+        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -101,12 +109,6 @@ public class Home extends Fragment {
 
                 if (Common.isConnectedToInternet(getActivity())) {
                     internetStatus.setVisibility(View.GONE);
-                    fab.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            fabOnClick();
-                        }
-                    });
                 }else {
                     internetStatus.setVisibility(View.VISIBLE);
                     toast("No Internet Connection");
@@ -125,13 +127,6 @@ public class Home extends Fragment {
             @Override
             public void run() {
                 if (Common.isConnectedToInternet(getActivity())){
-
-                    fab.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            fabOnClick();
-                        }
-                    });
 
                     recycler_menu = root.findViewById(R.id.recycle_menu_user);
                     recycler_menu.setHasFixedSize(true);
@@ -255,6 +250,7 @@ public class Home extends Fragment {
             recycler_menu.setHasFixedSize(true);
             recycler_menu.setAdapter(adapter);
         }else {
+            recycler_menu.setAdapter(null);
             internetStatus.setVisibility(View.VISIBLE);
             if (dialog.isShowing()){
                 dialog.dismiss();

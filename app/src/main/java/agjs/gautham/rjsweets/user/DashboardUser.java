@@ -2,6 +2,7 @@ package agjs.gautham.rjsweets.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -97,8 +98,6 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
 
             }
         }
-
-
 
         menu = navigationView.getMenu();
 
@@ -256,6 +255,13 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
     public void onBackPressed() {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        //Snackbar
+        Snackbar snackbar = Snackbar.make(drawer, "Press Again to Exit", Snackbar.LENGTH_SHORT);
+        View snackView = snackbar.getView();
+        TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (!navigationView.getMenu().findItem(R.id.nav_home).isChecked()){
@@ -267,8 +273,11 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
             if (back_pressed + 2000 > System.currentTimeMillis()){
                 finish();
                 moveTaskToBack(true);
+                System.exit(1);
+                android.os.Process.killProcess(android.os.Process.myPid());
             }else {
-                Snackbar.make(drawer, "Press Again to Exit", Snackbar.LENGTH_LONG).show();
+                snackbar.setText("Press Again to Exit");
+                snackbar.show();
                 back_pressed = System.currentTimeMillis();
             }
         }

@@ -56,10 +56,7 @@ public class SignUp extends AppCompatActivity {
 
     private LinearLayout name_parent, email_parent, pass_parent, pno_parent;
     private Button status1, status2, status3, status4;
-    private RelativeLayout root;
     private Snackbar snackbar;
-    private View snackView;
-    private TextView tv;
 
     private String final_name, final_email, final_pass, final_pno;
 
@@ -117,11 +114,11 @@ public class SignUp extends AppCompatActivity {
         status3 = findViewById(R.id.status3);
         status4 = findViewById(R.id.status4);
 
-        root = findViewById(R.id.root);
+        RelativeLayout root = findViewById(R.id.root);
 
         snackbar = Snackbar.make(root,"Enter Valid Details",Snackbar.LENGTH_SHORT);
-        snackView = snackbar.getView();
-        tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+        View snackView = snackbar.getView();
+        TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
         tv.setTextColor(Color.WHITE);
 
         mAuth = FirebaseAuth.getInstance();
