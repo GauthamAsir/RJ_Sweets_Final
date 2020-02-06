@@ -52,12 +52,10 @@ import dmax.dialog.SpotsDialog;
 public class SignUp extends AppCompatActivity {
 
     private TextInputLayout tname, temail, tpass, tphone;
-    private String pass2;
     private String verificationId;
 
-    private ImageView name_img, email_img, pass_img, pno_img;
     private LinearLayout name_parent, email_parent, pass_parent, pno_parent;
-    private Button status0, status1, status2, status3, status4, next_signup;
+    private Button status1, status2, status3, status4;
     private RelativeLayout root;
     private Snackbar snackbar;
     private View snackView;
@@ -71,10 +69,8 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference databse_user;
 
     private int phoneFlag = 0;
-
     android.app.AlertDialog dialog, vdialog;
 
-    private int status = 0;
     Animation slidein, slideout, back_slidein, back_slideout;
 
     @Override
@@ -111,18 +107,11 @@ public class SignUp extends AppCompatActivity {
         temail = findViewById(R.id.signUpEmail);
         tphone = findViewById(R.id.signUpPhone);
 
-        name_img = findViewById(R.id.name);
-        email_img = findViewById(R.id.email);
-        pass_img = findViewById(R.id.pass);
-        pno_img = findViewById(R.id.pno_img);
-        next_signup = findViewById(R.id.next_signup);
-
         name_parent = findViewById(R.id.name_container_parent);
         email_parent = findViewById(R.id.email_container_parent);
         pass_parent = findViewById(R.id.pass_container_parent);
         pno_parent = findViewById(R.id.pno_container_parent);
 
-        status0 = findViewById(R.id.status0);
         status1 = findViewById(R.id.status1);
         status2 = findViewById(R.id.status2);
         status3 = findViewById(R.id.status3);
@@ -340,7 +329,6 @@ public class SignUp extends AppCompatActivity {
 
                 out(name_parent);
                 in(email_parent);
-                status = 0;
                 status1.setVisibility(View.VISIBLE);
                 final_name = tname.getEditText().getText().toString();
 
@@ -373,7 +361,6 @@ public class SignUp extends AppCompatActivity {
                 out(email_parent);
                 in(pass_parent);
                 status2.setVisibility(View.VISIBLE);
-                status = 1;
                 final_email = temail.getEditText().getText().toString();
 
             }else {
@@ -389,7 +376,6 @@ public class SignUp extends AppCompatActivity {
 
     public void bt_back_email(View view) {
 
-        status = 0;
         back_out(email_parent);
         back_in(name_parent);
         status2.setVisibility(View.INVISIBLE);
@@ -415,7 +401,6 @@ public class SignUp extends AppCompatActivity {
                     out(pass_parent);
                     in(pno_parent);
                     status3.setVisibility(View.VISIBLE);
-                    status = 2;
 
                 }
             }else {
@@ -432,7 +417,6 @@ public class SignUp extends AppCompatActivity {
 
     public void bt_back_pass(View view) {
 
-        status = 1;
         back_out(pass_parent);
         back_in(email_parent);
         status3.setVisibility(View.INVISIBLE);
@@ -465,7 +449,6 @@ public class SignUp extends AppCompatActivity {
 
                             phoneFlag = 0;
                             status4.setVisibility(View.VISIBLE);
-                            status = 3;
                             bt_signup_user();
 
                         }
@@ -491,7 +474,6 @@ public class SignUp extends AppCompatActivity {
 
     public void bt_back_pno(View view) {
 
-        status = 2;
         back_out(pno_parent);
         back_in(pass_parent);
         status4.setVisibility(View.INVISIBLE);
