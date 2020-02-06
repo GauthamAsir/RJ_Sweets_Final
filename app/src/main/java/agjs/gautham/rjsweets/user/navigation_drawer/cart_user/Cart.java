@@ -86,7 +86,12 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                     if (mUser != null) {
 
                         if (cartAdapter.getItemCount() <= 0) {
-                            Snackbar.make(getView(), "No Items in Cart", Snackbar.LENGTH_LONG).show();
+                            Snackbar snackbar1 = Snackbar.make(getView(), "Press Again to Exit", Snackbar.LENGTH_SHORT);
+                            View snackView = snackbar1.getView();
+                            TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+                            tv.setTextColor(Color.WHITE);
+                            snackbar1.setText("No Items in Cart");
+                            snackbar1.show();
                         } else {
 
                             String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
@@ -175,6 +180,9 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
             txtTotalPrice.setText(fmt.format(total));
 
             Snackbar snackbar = Snackbar.make(rootLayout,name+" removed from cart! ", Snackbar.LENGTH_LONG);
+            View snackView = snackbar.getView();
+            TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
             snackbar.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
