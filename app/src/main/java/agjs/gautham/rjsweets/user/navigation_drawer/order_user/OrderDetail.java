@@ -22,17 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
-import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.DashboardUser;
-import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.Settings;
+import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
 import dmax.dialog.SpotsDialog;
 
 public class OrderDetail extends AppCompatActivity {
@@ -140,12 +137,8 @@ public class OrderDetail extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
-                                //getSupportActionBar().setTitle(R.string.menu_settings);
-
-                                Intent intent = new Intent(OrderDetail.this, DashboardUser.class);
-                                intent.putExtra("Execute_Settings","1");
-                                startActivity(intent);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsActivity.SettingsFragment()).commit();
+                                getSupportActionBar().setTitle(R.string.menu_settings);
 
                             }
                         }).setNegativeButton("Ok", new DialogInterface.OnClickListener() {

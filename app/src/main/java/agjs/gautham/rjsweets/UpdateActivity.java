@@ -329,30 +329,6 @@ public class UpdateActivity extends AppCompatActivity {
             }
             else{
 
-                /*if (getPackageManager().canRequestPackageInstalls()){
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("content:///"+UpdateActivity.this+"/"+app_name),
-                            "application/vnd.android.package-archive");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-
-                }else {
-
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName()));
-                    startActivityForResult(intent, 1);
-
-                }*/
-
-                /*Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse("content:///"+UpdateActivity.this.getExternalFilesDir(null).getAbsolutePath()+"/"+app_name),
-                        "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);*/
-
-                //installPackage(UpdateActivity.this,"agjs.gautham.rjsweets",
-                  //      UpdateActivity.this.getFilesDir()+"/"+app_name);
-
                 File file = new File(UpdateActivity.this.getExternalFilesDir(null).getAbsolutePath()
                         + "/" + app_name);
                 Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID +".provider",file);
@@ -366,32 +342,6 @@ public class UpdateActivity extends AppCompatActivity {
             }
         }
     }
-
-    public boolean installPackage(Context context, String packageName, String packagePath){
-
-        PackageManager packageManger = context.getPackageManager();
-        PackageInstaller packageInstaller = packageManger.getPackageInstaller();
-        PackageInstaller.SessionParams params = new PackageInstaller.SessionParams(
-                PackageInstaller.SessionParams.MODE_FULL_INSTALL);
-        params.setAppPackageName(packageName);
-
-        try {
-            int sessionId = packageInstaller.createSession(params);
-            PackageInstaller.Session session = packageInstaller.openSession(sessionId);
-            OutputStream out = session.openWrite(packageName + ".apk", 0, -1);
-            session.fsync(out);
-            out.close();
-            System.out.println("installing...");
-            session.commit(PendingIntent.getBroadcast(context, sessionId,
-                    new Intent("android.intent.action.MAIN"), 0).getIntentSender());
-            System.out.println("install request sent");
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     private String getAppVersion(Context context){
 
         String result = "";

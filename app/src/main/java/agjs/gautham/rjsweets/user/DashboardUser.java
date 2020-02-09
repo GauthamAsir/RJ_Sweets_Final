@@ -45,7 +45,6 @@ import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivi
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.Home;
 import agjs.gautham.rjsweets.user.navigation_drawer.order_user.Orders;
-import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.Settings;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
@@ -93,7 +92,7 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
             if (e != null){
 
                 if (e.equals("1")){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsActivity.SettingsFragment()).commit();
                     getSupportActionBar().setTitle(R.string.menu_settings);
                 }
 
