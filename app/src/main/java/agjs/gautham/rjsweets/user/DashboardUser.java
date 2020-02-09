@@ -41,6 +41,7 @@ import java.util.Map;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.Home;
 import agjs.gautham.rjsweets.user.navigation_drawer.order_user.Orders;
@@ -182,7 +183,7 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Settings()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsActivity.SettingsFragment()).commit();
                 getSupportActionBar().setTitle(R.string.menu_settings);
                 break;
 

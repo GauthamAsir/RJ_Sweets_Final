@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cupcake"
+        android:layout_margin="12dp"/>
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img1"
+        android:src="@drawable/rj_sweets"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp" />
+
+    <TextView
+        android:id="@+id/status_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img2"
+        android:text="Checking..."
+        android:textAlignment="center"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:textSize="24sp"
+        android:padding="6dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status_version"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:text="Last Checked"
+        android:textSize="14sp"
+        android:padding="6dp"/>
+
+    <TextView
+        android:id="@+id/lastCheck_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        android:text="Date:"
+        android:padding="6dp"/>
+
+    <TextView
+        android:id="@+id/lastCheck_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lastCheck_date"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        android:text="Time:"
+        android:padding="6dp"/>
+
+    <TextView
+        android:id="@+id/update_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_below="@+id/lastCheck_time"
+        android:layout_margin="12dp"
+        android:text="Up To Date"
+        android:textAlignment="center"
+        android:padding="6dp"
+        />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:text="ChangeLogs"
+        android:layout_below="@+id/update_status"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/check_update"
+        android:layout_below="@+id/textView2"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        android:scrollbars="vertical"
+        android:divider="@null"/>
+
+    <Button
+        android:id="@+id/check_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:layout_alignParentBottom="true"
+        android:text="Check Again"
+        android:textColor="@color/white"
+        android:onClick="bt_check_agian_update"
+        android:layout_margin="12dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:layout_alignParentBottom="true"
+        android:text="Update"
+        android:textColor="@color/white"
+        android:layout_margin="12dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:onClick="update"/>
+
+</RelativeLayout>

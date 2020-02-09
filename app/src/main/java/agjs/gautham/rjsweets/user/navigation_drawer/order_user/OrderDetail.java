@@ -163,7 +163,7 @@ public class OrderDetail extends AppCompatActivity {
                          final AlertDialog pdialog = new SpotsDialog.Builder()
                                 .setContext(OrderDetail.this)
                                 .setCancelable(false)
-                                .setMessage("Registering You In ...")
+                                .setMessage("Cancelling Your Order ...")
                                 .setTheme(R.style.DialogCustom)
                                 .build();
 

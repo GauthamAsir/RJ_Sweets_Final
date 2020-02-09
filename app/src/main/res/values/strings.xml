@@ -150,4 +150,11 @@
     <string name="rupee">₹</string>
     <string name="order_placed">Order Placed</string>
 
+    <string name="info">Info</string>
+    <string name="name">Name</string>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="summary_noti">Receive Notifications for new Sweets &amp; Discounts</string>
+    <string name="summary_change_pass">Verify To Change Password</string>
+
 </resources>
