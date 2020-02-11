@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.user.DashboardUser;
 import dmax.dialog.SpotsDialog;
+import io.paperdb.Paper;
 
 public class SignUp extends AppCompatActivity {
 
@@ -98,6 +99,8 @@ public class SignUp extends AppCompatActivity {
         //Init Firebase
         database = FirebaseDatabase.getInstance();
         databse_user = database.getReference("User");
+
+        Paper.init(this);
 
         tname = findViewById(R.id.signUpName);
         tpass = findViewById(R.id.signUpPass);
@@ -213,6 +216,10 @@ public class SignUp extends AppCompatActivity {
                                                     startActivity(new Intent(SignUp.this, DashboardUser.class)
                                                             .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                                                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                                    Paper.book().write("sub_new","true");
+                                                    Paper.book().write(Common.USER_EMAIL,semail);
+                                                    Paper.book().write(Common.USER_PASS,spass1);
+                                                    Paper.book().write(Common.loginType,"0");
                                                 }else {
                                                     if (dialog.isShowing()){
                                                         dialog.dismiss();
