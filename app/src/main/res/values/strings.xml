@@ -101,6 +101,7 @@
     <string name="view_placed_order">View Placed Order</string>
     <string name="view_delivered_order">View Delivered Order</string>
     <string name="view_rejected_order">View Rejected Order</string>
+    <string name="search_order">Search Orders</string>
 
     <!-- Delivery Strings -->
     <string name="title_home">Home</string>

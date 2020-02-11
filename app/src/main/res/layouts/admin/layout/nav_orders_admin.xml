@@ -148,7 +148,7 @@
                         android:id="@+id/view_search_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/view_rejected_order"
+                        android:text="@string/search_order"
                         android:background="@drawable/button_border"
                         android:layout_margin="4dp"
                         android:textSize="18sp"
