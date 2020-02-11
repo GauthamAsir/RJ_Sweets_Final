@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_settings_delivery"
-        android:name="agjs.gautham.rjsweets.delivery.ui.Settings.Settings"
+        android:name="agjs.gautham.rjsweets.admin.navigation_drawer.settings.Settings"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings_delivery" />
+        tools:layout="@layout/nav_settings_admin" />
 
 </navigation>
