@@ -111,5 +111,4 @@ dependencies {
     implementation 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
 
     implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
-
 }

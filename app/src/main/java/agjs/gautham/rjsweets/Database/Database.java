@@ -31,6 +31,8 @@ public class Database extends SQLiteAssetHelper {
         cursor = db.rawQuery(SQLQuery, null);
         flag = cursor.getCount() > 0;
         cursor.close();
+
+        db.close();
         return flag;
 
     }
@@ -60,6 +62,7 @@ public class Database extends SQLiteAssetHelper {
                         ));
             }while (c.moveToNext());
         }
+        db.close();
         return result;
     }
 
@@ -74,18 +77,21 @@ public class Database extends SQLiteAssetHelper {
                 sweetOrder.getDiscount(),
                 sweetOrder.getImage());
         db.execSQL(query);
+        db.close();
     }
 
     public void cleanCart(String userPhone){
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("DELETE FROM OrderDetail WHERE UserPhone='%s'",userPhone);
         db.execSQL(query);
+        db.close();
     }
 
     public void removeFromCart(String productId) {
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("DELETE FROM OrderDetail WHERE ProductId='%s'",productId);
         db.execSQL(query);
+        db.close();
     }
 
     public int getCountCart() {
@@ -98,6 +104,7 @@ public class Database extends SQLiteAssetHelper {
                 count = cursor.getInt(0);
             }while (cursor.moveToNext());
         }
+        db.close();
         return count;
     }
 
@@ -105,12 +112,14 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("UPDATE OrderDetail SET Quantity = '%s' WHERE UserPhone = '%s' AND ProductId= '%s'",sweetOrder.getQuantity(),sweetOrder.getUserPhone(),sweetOrder.getProductId());
         db.execSQL(query);
+        db.close();
     }
 
     public void increaseCart(String userPhone, String sweetId, String quantity) {
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("UPDATE OrderDetail SET Quantity = '%s' WHERE UserPhone = '%s' AND ProductId= '%s'",quantity, userPhone, sweetId);
         db.execSQL(query);
+        db.close();
     }
 
 }
