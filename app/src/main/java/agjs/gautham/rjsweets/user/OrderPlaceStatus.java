@@ -81,7 +81,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
     private List<SweetOrder> cart = new ArrayList<>();
 
     private FirebaseDatabase database;
-    private DatabaseReference requests, sweets, ipv4;
+    private DatabaseReference requests, sweets;
 
     private ProgressBar pg;
 
@@ -98,8 +98,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
     private static String secret_key = "agjs04";
 
-    private static String ip = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,20 +112,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
         sweets = database.getReference("Sweets");
         requests = database.getReference("Requests");
-        ipv4 = database.getReference("IPv4");
-
-        ipv4.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ip = dataSnapshot.getValue(String.class);
-                Log.d("Server Ip",ip);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         pg = findViewById(R.id.pg);
 
@@ -329,8 +313,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
             try {
 
-                //String ip = "192.168.0.103";
-                Socket socket = new Socket(ip, 5000);
+                Socket socket = new Socket(Common.IP, 5000);
 
                 PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
 
