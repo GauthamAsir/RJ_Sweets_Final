@@ -171,9 +171,6 @@ public class OrderPicked extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    orderViewHolder.btnedit.setVisibility(View.GONE);
-                    //orderViewHolder.btndirection.setVisibility(View.GONE);
-
                 }else {
                     orderViewHolder.itemView.setVisibility(View.GONE);
                     orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0,0));

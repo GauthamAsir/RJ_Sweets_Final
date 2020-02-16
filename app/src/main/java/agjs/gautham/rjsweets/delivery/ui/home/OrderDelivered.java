@@ -61,8 +61,6 @@ public class OrderDelivered extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         requests = database.getReference("Requests");
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
         textView = findViewById(R.id.order_empty);
 
         recyclerView = findViewById(R.id.listOrders);
@@ -129,7 +127,6 @@ public class OrderDelivered extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    orderViewHolder.btnedit.setVisibility(View.GONE);
                     orderViewHolder.btndirection.setVisibility(View.GONE);
 
                 }else {

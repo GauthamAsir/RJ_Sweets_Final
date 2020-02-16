@@ -131,24 +131,6 @@ public class OrderRejected extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    orderViewHolder.btnedit.setText("Reason");
-
-                    orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderRejected.this)
-                                    .setMessage(request.getReason())
-                                    .setCancelable(false)
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                    });
                     orderViewHolder.btndirection.setVisibility(View.GONE);
 
                 }else {

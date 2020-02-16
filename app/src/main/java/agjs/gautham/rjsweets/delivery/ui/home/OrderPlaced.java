@@ -138,7 +138,6 @@ public class OrderPlaced extends AppCompatActivity {
                     textView.setVisibility(View.GONE);
 
                     orderViewHolder.btndirection.setVisibility(View.GONE);
-                    orderViewHolder.btnedit.setVisibility(View.GONE);
 
                     orderViewHolder.itemView.setVisibility(View.VISIBLE);
                     orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -154,14 +153,6 @@ public class OrderPlaced extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showUpdateDialog(OrderId,
-                                    adapter.getItem(i));
-                        }
-                    });
-
                     orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -171,16 +162,6 @@ public class OrderPlaced extends AppCompatActivity {
                             startActivity(orderDetail);
                         }
                     });
-
-                    /*orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrderDelivery.class);
-                            trackingOrder.putExtra("Address",request.getAddress());
-                            trackingOrder.putExtra("Phone",request.getPhone());
-                            startActivity(trackingOrder);
-                        }
-                    });*/
 
                 }else {
                     orderViewHolder.itemView.setVisibility(View.GONE);
@@ -201,158 +182,6 @@ public class OrderPlaced extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void showUpdateDialog(String key, final Request item) {
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Update Status");
-        alertDialog.setMessage("Please Choose Status");
-
-        LayoutInflater inflater = getLayoutInflater();
-        final View view = inflater.inflate(R.layout.update_order_delivery,null);
-
-        spinner = view.findViewById(R.id.statusSpinner_delivery);
-
-        spinner.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,status));
-        alertDialog.setView(view);
-
-        final String localKey = key;
-        alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                String status1 = statusCode[spinner.getSelectedItemPosition()];
-                item.setStatus(status1);
-
-                /*if (status1.equals("4")){
-                    item.setDeliveredBy(Common.USER_Phone);
-                }*/
-
-                adapter.notifyDataSetChanged();     //Added to update item size
-                requests.child(localKey).setValue(item);
-
-                if (status1.equals("5")){
-                    //item.setDeliveredBy(Common.USER_Phone);
-                    showDeleteDialog(localKey,item);
-                }else {
-                    sendOrderStatusToUser(localKey,item,status1);
-                }
-            }
-        });
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alertDialog.show();
-    }
-
-    private void sendOrderStatusToUser(final String localKey, final Request item, final String status1) {
-        DatabaseReference tokens = database.getReference("Tokens");
-        tokens.orderByKey().equalTo(item.getPhone())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                            Token token = postSnapshot.getValue(Token.class);
-
-                            //Make New Payload
-                            Notification notification = new Notification
-                                    ("Your Order "+localKey+" is "+Common.convertCodeToStatus(status1) ,"RJ Sweets");
-                            Sender content = new Sender(token.getToken(),notification);
-                            mService.sendNotification(content)
-                                    .enqueue(new Callback<MyResponse>() {
-                                        @Override
-                                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.body().success == 1){
-                                                Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
-                                            }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                                            Log.e("ERROR",t.getMessage());
-                                        }
-                                    });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    private void showDeleteDialog(final String key, final Request item) {
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPlaced.this);
-        alertDialog.setTitle("Delete Order !");
-        alertDialog.setMessage("Please Enter Your Reason");
-        alertDialog.setCancelable(true);
-
-        LayoutInflater inflater = OrderPlaced.this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.delete_order_delivery,null);
-
-        editText = view.findViewById(R.id.delete_reason_text_delivery);
-        alertDialog.setView(view);
-
-        final String localKey = key;
-        alertDialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-
-                String reason = editText.getText().toString();
-                adapter.notifyDataSetChanged();     //Added to update item size
-                //deleteOrder(key);
-                item.setStatus("5");
-                item.setReason(reason);
-                requests.child(localKey).setValue(item);
-
-                sendOrderRemovedStatus(localKey,item);
-            }
-        });
-        alertDialog.show();
-    }
-
-    private void sendOrderRemovedStatus(final String localKey, final Request item) {
-        DatabaseReference tokens = database.getReference("Tokens");
-        tokens.orderByKey().equalTo(item.getPhone())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                            Token token = postSnapshot.getValue(Token.class);
-
-                            //Make New Payload
-                            Notification notification = new Notification("Your Order "+localKey+" was Rejected","RJ Sweets");
-                            Sender content = new Sender(token.getToken(),notification);
-                            mService.sendNotification(content)
-                                    .enqueue(new Callback<MyResponse>() {
-                                        @Override
-                                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                            if (response.body().success == 1){
-                                                Toast.makeText(OrderPlaced.this,"Order was updated",Toast.LENGTH_LONG).show();
-                                            }else {
-                                                Toast.makeText(OrderPlaced.this,"Failed To send SendNotification but Order Deleted",Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<MyResponse> call, Throwable t) {
-                                            Log.e("ERROR",t.getMessage());
-                                        }
-                                    });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
 
     @Override
     public void onBackPressed() {

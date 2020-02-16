@@ -100,6 +100,8 @@ public class OrderRejectedAdmin extends AppCompatActivity {
 
                     textView.setVisibility(View.GONE);
 
+                    orderViewHolder.btndirection.setVisibility(View.GONE);
+
                     orderViewHolder.itemView.setVisibility(View.VISIBLE);
                     orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 

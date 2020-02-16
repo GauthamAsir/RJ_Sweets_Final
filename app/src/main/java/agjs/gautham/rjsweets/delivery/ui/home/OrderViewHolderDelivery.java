@@ -15,7 +15,7 @@ public class OrderViewHolderDelivery extends RecyclerView.ViewHolder {
     public TextView txtOrderId, txtOrderStatus, txtOrderPhone, txtOrderAddress, txtComment, txtUsername, txtOrderRejectedInfo
             , order_id_info;
 
-    public Button btnedit, btndetails, btndirection;
+    public Button btndetails, btndirection;
 
     public LinearLayout order_detail_container;
 
@@ -29,7 +29,6 @@ public class OrderViewHolderDelivery extends RecyclerView.ViewHolder {
         txtUsername = itemView.findViewById(R.id.order_username);
         txtComment = itemView.findViewById(R.id.order_comment);
 
-        btnedit = itemView.findViewById(R.id.bt_edit);
         btndetails = itemView.findViewById(R.id.bt_details);
         btndirection = itemView.findViewById(R.id.bt_direction);
 

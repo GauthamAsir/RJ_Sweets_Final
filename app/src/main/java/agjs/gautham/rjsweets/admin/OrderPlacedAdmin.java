@@ -3,6 +3,7 @@ package agjs.gautham.rjsweets.admin;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,9 @@ import agjs.gautham.rjsweets.Model.Sender;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
+import agjs.gautham.rjsweets.TrackingOrder;
 import agjs.gautham.rjsweets.admin.ViewHolder.OrderViewHolderAdmin;
+import agjs.gautham.rjsweets.delivery.ui.Home.OrderPicked;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -147,14 +150,6 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                         dialog.dismiss();
                     }
 
-                    /*orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showUpdateDialog(OrderId,
-                                    adapter.getItem(i));
-                        }
-                    });*/
-
                     orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -165,15 +160,42 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                         }
                     });
 
-                    /*orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
+                    orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrderDelivery.class);
-                            trackingOrder.putExtra("Address",request.getAddress());
-                            trackingOrder.putExtra("Phone",request.getPhone());
-                            startActivity(trackingOrder);
+
+                            androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(OrderPlacedAdmin.this);
+                            alertDialog.setTitle("Select an Option");
+
+                            alertDialog.setPositiveButton("Show in Maps", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+request.getAddress());
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    startActivity(mapIntent);
+
+                                }
+                            });
+
+                            alertDialog.setNegativeButton("In App", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrder.class);
+                                    trackingOrder.putExtra("Address",request.getAddress());
+                                    trackingOrder.putExtra("Phone",request.getPhone());
+                                    startActivity(trackingOrder);
+
+                                }
+                            });
+
+                            alertDialog.create();
+                            alertDialog.show();
+
                         }
-                    });*/
+                    });
 
                 }else {
                     orderViewHolder.itemView.setVisibility(View.GONE);
