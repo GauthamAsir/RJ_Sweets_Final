@@ -166,6 +166,7 @@
                             android:text="@string/buy_now"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="12dp"
+                            android:textColor="@color/white"
                             android:background="@drawable/button_background"/>
 
                     </RelativeLayout>
@@ -216,6 +217,8 @@
         android:background="@drawable/button_background"
         android:textSize="18sp"
         android:layout_gravity="bottom|end"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:drawableTint="@color/white"
+        android:textColor="@color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -153,23 +153,13 @@ public class PlaceOrder extends AppCompatActivity {
 
         int id = paymentGroup.getCheckedRadioButtonId();
 
-        switch (id){
-            case R.id.paypal:
-                toast("Paypal Service is Unavailable");
-                break;
-
-            case R.id.paytm:
-                toast("Paytm Service is Unavailable");
-                break;
-
-            case R.id.cod:
-                Date dt = Calendar.getInstance().getTime();
-                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-                orderTime = timeFormat.format(dt);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                orderDate = dateFormat.format(dt);
-                paymentMode = "Pay On Delivery";
-                break;
+        if (id == R.id.cod) {
+            Date dt = Calendar.getInstance().getTime();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+            orderTime = timeFormat.format(dt);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            orderDate = dateFormat.format(dt);
+            paymentMode = "Pay On Delivery";
         }
 
         changeAddress.setOnClickListener(new View.OnClickListener() {

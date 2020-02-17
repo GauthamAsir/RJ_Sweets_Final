@@ -11,7 +11,7 @@
         android:id="@+id/progress_order"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:cardBackgroundColor="@color/progress_on"
+        app:cardBackgroundColor="@android:color/holo_green_light"
         android:layout_alignParentTop="true">
 
         <ProgressBar
@@ -30,10 +30,10 @@
             android:textAlignment="center"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/brown"
+            android:textColor="@color/white"
             android:textSize="42sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            />
 
     </androidx.cardview.widget.CardView>
 
@@ -46,16 +46,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:padding="5dp"
-                android:text="@string/your_order_is_under_process"
-                android:textAlignment="center"
-                android:textSize="22sp" />
 
             <LinearLayout
                 android:id="@+id/container1"
