@@ -1,19 +1,16 @@
 package agjs.gautham.rjsweets.user;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,16 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import agjs.gautham.rjsweets.AES;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.MyResponse;
@@ -62,20 +55,13 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
     private DatabaseReference requests, sweets;
 
-    private ProgressBar pg;
-
     private APIService mService;
     private FirebaseUser mUser;
 
-    private String message = "";
     private boolean checkCart;
-
-    private CardView progress_order;
 
     private String avaQuantity;
     private int finalQantity;
-
-    private static String secret_key = "agjs04";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +78,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
         sweets = database.getReference("Sweets");
         requests = database.getReference("Requests");
 
-        pg = findViewById(R.id.pg);
-
-        progress_order = findViewById(R.id.progress_order);
-
         parentLayout = findViewById(R.id.container_parent);
 
         home = findViewById(R.id.home);
@@ -107,8 +89,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
         order_placed = findViewById(R.id.order_placed);
 
         name = Common.Name;
-
-        Log.d("lmao",String.valueOf(cart));
 
         if (getIntent() != null){
 
@@ -157,20 +137,19 @@ public class OrderPlaceStatus extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String orderDate = dateFormat.format(dt);
 
-        Request request_1 = new Request(
+        Request request = new Request(
                 order_number,
                 Common.Name,
                 Common.USER_Phone,
                 address,
                 order_total,
-                "0", //init status
+                "0",         //init status
                 orderTime,
                 orderDate,
-                "empty", //Reject Reason Initially empty
+                "empty",    //Reject Reason Initially empty
                 pay_method,
-                "0", //init isPicked
-                "0", //init Picked By
-                "0",
+                "0",        //init isPicked
+                "0",        //init Picked By
                 mUser.getEmail(),
                 cart
         );
@@ -208,7 +187,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
         }
 
         //Update to Firebase using milisec to key
-        requests.child(order_number).setValue(request_1);
+        requests.child(order_number).setValue(request);
 
         //Delete Cart After Updating
         if (checkCart){
@@ -219,13 +198,9 @@ public class OrderPlaceStatus extends AppCompatActivity {
         }
 
         sendNotificationorder(order_number);
-        sendMailToUser();
+        Common.sendMail(mUser.getEmail(), order_number, Common.Name, orderDate, order_total,
+                Common.USER_Phone, "0", "Robert B. Weide");
 
-        message = mUser.getEmail() + " ," + order_number + " ," + Common.Name + " ," + order_total + " ,"
-                + Common.convertCodeToStatus("0") + " ," + orderDate + " ," + Common.USER_Phone + " ," + "has been Placed";
-
-        progress_order.setCardBackgroundColor(getResources().getColor(R.color.progress_done));
-        pg.setVisibility(View.GONE);
         order_placed.setVisibility(View.VISIBLE);
         home.setVisibility(View.VISIBLE);
 
@@ -273,40 +248,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
                 Log.e("CANCELED",databaseError.getMessage());
             }
         });
-    }
-
-    private void sendMailToUser(){
-
-        myTask mt = new myTask();
-        mt.execute();
-
-    }
-
-    class myTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            try {
-
-                Socket socket = new Socket(Common.IP, 5000);
-
-                String encrypted_message = AES.encrypt(message,secret_key);     // Using AES To Encrypt Message
-
-                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-
-                printWriter.write(encrypted_message);
-
-                printWriter.flush();
-                printWriter.close();
-                socket.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
     }
 
     @Override

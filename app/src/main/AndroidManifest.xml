@@ -78,8 +78,6 @@
         <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
         <activity android:name=".SweetsDetail" />
-        <activity android:name=".user.Address" />
-        <activity android:name=".user.NewAddress" />
         <activity android:name=".user.PlaceOrder" />
         <activity android:name=".user.navigation_drawer.order_user.OrderDelivered" />
         <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />

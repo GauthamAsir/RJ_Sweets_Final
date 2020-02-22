@@ -16,7 +16,6 @@ public class Request {
     private String paymentMethod;
     private String picked;
     private String pickedBy;
-    private String mailSent;
     private String mail;
     private List<SweetOrder> sweetOrders; //list of sweets
 
@@ -24,7 +23,7 @@ public class Request {
 
     }
 
-    public Request(String id, String name, String phone, String address, String total, String status, String time, String date, String reason, String paymentMethod, String picked, String pickedBy, String mailSent, String mail, List<SweetOrder> sweetOrders) {
+    public Request(String id, String name, String phone, String address, String total, String status, String time, String date, String reason, String paymentMethod, String picked, String pickedBy, String mail, List<SweetOrder> sweetOrders) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -37,7 +36,6 @@ public class Request {
         this.paymentMethod = paymentMethod;
         this.picked = picked;
         this.pickedBy = pickedBy;
-        this.mailSent = mailSent;
         this.mail = mail;
         this.sweetOrders = sweetOrders;
     }
@@ -136,14 +134,6 @@ public class Request {
 
     public void setPickedBy(String pickedBy) {
         this.pickedBy = pickedBy;
-    }
-
-    public String getMailSent() {
-        return mailSent;
-    }
-
-    public void setMailSent(String mailSent) {
-        this.mailSent = mailSent;
     }
 
     public String getMail() {

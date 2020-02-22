@@ -34,8 +34,8 @@ import retrofit2.Response;
 public class OrderDetailDelivery extends AppCompatActivity {
 
     TextView order_id, order_phone, order_address, order_total, user_name;
-    String order_id_value="";
-    String order_status="";
+    String order_id_value="", user_mail_value, orderDate_value, order_total_value, user_name_value;
+    String order_status="", user_phone_value;
     RecyclerView lstSweets;
     RecyclerView.LayoutManager layoutManager;
     FirebaseDatabase database;
@@ -132,6 +132,12 @@ public class OrderDetailDelivery extends AppCompatActivity {
                 order_address.setText(String.format("Address : %s",request.getAddress()));
                 user_name.setText(String.format("Username : %s",request.getName()));
 
+                user_mail_value = request.getMail();
+                orderDate_value = request.getDate();
+                order_total_value = request.getTotal();
+                user_name_value = request.getName();
+                user_phone_value = request.getPhone();
+
                 OrderDetailAdapterDelivery adapter = new OrderDetailAdapterDelivery(request.getSweetOrders());
                 adapter.notifyDataSetChanged();
                 lstSweets.setAdapter(adapter);
@@ -152,6 +158,9 @@ public class OrderDetailDelivery extends AppCompatActivity {
         sendOrderStatusToUser(order_id_value, "2");
         //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));  Makes user as server
 
+        Common.sendMail(user_mail_value, order_id_value, user_name_value, orderDate_value, order_total_value,
+                user_phone_value, "2", Common.Name + "(" + Common.USER_Phone + ")");
+
     }
 
     private void pickUp() {
@@ -161,6 +170,9 @@ public class OrderDetailDelivery extends AppCompatActivity {
         databaseReference.child(order_id_value).child("pickedBy").setValue(Common.USER_Phone);
         databaseReference.child(order_id_value).child("status").setValue("1");
         //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));   Makes user as server
+
+        Common.sendMail(user_mail_value, order_id_value, user_name_value, orderDate_value, order_total_value,
+                user_phone_value, "1", Common.Name + "(" + Common.USER_Phone + ")");
     }
 
     private void sendOrderStatusToUser(final String localKey, final String status1) {

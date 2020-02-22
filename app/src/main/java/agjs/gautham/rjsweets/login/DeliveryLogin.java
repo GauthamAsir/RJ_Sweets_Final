@@ -1,8 +1,5 @@
 package agjs.gautham.rjsweets.login;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -106,9 +106,12 @@ public class DeliveryLogin extends AppCompatActivity {
                                 Paper.book().write(Common.USER_PASS,localPass);
                             }
 
+                            Paper.book().write(Common.Name,user.getName());
+
                             Intent intent = new Intent(DeliveryLogin.this, DashboardDelivery.class);
                             Common.USER_Phone = localPhone;
                             Common.loginType = "2";
+                            Common.Name = user.getName();
                             startActivity(intent);
                             finish();
                         } else {

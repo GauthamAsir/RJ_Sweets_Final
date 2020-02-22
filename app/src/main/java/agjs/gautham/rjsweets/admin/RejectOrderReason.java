@@ -2,13 +2,11 @@ package agjs.gautham.rjsweets.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,11 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.MyResponse;
 import agjs.gautham.rjsweets.Model.Notification;
+import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.Model.Sender;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
-import agjs.gautham.rjsweets.user.NewAddress;
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +39,8 @@ public class RejectOrderReason extends AppCompatActivity {
 
     APIService mService;
 
+    private android.app.AlertDialog dialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,14 @@ public class RejectOrderReason extends AppCompatActivity {
 
         //Init Service
         mService = Common.getFCMClient();
+
+        dialog = new SpotsDialog.Builder()
+                .setContext(RejectOrderReason.this)
+                .setCancelable(false)
+                .setMessage("Please wait...")
+                .setTheme(R.style.DialogCustom)
+                .build();
+
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Requests");
@@ -63,6 +72,8 @@ public class RejectOrderReason extends AppCompatActivity {
 
     public void reject(View view){
 
+        dialog.show();
+
         String reason = r.getEditText().getText().toString();
 
         if (!reason.isEmpty()){
@@ -72,11 +83,38 @@ public class RejectOrderReason extends AppCompatActivity {
             databaseReference.child(order_id_value).child("reason").setValue(reason);
 
             sendOrderStatusToUser();
+
+            final DatabaseReference request = FirebaseDatabase.getInstance().getReference("Requests");
+
+            request.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Request request1 = dataSnapshot.child(order_id_value).getValue(Request.class);
+
+                    Common.sendMail(request1.getMail(), order_id_value, request1.getName(), request1.getDate(),
+                            request1.getTotal(), request1.getPhone() , "3",
+                            Common.Name + "(" + Common.USER_Phone + ")");
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+        }else {
+            dialog.dismiss();
         }
 
     }
 
     private void sendOrderStatusToUser() {
+
+        dialog.show();
 
         DatabaseReference tokens = database.getReference("Tokens");
         tokens.orderByKey().equalTo(order_p_number)
@@ -96,12 +134,14 @@ public class RejectOrderReason extends AppCompatActivity {
                                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                             if (response.isSuccessful()){
 
+                                                dialog.dismiss();
                                                 startActivity(new Intent(RejectOrderReason.this,DashboardAdmin.class));
                                                 Log.d("Order Notification Admin","Success  "+order_p_number);
                                                 Toast.makeText(RejectOrderReason.this,"Order was updated",Toast.LENGTH_LONG).show();
 
                                             }else {
 
+                                                dialog.dismiss();
                                                 startActivity(new Intent(RejectOrderReason.this,DashboardAdmin.class));
                                                 Log.d("Order Notification Admin","Failed");
                                                 Toast.makeText(RejectOrderReason.this,"Failed To send SendNotification but Order Updated",Toast.LENGTH_LONG).show();
@@ -111,6 +151,7 @@ public class RejectOrderReason extends AppCompatActivity {
                                         @Override
                                         public void onFailure(Call<MyResponse> call, Throwable t) {
                                             Log.e("ERROR",t.getMessage());
+                                            dialog.dismiss();
                                         }
                                     });
                         }
@@ -118,7 +159,7 @@ public class RejectOrderReason extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        dialog.dismiss();
                     }
                 });
     }

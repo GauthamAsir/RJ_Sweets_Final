@@ -14,14 +14,6 @@
         app:cardBackgroundColor="@android:color/holo_green_light"
         android:layout_alignParentTop="true">
 
-        <ProgressBar
-            android:id="@+id/pg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/progress"/>
-
         <TextView
             android:id="@+id/order_placed"
             android:layout_width="match_parent"

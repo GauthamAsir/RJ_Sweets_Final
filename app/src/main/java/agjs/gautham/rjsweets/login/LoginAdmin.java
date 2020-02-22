@@ -1,17 +1,16 @@
 package agjs.gautham.rjsweets.login;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -109,7 +108,7 @@ public class LoginAdmin extends AppCompatActivity {
 
                                 Common.loginType = "1";
                                 Common.USER_Phone = localPhone;
-                                Log.d("ADMIN",Common.USER_Phone);
+                                Common.Name = user.getName();
                                 Intent intent = new Intent(LoginAdmin.this, DashboardAdmin.class);
                                 startActivity(intent);
                                 finish();
