@@ -8,14 +8,6 @@ import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +32,9 @@ public class Common {
 
     public static String IP = "";
 
-    public static String USER_ADDRESS_LINE1= "Address_Line1";
-    public static String USER_ADDRESS_LINE2= "Address_Line2";
-    public static String USER_ADDRESS_LANDMARK= "Address_Landmark";
-    public static String USER_ADDRESS_Pincode= "Address_Pincode";
+    public static String USER_ADDRESS_SAVED= "Saved Address Temp";
 
     public static final String UPDATE = "Update";
-    public static final String UPDATE_IMAGE = "Update Image";
     public static final String DELETE = "Delete";
 
     public static String PHONE_KEY = "Phone";

@@ -1,15 +1,10 @@
 package agjs.gautham.rjsweets.admin;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,21 +20,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Model.MyResponse;
-import agjs.gautham.rjsweets.Model.Notification;
 import agjs.gautham.rjsweets.Model.Request;
-import agjs.gautham.rjsweets.Model.Sender;
-import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.admin.ViewHolder.OrderDetailAdapterAdmin;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrderDetailAdmin extends AppCompatActivity {
 
-    TextView order_id, order_phone, order_address, order_total, order_comment,user_name;
+    TextView order_id, order_phone, order_address, order_total, user_name;
     String order_id_value="";
     String order_status="";
     RecyclerView lstSweets;
@@ -64,7 +52,6 @@ public class OrderDetailAdmin extends AppCompatActivity {
         order_phone= findViewById(R.id.order_phone);
         order_address = findViewById(R.id.order_address);
         order_total = findViewById(R.id.order_total);
-        order_comment = findViewById(R.id.order_comment);
         user_name = findViewById(R.id.user_name);
 
         reject = findViewById(R.id.reject_order);
@@ -95,7 +82,6 @@ public class OrderDetailAdmin extends AppCompatActivity {
                 order_phone.setText(String.format("Phone : %s",request.getPhone()));
                 order_total.setText(String.format("Total : %s",request.getTotal()));
                 order_address.setText(String.format("Address : %s",request.getAddress()));
-                order_comment.setText(String.format("Comment : %s",request.getComment()));
                 user_name.setText(String.format("Username : %s",request.getName()));
 
                 OrderDetailAdapterAdmin adapter = new OrderDetailAdapterAdmin(request.getSweetOrders());

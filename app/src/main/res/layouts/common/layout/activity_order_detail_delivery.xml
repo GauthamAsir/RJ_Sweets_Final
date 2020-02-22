@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:elevation="4dp"
         android:padding="5dp">
 
@@ -41,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:text="#0111"
                     android:textColor="@color/colorText"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:padding="6dp"/>
 
                 <TextView
                     android:id="@+id/user_name_delivery"
@@ -50,7 +51,8 @@
                     android:text="Username"
                     android:paddingTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:padding="6dp"/>
 
                 <TextView
                     android:id="@+id/order_phone_delivery"
@@ -58,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:text="9876543210"
                     android:textColor="@color/colorText"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:padding="6dp"/>
 
                 <TextView
                     android:id="@+id/order_total_delivery"
@@ -66,7 +69,8 @@
                     android:layout_height="wrap_content"
                     android:text="Total"
                     android:textColor="@color/colorText"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:padding="6dp"/>
 
                 <TextView
                     android:id="@+id/order_address_delivery"
@@ -74,15 +78,8 @@
                     android:layout_height="wrap_content"
                     android:text="Address"
                     android:textColor="@color/colorText"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/order_comment_delivery"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Comment"
-                    android:textColor="@color/colorText"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    android:padding="6dp"/>
 
             </LinearLayout>
 
@@ -95,7 +92,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_above="@+id/pickup_delivery">
+        android:layout_above="@+id/pickup_delivery"
+        android:layout_margin="10dp">
 
         <TextView
             android:text="@string/order_details"
@@ -103,7 +101,6 @@
             android:textSize="30sp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

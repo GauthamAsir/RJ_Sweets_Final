@@ -72,7 +72,8 @@
                         android:layout_height="wrap_content"
                         android:text="#0111"
                         android:textColor="@color/colorText"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:padding="6dp"/>
 
                     <TextView
                         android:id="@+id/order_username"
@@ -81,7 +82,8 @@
                         android:text="username"
                         android:paddingTop="10dp"
                         android:textColor="@color/colorText"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:padding="6dp"/>
 
                     <TextView
                         android:id="@+id/order_status"
@@ -89,7 +91,8 @@
                         android:layout_height="wrap_content"
                         android:text="Status"
                         android:textColor="@color/colorText"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:padding="6dp"/>
 
                     <TextView
                         android:id="@+id/order_phone"
@@ -97,7 +100,8 @@
                         android:layout_height="wrap_content"
                         android:text="9876543210"
                         android:textColor="@color/colorText"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:padding="6dp"/>
 
                     <TextView
                         android:id="@+id/order_address"
@@ -105,15 +109,8 @@
                         android:layout_height="wrap_content"
                         android:text="Address"
                         android:textColor="@color/colorText"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:id="@+id/order_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Comment"
-                        android:textColor="@color/colorText"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:padding="6dp"/>
 
                 </LinearLayout>
 

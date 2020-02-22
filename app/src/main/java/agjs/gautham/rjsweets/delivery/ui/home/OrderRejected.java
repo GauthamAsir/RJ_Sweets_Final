@@ -1,6 +1,5 @@
 package agjs.gautham.rjsweets.delivery.ui.Home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -24,7 +22,6 @@ import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
 import dmax.dialog.SpotsDialog;
 
 public class OrderRejected extends AppCompatActivity {
@@ -89,7 +86,7 @@ public class OrderRejected extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery>(
                 Request.class,
-                R.layout.order_layout_admin_delivery,
+                R.layout.order_layout_delivery,
                 OrderViewHolderDelivery.class,
                 requests
         ) {

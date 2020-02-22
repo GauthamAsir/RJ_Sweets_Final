@@ -7,8 +7,6 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import dmax.dialog.ProgressLayout;
-
 public class Splash extends AppCompatActivity {
 
     private ProgressBar progressBar;
@@ -29,7 +27,7 @@ public class Splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },2000);
+        },1000);
     }
 
 }

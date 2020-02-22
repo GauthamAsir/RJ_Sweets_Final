@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,7 +21,6 @@ import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
 import dmax.dialog.SpotsDialog;
 
 public class OrderDelivered extends AppCompatActivity {
@@ -85,7 +83,7 @@ public class OrderDelivered extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery>(
                 Request.class,
-                R.layout.order_layout_admin_delivery,
+                R.layout.order_layout_delivery,
                 OrderViewHolderDelivery.class,
                 requests
         ) {

@@ -110,7 +110,6 @@ public class OrderPlaced extends AppCompatActivity {
                 OrderStatus = Common.convertCodeToStatus(request.getStatus());
                 OrderTotal = request.getTotal();
                 OrderAddress = request.getAddress();
-                OrderComment = request.getComment();
                 OrderUserName = request.getName();
                 OrderTime = request.getTime();
                 OrderDate = request.getDate();
@@ -157,7 +156,6 @@ public class OrderPlaced extends AppCompatActivity {
                                     .putExtra("OrderPhone",phone)
                                     .putExtra("OrderTotal",OrderTotal)
                                     .putExtra("OrderAddress",OrderAddress)
-                                    .putExtra("OrderComment",OrderComment)
                                     .putExtra("OrderUserName",OrderUserName)
                                     .putExtra("OrderTime",OrderTime)
                                     .putExtra("OrderDate",OrderDate)

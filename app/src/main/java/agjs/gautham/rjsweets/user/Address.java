@@ -6,21 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Model.SavedAddress;
 import agjs.gautham.rjsweets.R;
-import io.paperdb.Paper;
 
 public class Address extends AppCompatActivity {
 
@@ -42,9 +34,9 @@ public class Address extends AppCompatActivity {
 
         TextInputEditText edComment = findViewById(R.id.edtComment_user);
 
-        final String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
-        final String savedAddressLine2 = Paper.book().read(Common.USER_ADDRESS_LINE2);
-        final String savedAddressLandmark = Paper.book().read(Common.USER_ADDRESS_LANDMARK);
+        //final String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
+        //final String savedAddressLine2 = Paper.book().read(Common.USER_ADDRESS_LINE2);
+        /*final String savedAddressLandmark = Paper.book().read(Common.USER_ADDRESS_LANDMARK);
         final String savedAddressPincode = Paper.book().read(Common.USER_ADDRESS_Pincode);
 
         if (savedAddressLine1 != null && savedAddressLine2 != null && savedAddressLandmark != null
@@ -83,7 +75,7 @@ public class Address extends AppCompatActivity {
                 });
 
             }
-        }
+        }*/
 
         addNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override

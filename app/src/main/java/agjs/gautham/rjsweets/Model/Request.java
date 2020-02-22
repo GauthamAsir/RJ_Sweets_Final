@@ -10,33 +10,35 @@ public class Request {
     private String address;
     private String total;
     private String status;
-    private String comment;
     private String time;
     private String date;
     private String reason;
     private String paymentMethod;
     private String picked;
     private String pickedBy;
+    private String mailSent;
+    private String mail;
     private List<SweetOrder> sweetOrders; //list of sweets
 
     public Request(){
 
     }
 
-    public Request(String id, String name, String phone, String address, String total, String status, String comment, String time, String date, String reason, String paymentMethod, String picked, String pickedBy, List<SweetOrder> sweetOrders) {
+    public Request(String id, String name, String phone, String address, String total, String status, String time, String date, String reason, String paymentMethod, String picked, String pickedBy, String mailSent, String mail, List<SweetOrder> sweetOrders) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.total = total;
         this.status = status;
-        this.comment = comment;
         this.time = time;
         this.date = date;
         this.reason = reason;
         this.paymentMethod = paymentMethod;
         this.picked = picked;
         this.pickedBy = pickedBy;
+        this.mailSent = mailSent;
+        this.mail = mail;
         this.sweetOrders = sweetOrders;
     }
 
@@ -88,14 +90,6 @@ public class Request {
         this.status = status;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getTime() {
         return time;
     }
@@ -142,6 +136,22 @@ public class Request {
 
     public void setPickedBy(String pickedBy) {
         this.pickedBy = pickedBy;
+    }
+
+    public String getMailSent() {
+        return mailSent;
+    }
+
+    public void setMailSent(String mailSent) {
+        this.mailSent = mailSent;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public List<SweetOrder> getSweetOrders() {

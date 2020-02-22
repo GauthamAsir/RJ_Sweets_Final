@@ -1,8 +1,10 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.cart_user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +14,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,8 +42,7 @@ import agjs.gautham.rjsweets.Helper.RecyclerItemTouchHelper;
 import agjs.gautham.rjsweets.Interface.RecyclerItemTouchHelperListener;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.user.Address;
-import agjs.gautham.rjsweets.user.NewAddress;
+import agjs.gautham.rjsweets.user.PlaceOrder;
 import io.paperdb.Paper;
 
 public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
@@ -43,6 +51,10 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
 
     public static TextView txtTotalPrice;
     private List<SweetOrder> cart = new ArrayList<>();
+
+    AlertDialog.Builder builder;
+    View view1;
+    String comment = "Empty";
 
     private TextView cartStatus;
     private Button btnPlace;
@@ -56,6 +68,16 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
         View root = inflater.inflate(R.layout.nav_cart_user, container, false);
 
         rootLayout = root.findViewById(R.id.cart_container);
+
+        Places.initialize(getActivity().getApplicationContext(), "AIzaSyAfpdkEt00wmFp8DZVhqqnqG3JpQB880mM");
+        final PlacesClient placesClient = Places.createClient(getActivity());
+
+        builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Search Places");
+        builder.setCancelable(false);
+
+        view1 = LayoutInflater.from(getActivity()).inflate(R.layout.address_places,null);
+        builder.setView(view1);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser mUser = mAuth.getCurrentUser();
@@ -94,21 +116,14 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                             snackbar1.show();
                         } else {
 
-                            String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
-                            String savedAddressLine2 = Paper.book().read(Common.USER_ADDRESS_LINE2);
-                            String savedAddressLandmark = Paper.book().read(Common.USER_ADDRESS_LANDMARK);
-                            String savedAddressPincode = Paper.book().read(Common.USER_ADDRESS_Pincode);
+                            String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
 
-                            if (savedAddressLine1 != null && savedAddressLine2 != null && savedAddressLandmark != null
-                                    && savedAddressPincode != null) {
-                                Intent intent = new Intent(getActivity(), Address.class);
-                                intent.putExtra("Price",txtTotalPrice.getText().toString());
-                                startActivity(intent);
-                            }else {
-                                Intent intent = new Intent(getActivity(), NewAddress.class);
-                                intent.putExtra("Price",txtTotalPrice.getText().toString());
-                                startActivity(intent);
-                            }
+                            String price = txtTotalPrice.getText().toString();
+                            String price2 = price.replace("₹","");
+
+                            String final_price = price2.replaceAll("\\s+","");
+
+                            buy_now(final_price);
                         }
                     } else {
                         Snackbar.make(getView(), "You need to Login To Place Order, Please Login", Snackbar.LENGTH_LONG).show();
@@ -126,6 +141,73 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
         }
 
         return root;
+    }
+
+    private void buy_now(final String price) {
+
+        final TextView enter_address = view1.findViewById(R.id.enter_address);
+
+        List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME,
+                Place.Field.ID, Place.Field.LAT_LNG);
+
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                (getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment));
+
+        autocompleteFragment.setPlaceFields(fields);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                enter_address.setText(place.getAddress());
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+                Log.d("Error", status.toString());
+
+            }
+        });
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+
+        final AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (enter_address!=null){
+
+                    Intent placeOrder = new Intent(getActivity(), PlaceOrder.class);
+                    placeOrder.putExtra("Price",price);
+                    placeOrder.putExtra("Address",enter_address.getText().toString());
+
+                    alertDialog.dismiss();
+                    startActivity(placeOrder);
+
+                }
+
+            }
+        });
+
     }
 
     @Override

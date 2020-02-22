@@ -12,7 +12,7 @@ import agjs.gautham.rjsweets.R;
 
 public class OrderViewHolderDelivery extends RecyclerView.ViewHolder {
 
-    public TextView txtOrderId, txtOrderStatus, txtOrderPhone, txtOrderAddress, txtComment, txtUsername, txtOrderRejectedInfo
+    public TextView txtOrderId, txtOrderStatus, txtOrderPhone, txtOrderAddress, txtUsername, txtOrderRejectedInfo
             , order_id_info;
 
     public Button btndetails, btndirection;
@@ -27,7 +27,6 @@ public class OrderViewHolderDelivery extends RecyclerView.ViewHolder {
         txtOrderPhone = itemView.findViewById(R.id.order_phone);
         txtOrderStatus = itemView.findViewById(R.id.order_status);
         txtUsername = itemView.findViewById(R.id.order_username);
-        txtComment = itemView.findViewById(R.id.order_comment);
 
         btndetails = itemView.findViewById(R.id.bt_details);
         btndirection = itemView.findViewById(R.id.bt_direction);

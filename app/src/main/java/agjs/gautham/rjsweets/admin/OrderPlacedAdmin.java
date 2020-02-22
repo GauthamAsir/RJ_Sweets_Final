@@ -39,7 +39,6 @@ import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.TrackingOrder;
 import agjs.gautham.rjsweets.admin.ViewHolder.OrderViewHolderAdmin;
-import agjs.gautham.rjsweets.delivery.ui.Home.OrderPicked;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -143,7 +142,6 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                     orderViewHolder.txtOrderStatus.setText(String.format("Order Status :  %s",OrderStatus));
                     orderViewHolder.txtOrderAddress.setText(String.format("Address : %s",request.getAddress()));
                     orderViewHolder.txtOrderPhone.setText(String.format("Phone : %s",request.getPhone()));
-                    orderViewHolder.txtComment.setText(String.format("Comment : %s",request.getComment()));
                     orderViewHolder.txtUsername.setText(String.format("Username : %s",request.getName()));
 
                     if (dialog.isShowing()){

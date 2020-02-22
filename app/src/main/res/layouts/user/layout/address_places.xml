@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/places_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/enter_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="12dp"
+        android:text="@string/your_address"
+        android:textIsSelectable="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+
+    <CheckBox
+        android:id="@+id/saveAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_this_address_for_future_orders"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:checked="true"
+        android:buttonTint="@color/holo_orange"/>
+
+</LinearLayout>

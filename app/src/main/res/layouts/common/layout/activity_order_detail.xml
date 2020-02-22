@@ -274,51 +274,7 @@
                             android:textColor="@color/colorText" />
 
                         <TextView
-                            android:id="@+id/address_line1_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Line 1"
-                            android:textSize="18sp"
-                            android:textAlignment="textStart"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/colorText" />
-
-                        <TextView
-                            android:id="@+id/address_line2_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Line 2"
-                            android:textSize="18sp"
-                            android:textAlignment="textStart"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/colorText" />
-
-                        <TextView
-                            android:id="@+id/address_landmark_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Landark"
-                            android:textSize="18sp"
-                            android:textAlignment="textStart"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/colorText" />
-
-                        <TextView
-                            android:id="@+id/address_city_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Line 1"
-                            android:textSize="18sp"
-                            android:textAlignment="textStart"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/colorText" />
-
-                        <TextView
-                            android:id="@+id/address_state_details"
+                            android:id="@+id/address_line"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Line 1"

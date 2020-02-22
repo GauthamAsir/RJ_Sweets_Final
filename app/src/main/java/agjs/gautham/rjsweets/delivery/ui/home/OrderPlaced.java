@@ -1,20 +1,14 @@
 package agjs.gautham.rjsweets.delivery.ui.Home;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,26 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Model.MyResponse;
-import agjs.gautham.rjsweets.Model.Notification;
 import agjs.gautham.rjsweets.Model.Request;
-import agjs.gautham.rjsweets.Model.Sender;
-import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
-import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetail;
 import dmax.dialog.SpotsDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrderPlaced extends AppCompatActivity {
 
@@ -121,7 +104,7 @@ public class OrderPlaced extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery>(
                 Request.class,
-                R.layout.order_layout_admin_delivery,
+                R.layout.order_layout_delivery,
                 OrderViewHolderDelivery.class,
                 requests
         ) {
@@ -146,7 +129,6 @@ public class OrderPlaced extends AppCompatActivity {
                     orderViewHolder.txtOrderStatus.setText(String.format("Order Status :  %s",OrderStatus));
                     orderViewHolder.txtOrderAddress.setText(String.format("Address : %s",request.getAddress()));
                     orderViewHolder.txtOrderPhone.setText(String.format("Phone : %s",request.getPhone()));
-                    orderViewHolder.txtComment.setText(String.format("Comment : %s",request.getComment()));
                     orderViewHolder.txtUsername.setText(String.format("Username : %s",request.getName()));
 
                     if (dialog.isShowing()){

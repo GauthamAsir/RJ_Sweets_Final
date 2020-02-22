@@ -90,7 +90,7 @@ public class OrderPicked extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolderDelivery>(
                 Request.class,
-                R.layout.order_layout_admin_delivery,
+                R.layout.order_layout_delivery,
                 OrderViewHolderDelivery.class,
                 requests
         ) {

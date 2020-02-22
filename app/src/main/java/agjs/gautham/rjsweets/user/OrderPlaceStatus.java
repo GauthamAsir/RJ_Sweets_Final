@@ -1,21 +1,10 @@
 package agjs.gautham.rjsweets.user;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.format.Formatter;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -36,15 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,8 +45,6 @@ import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
-import dmax.dialog.SpotsDialog;
-import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,13 +54,12 @@ public class OrderPlaceStatus extends AppCompatActivity {
     private RelativeLayout parentLayout;
 
     private TextView orderId, username, orderTotal, pay_with, order_placed;
-    private String order_number, name, order_total, pay_method, address, comment;
+    private String order_number, name, order_total, pay_method, address;
 
     private Button home;
 
     private List<SweetOrder> cart = new ArrayList<>();
 
-    private FirebaseDatabase database;
     private DatabaseReference requests, sweets;
 
     private ProgressBar pg;
@@ -107,7 +86,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         mService = Common.getFCMService();
 
         sweets = database.getReference("Sweets");
@@ -137,7 +116,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
             order_total = getIntent().getStringExtra("Price");
             pay_method = getIntent().getStringExtra("PaymentMode");
             address = getIntent().getStringExtra("Address");
-            comment = getIntent().getStringExtra("Comment");
 
         }
 
@@ -153,6 +131,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(OrderPlaceStatus.this,DashboardUser.class));
+                finish();
             }
         });
 
@@ -185,13 +164,14 @@ public class OrderPlaceStatus extends AppCompatActivity {
                 address,
                 order_total,
                 "0", //init status
-                comment,
                 orderTime,
                 orderDate,
                 "empty", //Reject Reason Initially empty
                 pay_method,
                 "0", //init isPicked
                 "0", //init Picked By
+                "0",
+                mUser.getEmail(),
                 cart
         );
 
@@ -200,8 +180,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
             final String id = cart.get(i).getProductId();
             final String orderQuantity = cart.get(i).getQuantity();
 
-
-
             sweets.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -209,7 +187,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
                     //sweet = dataSnapshot.getValue(Sweet.class);
 
                     avaQuantity = dataSnapshot.child("avaQuantity").getValue(String.class);
-
 
                     if (Integer.parseInt(avaQuantity) >= Integer.parseInt(orderQuantity)){
 
@@ -236,7 +213,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
         //Delete Cart After Updating
         if (checkCart){
             new Database(getBaseContext()).cleanCart(Common.USER_Phone);
-            new Database(this).close();
+
         }else {
             Common.list.clear();
         }
@@ -244,8 +221,8 @@ public class OrderPlaceStatus extends AppCompatActivity {
         sendNotificationorder(order_number);
         sendMailToUser();
 
-        message = mUser.getEmail() + " ," + order_number+ " ," + Common.Name + " ," + order_total + " ,"
-                + Common.convertCodeToStatus("0") ;
+        message = mUser.getEmail() + " ," + order_number + " ," + Common.Name + " ," + order_total + " ,"
+                + Common.convertCodeToStatus("0") + " ," + orderDate + " ," + Common.USER_Phone + " ," + "has been Placed";
 
         progress_order.setCardBackgroundColor(getResources().getColor(R.color.progress_done));
         pg.setVisibility(View.GONE);
@@ -302,7 +279,6 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
         myTask mt = new myTask();
         mt.execute();
-        Log.d("Server msg", "Sent Successfully");
 
     }
 
@@ -315,9 +291,9 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
                 Socket socket = new Socket(Common.IP, 5000);
 
-                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-
                 String encrypted_message = AES.encrypt(message,secret_key);     // Using AES To Encrypt Message
+
+                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
 
                 printWriter.write(encrypted_message);
 

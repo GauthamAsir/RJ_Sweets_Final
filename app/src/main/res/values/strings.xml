@@ -158,4 +158,6 @@
     <string name="summary_noti">Receive Notifications for new Sweets &amp; Discounts</string>
     <string name="summary_change_pass">Verify To Change Password</string>
 
+    <string name="your_address">Your Address</string>
+
 </resources>

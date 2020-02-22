@@ -1,6 +1,5 @@
 package agjs.gautham.rjsweets.delivery;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Common;
@@ -35,7 +33,7 @@ import retrofit2.Response;
 
 public class OrderDetailDelivery extends AppCompatActivity {
 
-    TextView order_id, order_phone, order_address, order_total, order_comment,user_name;
+    TextView order_id, order_phone, order_address, order_total, user_name;
     String order_id_value="";
     String order_status="";
     RecyclerView lstSweets;
@@ -57,7 +55,6 @@ public class OrderDetailDelivery extends AppCompatActivity {
         order_phone= findViewById(R.id.order_phone_delivery);
         order_address = findViewById(R.id.order_address_delivery);
         order_total = findViewById(R.id.order_total_delivery);
-        order_comment = findViewById(R.id.order_comment_delivery);
         user_name = findViewById(R.id.user_name_delivery);
 
         //Init Service
@@ -133,7 +130,6 @@ public class OrderDetailDelivery extends AppCompatActivity {
                 order_phone.setText(String.format("Phone : %s",request.getPhone()));
                 order_total.setText(String.format("Total : %s",request.getTotal()));
                 order_address.setText(String.format("Address : %s",request.getAddress()));
-                order_comment.setText(String.format("Comment : %s",request.getComment()));
                 user_name.setText(String.format("Username : %s",request.getName()));
 
                 OrderDetailAdapterDelivery adapter = new OrderDetailAdapterDelivery(request.getSweetOrders());

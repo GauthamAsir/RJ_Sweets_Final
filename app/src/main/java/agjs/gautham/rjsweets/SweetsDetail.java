@@ -2,10 +2,13 @@ package agjs.gautham.rjsweets;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,13 +36,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
+import java.util.List;
+
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
-import agjs.gautham.rjsweets.admin.DashboardAdmin;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
-import agjs.gautham.rjsweets.user.Address;
-import agjs.gautham.rjsweets.user.NewAddress;
+import agjs.gautham.rjsweets.user.PlaceOrder;
 import io.paperdb.Paper;
 
 public class SweetsDetail extends AppCompatActivity {
@@ -45,6 +55,9 @@ public class SweetsDetail extends AppCompatActivity {
     ElegantNumberButton numberButton;
 
     Button buyNow, edit_admin;
+
+    AlertDialog.Builder builder;
+    View view1;
 
     String sweetId="";
     String phone = Common.USER_Phone;
@@ -65,11 +78,16 @@ public class SweetsDetail extends AppCompatActivity {
 
         Paper.init(this);
 
+        view1 = LayoutInflater.from(SweetsDetail.this).inflate(R.layout.address_places,null);
+
         //Firebase
         database = FirebaseDatabase.getInstance();
         sweet = database.getReference("Sweets");
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser mUser = mAuth.getCurrentUser();
+
+        Places.initialize(getApplicationContext(), "AIzaSyAfpdkEt00wmFp8DZVhqqnqG3JpQB880mM");
+        final PlacesClient placesClient = Places.createClient(this);
 
         //Init View
         numberButton = findViewById(R.id.number_button_user);
@@ -150,6 +168,8 @@ public class SweetsDetail extends AppCompatActivity {
             outOfStock.setText("Last Item Left Hurry Up !");
         }
 
+        builder = new AlertDialog.Builder(SweetsDetail.this);
+
         if (Common.isConnectedToInternet(this)){
 
                 buyNow.setOnClickListener(new View.OnClickListener() {
@@ -157,10 +177,12 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View view) {
                         if (mUser != null) {
 
-                            String savedAddressLine1 = Paper.book().read(Common.USER_ADDRESS_LINE1);
-                            String savedAddressLine2 = Paper.book().read(Common.USER_ADDRESS_LINE2);
-                            String savedAddressLandmark = Paper.book().read(Common.USER_ADDRESS_LANDMARK);
-                            String savedAddressPincode = Paper.book().read(Common.USER_ADDRESS_Pincode);
+                            builder.setTitle("Find Places");
+                            builder.setCancelable(false);
+                            builder.setView(view1);
+                            builder.setIcon(R.drawable.ic_place_black_24dp);
+
+                            final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
 
                             SweetOrder sweetOrder1 = new SweetOrder(
                                     phone,
@@ -173,21 +195,76 @@ public class SweetsDetail extends AppCompatActivity {
 
                             Common.list.add(sweetOrder1);
 
-                            if (savedAddressLine1 != null && savedAddressLine2 != null && savedAddressLandmark != null
-                                    && savedAddressPincode != null) {
+                            if (savedAddress != null){
 
-                                Toast.makeText(SweetsDetail.this, "Please Select an Address", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SweetsDetail.this, Address.class);
-                                intent.putExtra("Price",currentSweet.getPrice());
-                                startActivity(intent);
-                                finish();
-                            }else {
+                                final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
+                                savedAddresBuilder.setTitle("Saved Address");
 
-                                Toast.makeText(SweetsDetail.this, "Enter a new Address", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SweetsDetail.this, NewAddress.class);
-                                intent.putExtra("Price",currentSweet.getPrice());
-                                startActivity(intent);
-                                finish();
+                                View view2 = LayoutInflater.from(SweetsDetail.this)
+                                        .inflate(R.layout.saved_address, null);
+
+                                savedAddresBuilder.setView(view2);
+
+                                TextView addrs = view2.findViewById(R.id.addrs);
+                                ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
+                                ImageView new_adrs = view2.findViewById(R.id.new_adrs);
+                                Button select_adrs = view2.findViewById(R.id.select_adrs);
+
+                                String a = savedAddress.replaceAll("\\s+","");
+                                String address = a.replace(",",",\n");
+                                addrs.setText(address);
+
+                                final AlertDialog alertDialog = savedAddresBuilder.create();
+
+                                alertDialog.show();
+
+                                delete_addrs.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        Paper.book().delete(Common.USER_ADDRESS_SAVED);
+                                        alertDialog.dismiss();
+
+                                    }
+                                });
+
+                                new_adrs.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        buy_now(currentSweet.getPrice());
+
+                                    }
+                                });
+
+                                select_adrs.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
+                                        placeOrder.putExtra("Price",currentSweet.getPrice());
+                                        placeOrder.putExtra("Address",savedAddress);
+
+                                        alertDialog.dismiss();
+                                        startActivity(placeOrder);
+
+                                    }
+                                });
+
+                            }
+                            else{
+
+                                if (view1 != null){
+
+                                    ViewGroup parent = (ViewGroup) view1.getParent();
+                                    if (parent!= null){
+                                        parent.removeView(view1);
+                                    }
+
+                                }
+
+                                buy_now(currentSweet.getPrice());
+
                             }
 
                         } else {
@@ -218,6 +295,86 @@ public class SweetsDetail extends AppCompatActivity {
             }
         }
     }
+
+    private void buy_now(final String price) {
+
+        final TextView enter_address = view1.findViewById(R.id.enter_address);
+        final CheckBox checkBox = view1.findViewById(R.id.saveAddress);
+
+        List<Place.Field> fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME,
+                Place.Field.ID, Place.Field.LAT_LNG);
+
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                (getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment));
+
+        autocompleteFragment.setPlaceFields(fields);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+
+                enter_address.setText(place.getAddress());
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+                Log.d("Error", status.toString());
+
+            }
+        });
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        final AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                builder.setView(null);
+
+            }
+        });
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (enter_address!=null){
+
+                    Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
+                    placeOrder.putExtra("Price",price);
+                    placeOrder.putExtra("Address",enter_address.getText().toString());
+
+                    if (checkBox.isChecked())
+                        Paper.book().write(Common.USER_ADDRESS_SAVED,enter_address.getText().toString());
+
+                    alertDialog.dismiss();
+                    startActivity(placeOrder);
+
+                }
+
+            }
+        });
+
+    }
+
 
     private void addToCart(){
 

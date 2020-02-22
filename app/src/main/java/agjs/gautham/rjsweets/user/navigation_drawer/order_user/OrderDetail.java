@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.Objects;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
@@ -34,8 +34,8 @@ import dmax.dialog.SpotsDialog;
 
 public class OrderDetail extends AppCompatActivity {
 
-    TextView order_id, order_phone, order_status, order_total, order_comment,user_name, order_time, order_date
-            ,orderaddress_line1, orderaddress_line2, orderaddress_landark, orderaddress_city ,orderaddress_state, orderPaymentMethod;
+    TextView order_id, order_status, order_total,user_name, order_time, order_date
+            ,orderaddress_line1, orderPaymentMethod;
 
     NestedScrollView scrollView;
 
@@ -44,7 +44,6 @@ public class OrderDetail extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    OrderDetailHolder orderDetailHolder;
     Button cancelOrder;
 
     @Override
@@ -56,21 +55,17 @@ public class OrderDetail extends AppCompatActivity {
         scrollView.setSmoothScrollingEnabled(true);
 
         order_id = findViewById(R.id.order_id);
-        //order_phone= findViewById(R.id.order_phone);
+
         order_status = findViewById(R.id.order_status);
         order_total = findViewById(R.id.order_total);
-        //order_comment = findViewById(R.id.order_comment);
+
         user_name = findViewById(R.id.user_name);
         order_date = findViewById(R.id.order_date);
         order_time = findViewById(R.id.order_time);
 
         orderPaymentMethod = findViewById(R.id.payment_method);
 
-        orderaddress_line1 = findViewById(R.id.address_line1_details);
-        orderaddress_line2 = findViewById(R.id.address_line2_details);
-        orderaddress_landark = findViewById(R.id.address_landmark_details);
-        orderaddress_city = findViewById(R.id.address_city_details);
-        orderaddress_state = findViewById(R.id.address_state_details);
+        orderaddress_line1 = findViewById(R.id.address_line);
 
         lstSweets = findViewById(R.id.listsweets);
         lstSweets.setHasFixedSize(true);
@@ -80,10 +75,8 @@ public class OrderDetail extends AppCompatActivity {
         if (getIntent() != null){
 
             order_id_value = getIntent().getStringExtra("OrderId");
-            String orderPhone = getIntent().getStringExtra("OrderPhone");
             String orderTotal = getIntent().getStringExtra("OrderTotal");
             String orderAddress = getIntent().getStringExtra("OrderAddress");
-            String orderComment = getIntent().getStringExtra("OrderComment");
             String orderName = getIntent().getStringExtra("OrderUserName");
             String orderTime = getIntent().getStringExtra("OrderTime");
             String orderDate = getIntent().getStringExtra("OrderDate");
@@ -92,22 +85,17 @@ public class OrderDetail extends AppCompatActivity {
 
             //Set Value to recycler view
             order_id.setText(String.format("Order Id : %s",order_id_value));
-            //order_phone.setText(String.format("Phone : %s",orderPhone));
+
             order_total.setText(String.format("%s Rs",orderTotal));
             order_status.setText(Common.convertCodeToStatus(orderStatus));
-            //order_comment.setText(String.format("Comment : %s",orderComment));
+
             user_name.setText(String.format(" %s,",orderName));
             order_time.setText(orderTime);
             order_date.setText(orderDate);
 
-            String[] detailAddress = orderAddress.split(",");
+            String addrs = orderAddress.replace(",",",\n");
 
-            orderaddress_line1.setText(String.format(" %s,",detailAddress[0]));
-            orderaddress_line2.setText(String.format("%s,",detailAddress[1]));
-            orderaddress_landark.setText(String.format("%s,",detailAddress[2]));
-            orderaddress_city.setText(String.format("%s,",detailAddress[3]));
-            orderaddress_state.setText(detailAddress[4]);
-
+            orderaddress_line1.setText(String.format(" %s",addrs));
             orderPaymentMethod.setText(paymentMethod);
 
             database = FirebaseDatabase.getInstance();
@@ -196,11 +184,11 @@ public class OrderDetail extends AppCompatActivity {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                                    String avaQuantity = dataSnapshot.child(pid).child("AvaQuantity").getValue(String.class);
+                                                    String avaQuantity = dataSnapshot.child(pid).child("avaQuantity").getValue(String.class);
 
-                                                    int finalQuantity = Integer.parseInt(Orderquantity) + Integer.parseInt(avaQuantity);
+                                                    int finalQuantity = Integer.parseInt(Orderquantity) + Integer.parseInt(Objects.requireNonNull(avaQuantity));
 
-                                                    databaseReference1.child(pid).child("AvaQuantity").setValue(String.valueOf(finalQuantity));
+                                                    databaseReference1.child(pid).child("avaQuantity").setValue(String.valueOf(finalQuantity));
 
                                                 }
 
@@ -209,10 +197,6 @@ public class OrderDetail extends AppCompatActivity {
 
                                                 }
                                             });
-
-                                            //Toast.makeText(OrderDetail.this,pid,Toast.LENGTH_LONG).show();
-
-                                            Log.d("TEST",pid);
                                         }
 
                                     }
