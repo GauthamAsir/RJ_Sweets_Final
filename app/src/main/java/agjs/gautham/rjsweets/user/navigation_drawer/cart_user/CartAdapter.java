@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
 
         holder.root_cart.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transmission));
 
-        String pos = String.valueOf(listData.get(position).getProductId());
+        final String pos = String.valueOf(listData.get(position).getProductId());
 
         sweets.child(pos).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -83,7 +82,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
         holder.delete_f.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"Swipe left to Delete",Toast.LENGTH_LONG).show();
+
+                final SweetOrder sweetOrder = listData.get(position);
+                listData.remove(position);
+                new Database(context).removeFromCart(sweetOrder.getProductId());
+
+                //Calculate Total Price
+                int total = 0;
+                for (SweetOrder sweetOrder1 : listData) {
+                    total += (Integer.parseInt(sweetOrder1.getPrice())) * (Integer.parseInt(sweetOrder1.getQuantity()));
+                }
+                Locale locale = new Locale("en", "IN");
+                NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+                Cart.txtTotalPrice.setText(fmt.format(total));
+
+                notifyDataSetChanged();
+
             }
         });
 

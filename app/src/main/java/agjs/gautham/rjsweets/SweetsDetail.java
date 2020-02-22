@@ -200,7 +200,7 @@ public class SweetsDetail extends AppCompatActivity {
                                 final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
                                 savedAddresBuilder.setTitle("Saved Address");
 
-                                View view2 = LayoutInflater.from(SweetsDetail.this)
+                                final View view2 = LayoutInflater.from(SweetsDetail.this)
                                         .inflate(R.layout.saved_address, null);
 
                                 savedAddresBuilder.setView(view2);
@@ -232,6 +232,16 @@ public class SweetsDetail extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
 
+                                        if (view1 != null){
+
+                                            ViewGroup parent = (ViewGroup) view1.getParent();
+                                            if (parent!= null){
+                                                parent.removeView(view1);
+                                            }
+
+                                        }
+
+                                        builder.setView(view1);
                                         buy_now(currentSweet.getPrice());
 
                                     }
