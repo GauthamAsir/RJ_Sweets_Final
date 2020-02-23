@@ -1,25 +1,16 @@
 package agjs.gautham.rjsweets;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Random;
 
 import agjs.gautham.rjsweets.admin.DashboardAdmin;
 import agjs.gautham.rjsweets.delivery.DashboardDelivery;
@@ -75,67 +64,28 @@ public class Splash extends AppCompatActivity {
                     if (loginType.equals("2"))
                         logInDelivery(user,pwd);
 
+                }else {
+                    defaultLogin();
                 }
             }
         }else {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    progressBar.setProgress(100);
-                    Intent intent = new Intent(Splash.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            },1000);
-
+            defaultLogin();
         }
     }
 
-    private void showNotification() {
+    private void defaultLogin(){
 
-        System.out.println("Noti");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        String CHANNEL_NAME = "RJ SWEETS UPDATE";
-        String CHANNEL_ID = "rj_sweets_update";
+                progressBar.setProgress(100);
+                Intent intent = new Intent(Splash.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        },1000);
 
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, UpdateActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_system_update)
-                .setContentTitle(getString(R.string.update_available))
-                .setContentText(getString(R.string.update_description))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(false);
-
-        CharSequence name = CHANNEL_NAME;
-        String description = getString(R.string.update_description);
-
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-        channel.setDescription(description);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(new Random().nextInt(), builder.build());
-
-    }
-
-    private String getAppVersion(Context context){
-
-        String result = "";
-        try {
-            result = context.getPackageManager().getPackageInfo(context.getPackageName(),0)
-                    .versionName;
-            result = result.replaceAll("[a-zA-Z]|-","");
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     private void logInAdmin(final String phone, final String pwd){
@@ -161,8 +111,8 @@ public class Splash extends AppCompatActivity {
 
                 } else {
                     progressBar.setProgress(100);
-                    final View parentLayout = findViewById(android.R.id.content);
-                    Snackbar.make(parentLayout, "Something went Wrong Please Login Again", Snackbar.LENGTH_LONG).show();
+                    startActivity(new Intent(Splash.this, MainActivity.class));
+                    finish();
                 }
             }
 
@@ -196,8 +146,8 @@ public class Splash extends AppCompatActivity {
 
                 } else {
                     progressBar.setProgress(100);
-                    final View parentLayout = findViewById(android.R.id.content);
-                    Snackbar.make(parentLayout, "Something went Wrong Please Login Again", Snackbar.LENGTH_LONG).show();
+                    startActivity(new Intent(Splash.this, MainActivity.class));
+                    finish();
                 }
             }
 
