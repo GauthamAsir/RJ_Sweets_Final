@@ -51,41 +51,8 @@ public class Splash extends AppCompatActivity {
         //Init Firebase
         database = FirebaseDatabase.getInstance();
 
+        //Check For App-Update
         CheckUpdate.check_for_update(Splash.this);
-
-        /*DatabaseReference updates = database.getReference("Updates");
-
-        updates.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                AppUpdate appUpdate = dataSnapshot.getValue(AppUpdate.class);
-
-                String updateUrl = appUpdate.getUpdate_url();
-                Double update_version = appUpdate.getVersion();
-                String changelog = appUpdate.getChangelog();
-                String app_name = appUpdate.getApp_name();
-
-                String cureent_version = getAppVersion(Splash.this);
-                Double app_version = Double.parseDouble(cureent_version);
-
-                if (app_version<update_version){
-
-                    Log.d("Test","test");
-                    showNotification();
-
-                }else {
-
-                    Common.changelog = null;
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 
         Paper.init(this);
 

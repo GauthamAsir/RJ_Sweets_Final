@@ -3,9 +3,7 @@ package agjs.gautham.rjsweets;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -34,10 +32,7 @@ public class CheckUpdate {
 
                 AppUpdate appUpdate = dataSnapshot.getValue(AppUpdate.class);
 
-                String updateUrl = appUpdate.getUpdate_url();
                 Double update_version = appUpdate.getVersion();
-                String changelog = appUpdate.getChangelog();
-                String app_name = appUpdate.getApp_name();
 
                 String cureent_version = getAppVersion(context);
                 Double app_version = Double.parseDouble(cureent_version);
@@ -46,17 +41,14 @@ public class CheckUpdate {
 
                     Log.d("Update Status","Update Available");
 
-                    String CHANNEL_NAME = "RJ SWEETS UPDATE";
                     String CHANNEL_ID = "rj_sweets_update";
 
                     String title = context.getString(R.string.update_available);
 
-                    Intent intent;
-                    PendingIntent pendingIntent;
                     NotificationCompat.Builder builder;
 
                     NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-                    bigTextStyle.setBigContentTitle(context.getString(R.string.update_available));
+                    bigTextStyle.setBigContentTitle(title);
                     bigTextStyle.bigText(context.getString(R.string.update_description));
 
                     if (notifManager == null) {
@@ -71,15 +63,11 @@ public class CheckUpdate {
                     }
 
                     builder = new NotificationCompat.Builder(context, CHANNEL_ID);
-                    intent = new Intent(context, UpdateActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
                     builder.setSmallIcon(R.drawable.ic_system_update)   // required
                             .setStyle(bigTextStyle)
                             .setDefaults(Notification.DEFAULT_ALL)
-                            .setAutoCancel(true)
-                            .setContentIntent(pendingIntent);
+                            .setAutoCancel(true);
 
                     Notification notification = builder.build();
                     notifManager.notify(0, notification);
