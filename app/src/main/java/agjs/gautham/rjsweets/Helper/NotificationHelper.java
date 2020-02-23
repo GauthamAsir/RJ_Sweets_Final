@@ -48,6 +48,6 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.sweet_icon_notification)
                 .setSound(soundUri)
-                .setAutoCancel(false);
+                .setAutoCancel(true);
     }
 }

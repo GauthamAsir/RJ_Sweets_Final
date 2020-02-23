@@ -1,19 +1,13 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.settings_user;
 
-import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -28,19 +22,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.AppUpdaterUtils;
-import com.github.javiersantos.appupdater.enums.AppUpdaterError;
-import com.github.javiersantos.appupdater.enums.Display;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
-import com.github.javiersantos.appupdater.objects.Update;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -62,16 +48,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Model.AppUpdate;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.UpdateActivity;
@@ -223,177 +202,6 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
-
-        }
-
-        private void checkUpdate() {
-
-            database_update.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    AppUpdate appUpdate = dataSnapshot.getValue(AppUpdate.class);
-                    final String updateUrl = appUpdate.getUpdate_url();
-                    Double update_version = appUpdate.getVersion();
-                    String changelog = appUpdate.getChangelog();
-                    final String app_name = appUpdate.getApp_name();
-
-                    String cureent_version = getAppVersion(getActivity());
-
-                    Double app_version = Double.parseDouble(cureent_version);
-
-                    if (app_version<update_version){
-
-                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                                .setTitle("New Version Available")
-                                .setMessage("Please Update to New Version to Continue")
-                                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        pgDialog.show();
-
-                                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                                == PackageManager.PERMISSION_GRANTED){
-
-                                            // execute this when the downloader must be fired
-                                            final DownloadTask downloadTask = new DownloadTask(getActivity(),app_name);
-                                            downloadTask.execute(updateUrl);
-                                            Toast.makeText(getActivity(),"Downloading Update",Toast.LENGTH_SHORT).show();
-
-                                            pgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                                @Override
-                                                public void onCancel(DialogInterface dialog) {
-                                                    downloadTask.cancel(true);
-                                                    pgDialog.dismiss();
-                                                }
-                                            });
-
-                                        }else {
-                                            ActivityCompat.requestPermissions(getActivity(),new String[]{
-                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-                                            },1);
-                                        }
-                                    }
-                                })
-                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).create();
-                        alertDialog.show();
-
-                    }else {
-                        Toast.makeText(getActivity(),"no Updates",Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        private String getAppVersion(Context context){
-
-            String result = "";
-            try {
-                result = context.getPackageManager().getPackageInfo(context.getPackageName(),0)
-                        .versionName;
-                result = result.replaceAll("[a-zA-Z]|-","");
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        private void checkForUpdate() {
-
-            if (Common.isConnectedToInternet(getActivity())){
-
-                AppUpdater appUpdater = new AppUpdater(getActivity())
-                        .setUpdateFrom(UpdateFrom.XML)
-                        .setUpdateXML("https://raw.githubusercontent.com/GauthamAsir/RJ_Sweets_Releases/master/update.xml")
-                        .setDisplay(Display.DIALOG)
-                        .setButtonDoNotShowAgain(null)
-                        .showAppUpdated(true)
-                        .setButtonUpdateClickListener(new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (ContextCompat.checkSelfPermission(getActivity(),
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                        == PackageManager.PERMISSION_GRANTED){
-                                    downloadUpdateApk();
-                                }else {
-                                    ActivityCompat.requestPermissions(getActivity(),new String[]{
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-                                    },1);
-                                }
-                            }
-                        });
-
-                AppUpdater updater = new AppUpdater(getActivity())
-                        .setUpdateFrom(UpdateFrom.XML)
-                        .setUpdateXML("https://raw.githubusercontent.com/GauthamAsir/RJ_Sweets_Releases/master/update.xml")
-                        .setDisplay(Display.NOTIFICATION);
-
-                updater.start();
-
-                updater.setButtonUpdateClickListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        downloadUpdateApk();
-                    }
-                });
-
-                appUpdater.start();
-
-            }else {
-                Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        private void downloadUpdateApk() {
-
-            AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(getActivity())
-                    .setUpdateFrom(UpdateFrom.XML)
-                    .setUpdateXML("https://raw.githubusercontent.com/GauthamAsir/RJ_Sweets_Releases/master/update.xml")
-                    .withListener(new AppUpdaterUtils.UpdateListener() {
-                        @Override
-                        public void onSuccess(Update update, Boolean isUpdateAvailable) {
-
-                            String updateUrl = String.valueOf(update.getUrlToDownload());
-                            String updateAppName = "rj_sweets_" + update.getLatestVersion() + ".apk";
-
-                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateUrl));
-                            request.setTitle("RJ Sweets App Updater");
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,updateAppName);
-                            final DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                            manager.enqueue(request);
-
-                            Toast.makeText(getActivity(),"Downloading Update",Toast.LENGTH_SHORT).show();
-
-                            if (DownloadManager.ACTION_NOTIFICATION_CLICKED.isEmpty()){
-                                Intent promptInstall = new Intent(Intent.ACTION_VIEW)
-                                        .setDataAndType(Uri.parse(Environment.DIRECTORY_DOWNLOADS+"updateAppName"),
-                                                "application/vnd.android.package-archive");
-                                startActivity(promptInstall);
-                            }
-                        }
-
-                        @Override
-                        public void onFailed(AppUpdaterError error) {
-
-                        }
-                    });
-
-            appUpdaterUtils.start();
 
         }
 
@@ -791,104 +599,6 @@ public class SettingsActivity extends AppCompatActivity {
         void hideKeyboard(TextInputLayout passResetPhone){
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(passResetPhone.getWindowToken(), 0);
-        }
-
-        private class DownloadTask extends AsyncTask<String, Integer, String> {
-
-            private Context context;
-            private String app_name;
-            private PowerManager.WakeLock mWakeLock;
-
-            public DownloadTask(Context context, String app_name) {
-                this.context = context;
-                this.app_name = app_name;
-            }
-
-            @Override
-            protected String doInBackground(String... sUrl) {
-                InputStream input = null;
-                OutputStream output = null;
-                HttpURLConnection connection = null;
-                try {
-                    URL url = new URL(sUrl[0]);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
-
-                    // expect HTTP 200 OK, so we don't mistakenly save error report
-                    // instead of the file
-                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                        return "Server returned HTTP " + connection.getResponseCode()
-                                + " " + connection.getResponseMessage();
-                    }
-
-                    // this will be useful to display download percentage
-                    // might be -1: server did not report the length
-                    int fileLength = connection.getContentLength();
-
-                    // download the file
-                    input = connection.getInputStream();
-                    output = new FileOutputStream(getActivity().getFilesDir() + "/"+app_name);
-
-                    byte data[] = new byte[4096];
-                    long total = 0;
-                    int count;
-                    while ((count = input.read(data)) != -1) {
-                        // allow canceling with back button
-                        if (isCancelled()) {
-                            input.close();
-                            return null;
-                        }
-                        total += count;
-                        // publishing the progress....
-                        if (fileLength > 0) // only if total length is known
-                            publishProgress((int) (total * 100 / fileLength));
-                        output.write(data, 0, count);
-                    }
-                } catch (Exception e) {
-                    return e.toString();
-                } finally {
-                    try {
-                        if (output != null)
-                            output.close();
-                        if (input != null)
-                            input.close();
-                    } catch (IOException ignored) {
-                    }
-
-                    if (connection != null)
-                        connection.disconnect();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                        getClass().getName());
-                mWakeLock.acquire();
-                pgDialog.show();
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... progress) {
-                super.onProgressUpdate(progress);
-                // if we get here, length is known, now set indeterminate to false
-                pg.setIndeterminate(false);
-                pg.setMax(100);
-                pg.setProgress(progress[0]);
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                mWakeLock.release();
-                pgDialog.dismiss();
-                if (result != null)
-                    Toast.makeText(context,"Download error: "+result, Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(context,"File downloaded", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 }

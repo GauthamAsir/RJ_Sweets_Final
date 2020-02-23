@@ -132,6 +132,8 @@
     <string name="enter_shipper_email">Enter Shipper Email</string>
     <string name="enter_shipper_password">Enter Shipper Password</string>
     <string name="update">Update</string>
+    <string name="update_available">Update Available</string>
+    <string name="update_description">Update To Latest Version To Avoid Crash or any Other Inconvenience</string>
     <string name="enter_reason">Enter Reason</string>
     <string name="cancel">Cancel</string>
     <string name="reject">Reject</string>
