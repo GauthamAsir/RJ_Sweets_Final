@@ -185,7 +185,7 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                                         Intent placeOrder = new Intent(getActivity(), PlaceOrder.class);
                                         placeOrder.putExtra("Price",final_price);
                                         placeOrder.putExtra("Address",savedAddress);
-
+                                        Common.intentOpenAnimation(getActivity());
                                         alertDialog.dismiss();
                                         startActivity(placeOrder);
 
@@ -296,6 +296,7 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                         Paper.book().write(Common.USER_ADDRESS_SAVED,enter_address.getText().toString());
 
                     alertDialog.dismiss();
+                    Common.intentOpenAnimation(getActivity());
                     startActivity(placeOrder);
 
                 }

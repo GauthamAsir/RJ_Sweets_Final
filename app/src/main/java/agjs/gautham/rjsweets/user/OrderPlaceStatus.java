@@ -111,6 +111,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(OrderPlaceStatus.this,DashboardUser.class));
+                Common.intentOpenAnimation(OrderPlaceStatus.this);
                 finish();
             }
         });
@@ -253,6 +254,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Snackbar.make(parentLayout,"Back is not Allowed",Snackbar.LENGTH_LONG).show();
+        Common.intentCloseAnimation(OrderPlaceStatus.this);
     }
 
     private void toast(String msg){

@@ -29,7 +29,7 @@
         android:startOffset="83"
         android:toAlpha="0.4" />
     <scale
-        android:duration="400"
+        android:duration="800"
         android:fillAfter="true"
         android:fillBefore="true"
         android:fillEnabled="true"

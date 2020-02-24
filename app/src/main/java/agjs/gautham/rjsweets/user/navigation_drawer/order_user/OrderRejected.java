@@ -180,6 +180,7 @@ public class OrderRejected extends AppCompatActivity {
                                     .putExtra("OrderPaymentMethod",request.getPaymentMethod());
 
                             startActivity(orderDetail);
+                            Common.intentOpenAnimation(OrderRejected.this);
                         }
                     });
 
@@ -204,6 +205,7 @@ public class OrderRejected extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Common.intentCloseAnimation(OrderRejected.this);
     }
 
     @Override

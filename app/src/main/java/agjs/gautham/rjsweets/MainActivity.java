@@ -35,5 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void bt_next(View view){
         startActivity(new Intent(MainActivity.this, Login.class));
+        Common.intentOpenAnimation(MainActivity.this);
     }
 }

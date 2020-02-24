@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -196,9 +195,9 @@ public class SettingsActivity extends AppCompatActivity {
             check_update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Log.d("TEST",String.valueOf(getActivity().getExternalFilesDir(null).getAbsolutePath()));
+
                     startActivity(new Intent(getActivity(), UpdateActivity.class));
-                    //checkUpdate();
+                    Common.intentOpenAnimation(getActivity());
                     return true;
                 }
             });
@@ -543,8 +542,8 @@ public class SettingsActivity extends AppCompatActivity {
                             Intent logout = new Intent(getActivity(), Login.class);
                             logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(logout);
+                            Common.intentOpenAnimation(getActivity());
                             getActivity().finish();
-                            getActivity().overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit );
                         }
                     }, 3000);
                 }

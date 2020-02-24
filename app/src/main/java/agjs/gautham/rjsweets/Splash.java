@@ -82,6 +82,7 @@ public class Splash extends AppCompatActivity {
                 progressBar.setProgress(100);
                 Intent intent = new Intent(Splash.this, MainActivity.class);
                 startActivity(intent);
+                Common.intentOpenAnimation(Splash.this);
                 finish();
             }
         },1000);
@@ -107,11 +108,13 @@ public class Splash extends AppCompatActivity {
                     intent.putExtra("Number",phone);
                     Common.loginType = "1";
                     startActivity(intent);
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
 
                 } else {
                     progressBar.setProgress(100);
                     startActivity(new Intent(Splash.this, MainActivity.class));
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
                 }
             }
@@ -142,11 +145,13 @@ public class Splash extends AppCompatActivity {
                     Intent intent = new Intent(Splash.this, DashboardDelivery.class);
                     Common.loginType = "2";
                     startActivity(intent);
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
 
                 } else {
                     progressBar.setProgress(100);
                     startActivity(new Intent(Splash.this, MainActivity.class));
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
                 }
             }
@@ -174,16 +179,16 @@ public class Splash extends AppCompatActivity {
                     Common.loginType = "0";
                     Common.USER_Phone = Paper.book().read(Common.PHONE_KEY);
                     startActivity(intent);
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
-                    overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit );
                 }else {
 
                     progressBar.setProgress(100);
 
                     Intent intent = new Intent(Splash.this, Login.class);
                     startActivity(intent);
+                    Common.intentOpenAnimation(Splash.this);
                     finish();
-                    overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit );
                 }
             }
         });

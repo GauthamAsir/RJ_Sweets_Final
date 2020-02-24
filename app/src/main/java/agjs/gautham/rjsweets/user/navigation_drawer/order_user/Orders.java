@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.R;
 
 public class Orders extends Fragment {
@@ -39,6 +40,7 @@ public class Orders extends Fragment {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getActivity(),OrderPlaced.class));
+                    Common.intentOpenAnimation(getActivity());
                 }
             });
 
@@ -46,6 +48,7 @@ public class Orders extends Fragment {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getActivity(),OrderDelivered.class));
+                    Common.intentOpenAnimation(getActivity());
                 }
             });
 
@@ -53,6 +56,7 @@ public class Orders extends Fragment {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getActivity(),OrderRejected.class));
+                    Common.intentOpenAnimation(getActivity());
                 }
             });
 

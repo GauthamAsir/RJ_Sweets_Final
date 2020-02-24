@@ -1,7 +1,6 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -258,6 +256,7 @@ public class Home extends Fragment {
                             sweetsDetail.putExtra("SweetId", adapter.getRef(position).getKey());
                             sweetsDetail.putExtra("AvailableQuantity",model.getAvaQuantity());
 
+                            Common.intentOpenAnimation(getActivity());
                             startActivity(sweetsDetail);
                             getActivity().overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                         }

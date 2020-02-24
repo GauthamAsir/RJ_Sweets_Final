@@ -218,6 +218,7 @@ public class OrderDetail extends AppCompatActivity {
                                 Toast.makeText(OrderDetail.this,"Order Cancelled Successfully",Toast.LENGTH_LONG).show();
 
                                 startActivity(new Intent(OrderDetail.this, DashboardUser.class));
+                                Common.intentOpenAnimation(OrderDetail.this);
 
                             }
                         });
@@ -258,7 +259,7 @@ public class OrderDetail extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Common.intentCloseAnimation(OrderDetail.this);
         finish();
-        overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit );
     }
 }

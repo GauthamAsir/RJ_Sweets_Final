@@ -144,6 +144,7 @@ public class SweetsDetail extends AppCompatActivity {
                 intent.putExtra("Key",sweetId);
                 intent.putExtra("Url",img_url);
                 startActivity(intent);
+                Common.intentOpenAnimation(SweetsDetail.this);
             }
         });
 
@@ -257,6 +258,7 @@ public class SweetsDetail extends AppCompatActivity {
 
                                         alertDialog.dismiss();
                                         startActivity(placeOrder);
+                                        Common.intentOpenAnimation(SweetsDetail.this);
 
                                     }
                                 });
@@ -377,6 +379,7 @@ public class SweetsDetail extends AppCompatActivity {
 
                     alertDialog.dismiss();
                     startActivity(placeOrder);
+                    Common.intentOpenAnimation(SweetsDetail.this);
 
                 }
 

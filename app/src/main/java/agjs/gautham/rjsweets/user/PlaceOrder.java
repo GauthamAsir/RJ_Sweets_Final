@@ -142,7 +142,9 @@ public class PlaceOrder extends AppCompatActivity {
                 intent.putExtra("Address",address);
                 intent.putExtra("Price",price);
                 intent.putExtra("PaymentMode",paymentMode);
+                Common.intentOpenAnimation(PlaceOrder.this);
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -204,6 +206,7 @@ public class PlaceOrder extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Common.list.clear(); //To Avoid Conflicts between Cart and Buy Option
+        Common.intentCloseAnimation(PlaceOrder.this);
     }
 
 }

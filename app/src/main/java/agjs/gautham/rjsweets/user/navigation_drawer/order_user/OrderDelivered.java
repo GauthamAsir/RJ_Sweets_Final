@@ -176,6 +176,7 @@ public class OrderDelivered extends AppCompatActivity {
                                     .putExtra("OrderPaymentMethod",request.getPaymentMethod());
 
                             startActivity(orderDetail);
+                            Common.intentOpenAnimation(OrderDelivered.this);
                         }
                     });
 
@@ -201,6 +202,7 @@ public class OrderDelivered extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Common.intentCloseAnimation(OrderDelivered.this);
     }
 
     @Override

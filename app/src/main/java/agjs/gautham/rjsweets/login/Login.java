@@ -1,15 +1,10 @@
 package agjs.gautham.rjsweets.login;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -21,11 +16,13 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -264,6 +261,7 @@ public class Login extends AppCompatActivity {
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 Common.loginType = "0";
+                                Common.intentOpenAnimation(Login.this);
 
                                 startActivity(intent);
                                 finish();
@@ -340,8 +338,8 @@ public class Login extends AppCompatActivity {
                                             Intent intent = new Intent(Login.this, DashboardUser.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
+                                            Common.intentOpenAnimation(Login.this);
                                             finish();
-                                            overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
                                         } else {
                                             if (pdialog.isShowing()){
                                                 pdialog.dismiss();
@@ -535,6 +533,8 @@ public class Login extends AppCompatActivity {
                                         Intent intent = new Intent(Login.this, DashboardUser.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
+                                        Common.intentOpenAnimation(Login.this);
+                                        finish();
                                         if (dialog.isShowing()){
                                             dialog.dismiss();
                                         }
@@ -639,10 +639,12 @@ public class Login extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.admin_login:
                 startActivity(new Intent(Login.this, LoginAdmin.class));
+                Common.intentOpenAnimation(Login.this);
                 return true;
 
             case R.id.delivery_login:
                 startActivity(new Intent(Login.this, DeliveryLogin.class));
+                Common.intentOpenAnimation(Login.this);
                 return true;
         }
         return(super.onOptionsItemSelected(item));
@@ -650,10 +652,13 @@ public class Login extends AppCompatActivity {
 
     public void bt_skip(View view){
         startActivity(new Intent(Login.this, DashboardUser.class));
+        Common.intentOpenAnimation(Login.this);
+        finish();
     }
 
     public void bt_signup(View view){
         startActivity(new Intent(Login.this, SignUp.class));
+        Common.intentOpenAnimation(Login.this);
     }
 
     void hideKeyboard(){

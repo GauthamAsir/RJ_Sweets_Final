@@ -5,46 +5,41 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.os.Handler;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Map;
 
 import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
+import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.Home;
 import agjs.gautham.rjsweets.user.navigation_drawer.order_user.Orders;
+import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
@@ -275,6 +270,7 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
                 moveTaskToBack(true);
                 System.exit(1);
                 android.os.Process.killProcess(android.os.Process.myPid());
+                finish();
             }else {
                 snackbar.setText("Press Again to Exit");
                 snackbar.show();

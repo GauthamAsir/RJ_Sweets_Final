@@ -1,5 +1,6 @@
 package agjs.gautham.rjsweets;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -162,6 +163,14 @@ public class Common {
                 return "is Rejected by Default";
         }
 
+    }
+
+    public static void intentOpenAnimation(Activity activity){
+        activity.overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
+    }
+
+    public static void intentCloseAnimation(Activity activity){
+        activity.overridePendingTransition(R.anim.activity_close_enter, R.anim.activity_close_exit);
     }
 
 }
