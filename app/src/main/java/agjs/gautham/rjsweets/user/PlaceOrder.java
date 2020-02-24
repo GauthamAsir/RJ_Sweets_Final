@@ -36,7 +36,7 @@ import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetailAdapte
 
 public class PlaceOrder extends AppCompatActivity {
 
-    String address, price;
+    String address, price, latlng;
 
     List<SweetOrder> cart = new ArrayList<>();
 
@@ -98,6 +98,7 @@ public class PlaceOrder extends AppCompatActivity {
 
             address = getIntent().getStringExtra("Address");
             price = getIntent().getStringExtra("Price");
+            latlng = getIntent().getStringExtra("LatLng");
 
         }
 
@@ -142,6 +143,7 @@ public class PlaceOrder extends AppCompatActivity {
                 intent.putExtra("Address",address);
                 intent.putExtra("Price",price);
                 intent.putExtra("PaymentMode",paymentMode);
+                intent.putExtra("LatLng",latlng);
                 Common.intentOpenAnimation(PlaceOrder.this);
                 startActivity(intent);
                 finish();

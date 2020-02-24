@@ -47,7 +47,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
     private RelativeLayout parentLayout;
 
     private TextView orderId, username, orderTotal, pay_with, order_placed;
-    private String order_number, name, order_total, pay_method, address;
+    private String order_number, name, order_total, pay_method, address, latlng;
 
     private Button home;
 
@@ -96,6 +96,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
             order_total = getIntent().getStringExtra("Price");
             pay_method = getIntent().getStringExtra("PaymentMode");
             address = getIntent().getStringExtra("Address");
+            latlng = getIntent().getStringExtra("LatLng");
 
         }
 
@@ -152,6 +153,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
                 "0",        //init isPicked
                 "0",        //init Picked By
                 mUser.getEmail(),
+                latlng,
                 cart
         );
 
