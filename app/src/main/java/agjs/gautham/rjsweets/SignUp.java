@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -486,28 +485,28 @@ public class SignUp extends AppCompatActivity {
 
     private void out(LinearLayout l1) {
 
-        l1.setAnimation(slideout);
+        l1.startAnimation(slideout);
         l1.setVisibility(View.GONE);
 
     }
 
     private void in(LinearLayout l1){
 
-        l1.setAnimation(slidein);
+        l1.startAnimation(slidein);
         l1.setVisibility(View.VISIBLE);
         status1.setVisibility(View.VISIBLE);
     }
 
     private void back_out(LinearLayout l1){
 
-        l1.setAnimation(back_slideout);
+        l1.startAnimation(back_slideout);
         l1.setVisibility(View.GONE);
 
     }
 
     private void back_in(LinearLayout l1){
 
-        l1.setAnimation(back_slidein);
+        l1.startAnimation(back_slidein);
         l1.setVisibility(View.VISIBLE);
 
     }

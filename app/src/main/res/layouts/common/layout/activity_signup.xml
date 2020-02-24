@@ -380,8 +380,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_green_light"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
             android:visibility="invisible"/>
 
         <Button
@@ -390,8 +388,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_green_light"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
             android:visibility="invisible"/>
 
         <Button
@@ -400,8 +396,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_green_light"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
             android:visibility="invisible"/>
 
         <Button
