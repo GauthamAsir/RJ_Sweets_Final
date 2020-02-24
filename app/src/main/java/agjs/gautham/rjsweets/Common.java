@@ -35,6 +35,7 @@ public class Common {
     public static String IP = "";
 
     public static String USER_ADDRESS_SAVED= "Saved Address Temp";
+    public static String USER_SAVED_LATLNG;
 
     public static final String UPDATE = "Update";
     public static final String DELETE = "Delete";

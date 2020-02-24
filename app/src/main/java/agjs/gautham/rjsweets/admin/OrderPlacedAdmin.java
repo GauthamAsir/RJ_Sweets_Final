@@ -126,7 +126,15 @@ public class OrderPlacedAdmin extends AppCompatActivity {
             @Override
             protected void populateViewHolder(OrderViewHolderAdmin orderViewHolder, final Request request, final int i) {
 
-                final String OrderId, OrderStatus;
+                final String OrderId, OrderStatus, latlng;
+
+                latlng = request.getLatLng();
+
+                String[] spliter = latlng.split("\\(");
+                final String ll = spliter[1].replaceAll("\\)","");
+                final String l2[] = ll.split(",");
+                final String lat = l2[0];
+                final String lng = l2[1];
 
                 OrderId = adapter.getRef(i).getKey();
                 OrderStatus = Common.convertCodeToStatus(request.getStatus());
@@ -169,7 +177,7 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+request.getAddress());
+                                    Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=d");
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
                                     startActivity(mapIntent);
@@ -182,8 +190,8 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     Intent trackingOrder = new Intent(OrderPlacedAdmin.this, TrackingOrder.class);
-                                    trackingOrder.putExtra("Address",request.getAddress());
-                                    trackingOrder.putExtra("Phone",request.getPhone());
+                                    trackingOrder.putExtra("Lat",lat);
+                                    trackingOrder.putExtra("Lng",lng);
                                     startActivity(trackingOrder);
 
                                 }

@@ -59,6 +59,8 @@ public class SweetsDetail extends AppCompatActivity {
     AlertDialog.Builder builder;
     View view1;
 
+    String latlng;
+
     String sweetId="";
     String phone = Common.USER_Phone;
     String avaQuantity="";
@@ -184,6 +186,7 @@ public class SweetsDetail extends AppCompatActivity {
                             builder.setIcon(R.drawable.ic_place_black_24dp);
 
                             final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
+                            final String savedLatlng = Paper.book().read(Common.USER_SAVED_LATLNG);
 
                             SweetOrder sweetOrder1 = new SweetOrder(
                                     phone,
@@ -224,6 +227,7 @@ public class SweetsDetail extends AppCompatActivity {
                                     public void onClick(View v) {
 
                                         Paper.book().delete(Common.USER_ADDRESS_SAVED);
+                                        Paper.book().delete(Common.USER_SAVED_LATLNG);
                                         alertDialog.dismiss();
 
                                     }
@@ -255,6 +259,7 @@ public class SweetsDetail extends AppCompatActivity {
                                         Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
                                         placeOrder.putExtra("Price",currentSweet.getPrice());
                                         placeOrder.putExtra("Address",savedAddress);
+                                        placeOrder.putExtra("LatLng",savedLatlng);
 
                                         alertDialog.dismiss();
                                         startActivity(placeOrder);
@@ -326,6 +331,7 @@ public class SweetsDetail extends AppCompatActivity {
             public void onPlaceSelected(@NonNull Place place) {
 
                 enter_address.setText(place.getAddress());
+                latlng = place.getLatLng().toString();
 
             }
 
@@ -373,9 +379,13 @@ public class SweetsDetail extends AppCompatActivity {
                     Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
                     placeOrder.putExtra("Price",price);
                     placeOrder.putExtra("Address",enter_address.getText().toString());
+                    placeOrder.putExtra("LatLng",latlng);
 
-                    if (checkBox.isChecked())
+                    if (checkBox.isChecked()){
+
                         Paper.book().write(Common.USER_ADDRESS_SAVED,enter_address.getText().toString());
+                        Paper.book().write(Common.USER_SAVED_LATLNG,latlng);
+                    }
 
                     alertDialog.dismiss();
                     startActivity(placeOrder);
