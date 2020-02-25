@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import agjs.gautham.rjsweets.Credits;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.UpdateActivity;
 import agjs.gautham.rjsweets.login.Login;
@@ -29,6 +30,14 @@ public class Settings extends Fragment {
 
         ImageView update = root.findViewById(R.id.update);
         ImageView logOut = root.findViewById(R.id.logout_admin);
+        ImageView contributor = root.findViewById(R.id.contributor);
+
+        contributor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Credits.class));
+            }
+        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override

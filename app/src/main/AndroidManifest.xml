@@ -89,6 +89,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".UpdateActivity"/>
+        <activity android:name=".Credits"/>
         <activity
             android:name=".Splash"
             android:theme="@style/MainActivity">

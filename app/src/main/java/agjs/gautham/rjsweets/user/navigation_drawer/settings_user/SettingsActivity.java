@@ -50,6 +50,7 @@ import com.mukesh.OtpView;
 import java.util.concurrent.TimeUnit;
 
 import agjs.gautham.rjsweets.Common;
+import agjs.gautham.rjsweets.Credits;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.UpdateActivity;
@@ -76,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
         private DatabaseReference databse_user, database_update;
         private FirebaseAuth mAuth;
         private FirebaseUser mUser;
-        private Preference change_pass, check_update, contact_us, logOut;
+        private Preference change_pass, check_update, contact_us, logOut, contributor;
         private SwitchPreferenceCompat noti;
         private FirebaseFirestore firestore;
         private OtpView otpView;
@@ -137,6 +138,15 @@ public class SettingsActivity extends AppCompatActivity {
             check_update = findPreference(getString(R.string.check_for_updates));
             contact_us = findPreference(getString(R.string.contact_us));
             logOut = findPreference(getString(R.string.logout));
+            contributor = findPreference(getString(R.string.contributors));
+
+            contributor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), Credits.class));
+                    return true;
+                }
+            });
 
             name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

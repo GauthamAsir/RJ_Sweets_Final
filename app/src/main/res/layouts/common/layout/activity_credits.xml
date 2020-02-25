@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="24dp"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/border_shadow">
 
         <ImageView
             android:id="@+id/update"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/app_update"
+            android:src="@drawable/gautham"
             android:clickable="true"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/update"
+            android:text="@string/gautham"
             android:textSize="32sp"
             android:textAlignment="center"
             android:layout_alignParentBottom="true"
@@ -38,19 +39,20 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="24dp"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/border_shadow">
 
         <ImageView
             android:id="@+id/contributor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/contributor_img"
+            android:src="@drawable/adhi"
             android:clickable="true"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/contributors"
+            android:text="@string/adhi"
             android:textSize="32sp"
             android:textAlignment="center"
             android:layout_alignParentBottom="true"
@@ -66,19 +68,20 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="24dp"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/border_shadow">
 
         <ImageView
             android:id="@+id/logout_admin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/exit"
+            android:src="@drawable/jebas"
             android:clickable="true"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/logout"
+            android:text="@string/jebastin"
             android:textSize="32sp"
             android:textAlignment="center"
             android:layout_alignParentBottom="true"

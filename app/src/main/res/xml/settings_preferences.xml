@@ -58,6 +58,11 @@
     <PreferenceCategory app:title="Misc">
 
         <Preference
+            android:key="@string/contributors"
+            android:title="@string/contributors"
+            android:icon="@drawable/ic_people_outline_black" />
+
+        <Preference
             android:key="@string/logout"
             android:title="@string/logout"
             android:icon="@drawable/ic_menu_logout"/>
