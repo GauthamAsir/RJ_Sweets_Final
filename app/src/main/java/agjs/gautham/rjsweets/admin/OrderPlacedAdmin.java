@@ -177,7 +177,7 @@ public class OrderPlacedAdmin extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=d");
+                                    Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=l");
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
                                     startActivity(mapIntent);
