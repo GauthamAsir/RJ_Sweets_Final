@@ -110,7 +110,7 @@ public class OrderDeliveredAdmin extends AppCompatActivity {
                     orderViewHolder.order_id_info.setTextColor(ContextCompat.getColor(OrderDeliveredAdmin.this,R.color.overlayBackground));
 
                     orderViewHolder.txtOrderRejectedInfo.setVisibility(View.VISIBLE);
-                    orderViewHolder.txtOrderRejectedInfo.setText(String.format("Delivered By :  %s",request.getPicked()));
+                    orderViewHolder.txtOrderRejectedInfo.setText(String.format("Delivered By :  %s",request.getPickedBy()));
 
                     orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
                         @Override
