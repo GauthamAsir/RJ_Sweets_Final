@@ -174,8 +174,9 @@ public class UpdateActivity extends AppCompatActivity {
         ArrayList<String> arrayList;
         arrayList = new ArrayList<>();
 
-        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
+        adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.listview_text, arrayList);
         listView.setAdapter(adapter);
+
 
         for (int i=0; i<changelogs.length; i++){
 
