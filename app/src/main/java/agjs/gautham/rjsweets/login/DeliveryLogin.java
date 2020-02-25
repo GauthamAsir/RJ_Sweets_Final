@@ -51,6 +51,7 @@ public class DeliveryLogin extends AppCompatActivity {
                 .setContext(this)
                 .setCancelable(false)
                 .setMessage("Please wait ...")
+                .setTheme(R.style.DialogCustom)
                 .build();
 
         TextView headline1 = findViewById(R.id.headline1_delivery);

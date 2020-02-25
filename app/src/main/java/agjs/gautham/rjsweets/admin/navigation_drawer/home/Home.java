@@ -47,7 +47,6 @@ import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.SweetsDetail;
 import agjs.gautham.rjsweets.admin.ViewHolder.MenuViewHolderAdmin;
-import agjs.gautham.rjsweets.user.navigation_drawer.home_user.MenuViewHolder;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
@@ -187,6 +186,7 @@ public class Home extends Fragment {
                     .setContext(getActivity())
                     .setCancelable(false)
                     .setMessage("Uploading...")
+                    .setTheme(R.style.DialogCustom)
                     .build();
 
             dialog.show();
@@ -339,6 +339,7 @@ public class Home extends Fragment {
                 .setContext(getActivity())
                 .setCancelable(false)
                 .setMessage("Loading Sweets For You...")
+                .setTheme(R.style.DialogCustom)
                 .build();
 
         dlg.show();

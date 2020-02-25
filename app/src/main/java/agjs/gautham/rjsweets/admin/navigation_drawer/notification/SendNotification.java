@@ -44,6 +44,7 @@ public class SendNotification extends Fragment {
                 .setContext(getActivity())
                 .setCancelable(false)
                 .setMessage("Sending Notification ...")
+                .setTheme(R.style.DialogCustom)
                 .build();
 
         title = root.findViewById(R.id.notification_title);

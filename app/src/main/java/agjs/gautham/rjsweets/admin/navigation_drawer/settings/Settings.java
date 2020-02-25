@@ -11,16 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.UpdateActivity;
-import agjs.gautham.rjsweets.admin.DashboardAdmin;
 import agjs.gautham.rjsweets.login.Login;
-import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
@@ -50,6 +45,7 @@ public class Settings extends Fragment {
                         .setContext(getActivity())
                         .setCancelable(false)
                         .setMessage("Logging You Out !...")
+                        .setTheme(R.style.DialogCustom)
                         .build();
 
                 final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());

@@ -34,8 +34,6 @@ public class DashboardAdmin extends AppCompatActivity
     NavigationView navigationView;
     private long back_pressed;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +104,7 @@ public class DashboardAdmin extends AppCompatActivity
                         .setContext(DashboardAdmin.this)
                         .setCancelable(false)
                         .setMessage("Logging You Out !...")
+                        .setTheme(R.style.DialogCustom)
                         .build();
 
                 final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
