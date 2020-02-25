@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,14 +26,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +41,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.User;
@@ -58,15 +53,10 @@ import io.paperdb.Paper;
 public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private TextInputLayout sEmail_Phone, sPass, reset_email, otp_code;
+    private TextInputLayout sEmail_Phone, sPass, reset_email;
 
-    private Button forgotPass, login_user_otp;
-    private CheckBox remember;
+    private Button forgotPass;
     private long back_pressed;
-    private String verificationId;
-
-    private String otp_mail;
-    private String otp_pass;
 
     int phone_flag = 0;
 
@@ -103,12 +93,8 @@ public class Login extends AppCompatActivity {
         LinearLayout c1 = findViewById(R.id.email_container);
         c1.startAnimation(fadein);
 
-        remember = findViewById(R.id.remember);
-
         sEmail_Phone = findViewById(R.id.signInEmail);
         sPass = findViewById(R.id.signInPass);
-
-        login_user_otp = findViewById(R.id.login_user_otp);
 
         forgotPass = findViewById(R.id.forgot_pass);
         forgotPass.setOnClickListener(new View.OnClickListener() {
@@ -160,12 +146,11 @@ public class Login extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     toast("Please Check Your E-Mail");
-                                                    login_user_otp.setVisibility(View.GONE);
                                                     phone_flag = 1;
                                                 }
                                             }
                                         });
-                                Snackbar.make(login,"Note: Please Login with E-Mail after changing Password",Snackbar.LENGTH_LONG).show();
+                                snack(login,"Note: Please Login with E-Mail after changing Password");
 
                                 if (pdialog2.isShowing()){
                                     pdialog2.dismiss();
@@ -245,19 +230,18 @@ public class Login extends AppCompatActivity {
                                     }
                                 });
 
-                                if (remember.isChecked()){
-                                    Paper.book().destroy();
-                                    Paper.book().write(Common.loginType,"0");
-                                    Paper.book().write(Common.USER_EMAIL,mail);
-                                    Paper.book().write(Common.USER_PASS,pass);
-                                }
+                                Paper.book().destroy();
+                                Paper.book().write(Common.loginType,"0");
+                                Paper.book().write(Common.USER_EMAIL,mail);
+                                Paper.book().write(Common.USER_PASS,pass);
+                                Paper.book().write("sub_new","true");
+
+                                FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
 
                                 if (pdialog.isShowing()){
                                     pdialog.dismiss();
                                 }
 
-                                Paper.book().write("sub_new","true");
-                                FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
                                 Intent intent = new Intent(Login.this, DashboardUser.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 Common.loginType = "0";
@@ -270,11 +254,9 @@ public class Login extends AppCompatActivity {
                                 if (pdialog.isShowing()){
                                     pdialog.dismiss();
                                 }
-                                if (remember.isChecked()){
-                                    Paper.book().destroy();
-                                    Paper.book().delete(Common.USER_EMAIL);
-                                    Paper.book().delete(Common.USER_PASS);
-                                }
+                                Paper.book().destroy();
+                                Paper.book().delete(Common.USER_EMAIL);
+                                Paper.book().delete(Common.USER_PASS);
                                 Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -284,7 +266,7 @@ public class Login extends AppCompatActivity {
                 if (pdialog.isShowing()){
                     pdialog.dismiss();
                 }
-                Toast.makeText(Login.this, "Please Enter Valid Data", Toast.LENGTH_LONG).show();
+                toast("Please Enter Valid Data");
             }
 
         }else {
@@ -321,12 +303,10 @@ public class Login extends AppCompatActivity {
                                                 pdialog.dismiss();
                                             }
 
-                                            if (remember.isChecked()){
-                                                Paper.book().destroy();
-                                                Paper.book().write(Common.loginType,"0");
-                                                Paper.book().write(Common.USER_EMAIL,mail);
-                                                Paper.book().write(Common.USER_PASS,pass);
-                                            }
+                                            Paper.book().destroy();
+                                            Paper.book().write(Common.loginType,"0");
+                                            Paper.book().write(Common.USER_EMAIL,mail);
+                                            Paper.book().write(Common.USER_PASS,pass);
 
                                             Common.loginType = "0";
                                             Common.USER_Phone = mail;
@@ -344,11 +324,9 @@ public class Login extends AppCompatActivity {
                                             if (pdialog.isShowing()){
                                                 pdialog.dismiss();
                                             }
-                                            if (remember.isChecked()){
-                                                Paper.book().delete(Common.USER_EMAIL);
-                                                Paper.book().delete(Common.USER_PASS);
-                                                Paper.book().destroy();
-                                            }
+                                            Paper.book().delete(Common.USER_EMAIL);
+                                            Paper.book().delete(Common.USER_PASS);
+                                            Paper.book().destroy();
                                             Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -357,13 +335,14 @@ public class Login extends AppCompatActivity {
                                 if (pdialog.isShowing()){
                                     pdialog.dismiss();
                                 }
-                                Snackbar.make(view, "Wrong Password", Snackbar.LENGTH_LONG).show();
+                                snack(view,"Wrong Password");
+
                             }
                         } else {
                             if (pdialog.isShowing()){
                                 pdialog.dismiss();
                             }
-                            Snackbar.make(view, "User doesnt exists", Snackbar.LENGTH_LONG).show();
+                            snack(view,"User doesnt exists");
                         }
                     }
 
@@ -373,189 +352,10 @@ public class Login extends AppCompatActivity {
                     }
                 });
             } else {
-                Snackbar.make(view, "Enter Valid Details", Snackbar.LENGTH_LONG).show();
+                snack(view,"Enter Valid Details");
             }
         }
 
-
-    }
-
-    public void login_otp(View view){
-
-        if (validatePhone()){
-
-            final AlertDialog dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setCancelable(false)
-                    .setMessage("Just a sec")
-                    .setTheme(R.style.DialogCustom)
-                    .build();
-
-            dialog.show();
-
-            final String phone = sEmail_Phone.getEditText().getText().toString();
-            final String spno = "+91" + sEmail_Phone.getEditText().getText().toString();
-
-            //Init Firebase
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference databse_user = database.getReference("User");
-
-            databse_user.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.child(phone).exists()){
-
-                        dialog.show();
-
-                        User user = dataSnapshot.child(phone).getValue(User.class);
-
-                        otp_mail = user.getEmail();
-                        otp_pass = user.getPassword();
-
-                        final View exp = LayoutInflater.from(Login.this).inflate(R.layout.otp_activity,null);
-
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
-                        alertDialog.setTitle("Verification");
-                        alertDialog.setMessage("Enter Otp Sent to your number");
-                        alertDialog.setIcon(R.drawable.ic_phone_iphone);
-                        alertDialog.setView(exp);
-                        alertDialog.setCancelable(false);
-
-                        otp_code = exp.findViewById(R.id.otp_verify);
-
-                        alertDialog.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        });
-                        final AlertDialog dialog = alertDialog.create();
-                        dialog.show();
-
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                dialog.show();
-                                String code = otp_code.getEditText().getText().toString();
-
-                                if (!code.isEmpty()){
-                                    verifyCode(code);
-                                }
-
-                            }
-                        });
-
-                        sendVerificationCode(spno);
-                    }else {
-                        dialog.dismiss();
-                        toast("User doesn't exists");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    }
-
-    private void sendVerificationCode(String number){
-
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                number,
-                60,
-                TimeUnit.SECONDS,
-                TaskExecutors.MAIN_THREAD,
-                mCallBack
-        );
-    }
-
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
-            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-            verificationId = s;
-        }
-
-        @Override
-        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            String code = phoneAuthCredential.getSmsCode();
-
-            otp_code.getEditText().setText(code);
-
-            if (code != null){
-                verifyCode(code);
-            }
-        }
-
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    };
-
-    private void verifyCode(String code){
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signinwithCredential(credential);
-    }
-
-    private void signinwithCredential(PhoneAuthCredential credential){
-
-        final AlertDialog dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setCancelable(false)
-                .setMessage("Just a sec")
-                .setTheme(R.style.DialogCustom)
-                .build();
-
-        dialog.show();
-
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if (task.isSuccessful()){
-
-                            if (otp_mail!=null && otp_pass!=null) {
-
-                                mAuth.signInWithEmailAndPassword(otp_mail,otp_pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                        Common.USER_Phone = sEmail_Phone.getEditText().getText().toString();
-                                        Intent intent = new Intent(Login.this, DashboardUser.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                        Common.intentOpenAnimation(Login.this);
-                                        finish();
-                                        if (dialog.isShowing()){
-                                            dialog.dismiss();
-                                        }
-
-                                    }
-                                });
-
-                            }
-
-                        } else {
-                            if (pdialog.isShowing()){
-                                pdialog.dismiss();
-                            }
-
-                            if (dialog.isShowing()){
-                                dialog.dismiss();
-                            }
-                            toast("Login Failed");
-                        }
-                    }
-                });
     }
 
     //Email Validation
@@ -667,7 +467,19 @@ public class Login extends AppCompatActivity {
     }
 
     private void toast(String msg){
-        Toast.makeText(Login.this,msg,Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(Login.this,msg,Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
+    }
+
+    private void snack(View view, String msg){
+
+        Snackbar snackbar = Snackbar.make(view,msg,Snackbar.LENGTH_LONG);
+        View snackView = snackbar.getView();
+        TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
+        snackbar.show();
+
     }
 
     @Override
@@ -675,20 +487,13 @@ public class Login extends AppCompatActivity {
 
         View view = findViewById(R.id.login_container);
 
-        //Snackbar
-        Snackbar snackbar = Snackbar.make(view, "Press Again to Exit", Snackbar.LENGTH_SHORT);
-        View snackView = snackbar.getView();
-        TextView tv = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
-        tv.setTextColor(Color.WHITE);
-
         if (back_pressed + 2000 > System.currentTimeMillis()){
             finish();
             moveTaskToBack(true);
             System.exit(1);
             android.os.Process.killProcess(android.os.Process.myPid());
         }else {
-            snackbar.setText("Press Again to Exit");
-            snackbar.show();
+            snack(view,"Press Again to Exit");
             back_pressed = System.currentTimeMillis();
         }
     }
