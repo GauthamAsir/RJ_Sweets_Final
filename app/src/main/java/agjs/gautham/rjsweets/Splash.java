@@ -141,6 +141,7 @@ public class Splash extends AppCompatActivity {
                     progressBar.setProgress(100);
 
                     Common.USER_Phone = phone;
+                    Common.Name = dataSnapshot.child(phone).child("name").getValue(String.class);
                     Toast.makeText(Splash.this,"Signed In",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Splash.this, DashboardDelivery.class);
                     Common.loginType = "2";

@@ -22,7 +22,7 @@ public class Common {
     public static String USER_EMAIL = "Email";
     public static String USER_PASS = "Pass";
     public static String USER_Phone = "123";
-    public static String Name = "123";
+    public static String Name = "RJ Sweets Staff";
 
     public static String topicName = "News";
 
