@@ -225,6 +225,7 @@ public class UpdateActivity extends AppCompatActivity {
             pgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    Toast.makeText(UpdateActivity.this,"Download Canceled",Toast.LENGTH_SHORT).show();
                     downloadTask.cancel(true);
                     pgDialog.dismiss();
                 }
