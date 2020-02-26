@@ -61,6 +61,7 @@ public class UpdateActivity extends AppCompatActivity {
     private String changelog;
     private String app_name;
     private String cureent_version;
+    private TextView percent_pg;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +87,8 @@ public class UpdateActivity extends AppCompatActivity {
         View progressBar = LayoutInflater.from(UpdateActivity.this).inflate(R.layout.progress_bar, null);
         pg = progressBar.findViewById(R.id.progressBar);
 
+        percent_pg = progressBar.findViewById(R.id.percent_pg);
+
         android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(UpdateActivity.this);
         alertDialog.setTitle("Downloading...");
         alertDialog.setIcon(R.drawable.ic_phone_iphone);
@@ -98,7 +101,21 @@ public class UpdateActivity extends AppCompatActivity {
         cureent_version = getAppVersion(UpdateActivity.this);
         status_version.setText("v"+cureent_version);
 
+        requestPermission();
         checkForUpdate();
+
+    }
+
+    private void requestPermission() {
+
+        if (ContextCompat.checkSelfPermission(UpdateActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+        }else {
+            ActivityCompat.requestPermissions(UpdateActivity.this,new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+            },1);
+        }
 
     }
 
@@ -188,6 +205,7 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     public void bt_check_agian_update(View view) {
+        requestPermission();
         checkForUpdate();
     }
 
@@ -236,6 +254,7 @@ public class UpdateActivity extends AppCompatActivity {
             InputStream input = null;
             OutputStream output = null;
             HttpURLConnection connection = null;
+
             try {
                 URL url = new URL(sUrl[0]);
                 connection = (HttpURLConnection) url.openConnection();
@@ -302,6 +321,9 @@ public class UpdateActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
+
+            percent_pg.setText(String.valueOf(progress[0] + "%"));
+
             // if we get here, length is known, now set indeterminate to false
             pg.setIndeterminate(false);
             pg.setMax(100);
