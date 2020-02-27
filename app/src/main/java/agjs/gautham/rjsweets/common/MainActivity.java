@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.login.Login;
 
 public class MainActivity extends AppCompatActivity {

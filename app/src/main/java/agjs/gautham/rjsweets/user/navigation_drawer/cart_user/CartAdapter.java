@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
 

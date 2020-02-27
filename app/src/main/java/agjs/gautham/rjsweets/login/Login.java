@@ -42,10 +42,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.SignUp;
+import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.common.SignUp;
 import agjs.gautham.rjsweets.user.DashboardUser;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

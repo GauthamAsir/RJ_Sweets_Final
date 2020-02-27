@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import java.util.List;
 import agjs.gautham.rjsweets.Helper.GMailSender;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.Model.User;
+import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.Remote.RetroFitClient;
 

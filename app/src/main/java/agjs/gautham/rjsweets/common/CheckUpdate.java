@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import agjs.gautham.rjsweets.Model.AppUpdate;
+import agjs.gautham.rjsweets.R;
 
 public class CheckUpdate {
 

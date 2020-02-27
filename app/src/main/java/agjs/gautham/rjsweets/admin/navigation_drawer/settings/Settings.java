@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import agjs.gautham.rjsweets.Credits;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.UpdateActivity;
+import agjs.gautham.rjsweets.common.Credits;
+import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.login.Login;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

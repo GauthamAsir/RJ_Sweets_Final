@@ -40,13 +40,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.SweetsDetail;
 import agjs.gautham.rjsweets.admin.ViewHolder.MenuViewHolderAdmin;
+import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.common.SweetsDetail;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 

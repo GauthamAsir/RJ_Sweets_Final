@@ -24,10 +24,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import java.util.Objects;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.user.DashboardUser;
 import agjs.gautham.rjsweets.user.navigation_drawer.settings_user.SettingsActivity;
 import dmax.dialog.SpotsDialog;

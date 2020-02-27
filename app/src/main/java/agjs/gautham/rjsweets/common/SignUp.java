@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,6 +45,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import agjs.gautham.rjsweets.Model.User;
+import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.user.DashboardUser;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

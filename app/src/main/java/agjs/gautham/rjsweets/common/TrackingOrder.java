@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -20,6 +20,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import agjs.gautham.rjsweets.R;
 
 public class TrackingOrder extends FragmentActivity implements OnMapReadyCallback{
 

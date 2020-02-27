@@ -19,15 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.ViewHolder.ShipperViewHolder;
+import agjs.gautham.rjsweets.common.Common;
 import dmax.dialog.SpotsDialog;
 
 public class Shippers extends Fragment {

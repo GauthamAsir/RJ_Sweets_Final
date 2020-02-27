@@ -15,12 +15,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.MyResponse;
 import agjs.gautham.rjsweets.Model.Notification;
 import agjs.gautham.rjsweets.Model.Sender;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
+import agjs.gautham.rjsweets.common.Common;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -28,10 +28,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.user.navigation_drawer.order_user.OrderDetailAdapter;
 
 public class PlaceOrder extends AppCompatActivity {

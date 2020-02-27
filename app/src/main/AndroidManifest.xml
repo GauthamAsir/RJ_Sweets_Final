@@ -57,7 +57,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" /> <!-- Start of Delivery Activities -->
-        <activity android:name=".TrackingOrder" />
+        <activity android:name=".common.TrackingOrder" />
         <activity android:name=".delivery.DashboardDelivery" />
         <activity android:name=".login.DeliveryLogin" />
         <activity android:name=".delivery.ui.Home.OrderPicked" />
@@ -77,7 +77,7 @@
         <activity android:name=".admin.OrderSearchAdmin" /> <!-- End of Admin Activities -->
         <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
-        <activity android:name=".SweetsDetail" />
+        <activity android:name=".common.SweetsDetail" />
         <activity android:name=".user.PlaceOrder" />
         <activity android:name=".user.navigation_drawer.order_user.OrderDelivered" />
         <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />
@@ -86,10 +86,10 @@
         <activity android:name=".user.OrderPlaceStatus" /> <!-- End of User Activities -->
         <!-- Start of Common Activities -->
         <activity android:name=".login.Login" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".UpdateActivity"/>
-        <activity android:name=".Credits"/>
+        <activity android:name=".common.MainActivity" />
+        <activity android:name=".common.SignUp" />
+        <activity android:name=".common.UpdateActivity"/>
+        <activity android:name=".common.Credits"/>
         <activity
             android:name=".Splash"
             android:theme="@style/MainActivity">

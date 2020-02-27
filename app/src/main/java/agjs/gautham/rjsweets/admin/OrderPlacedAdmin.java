@@ -29,7 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.MyResponse;
 import agjs.gautham.rjsweets.Model.Notification;
 import agjs.gautham.rjsweets.Model.Request;
@@ -37,8 +36,9 @@ import agjs.gautham.rjsweets.Model.Sender;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
-import agjs.gautham.rjsweets.TrackingOrder;
 import agjs.gautham.rjsweets.admin.ViewHolder.OrderViewHolderAdmin;
+import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.common.TrackingOrder;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;

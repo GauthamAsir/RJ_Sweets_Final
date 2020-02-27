@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 
 public class Orders extends Fragment {
 

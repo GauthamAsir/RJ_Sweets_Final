@@ -40,13 +40,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.SweetsDetail;
+import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.common.SweetsDetail;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import dmax.dialog.SpotsDialog;
 

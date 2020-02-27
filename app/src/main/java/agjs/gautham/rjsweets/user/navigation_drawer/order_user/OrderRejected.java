@@ -23,9 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import dmax.dialog.SpotsDialog;
 
 public class OrderRejected extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

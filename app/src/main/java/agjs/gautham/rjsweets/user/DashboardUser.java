@@ -33,8 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.navigation_drawer.cart_user.Cart;
 import agjs.gautham.rjsweets.user.navigation_drawer.home_user.Home;

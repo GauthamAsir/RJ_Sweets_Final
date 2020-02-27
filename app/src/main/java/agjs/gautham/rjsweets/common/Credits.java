@@ -1,9 +1,11 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import agjs.gautham.rjsweets.R;
 
 public class Credits extends AppCompatActivity {
 

@@ -38,12 +38,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Helper.RecyclerItemTouchHelper;
 import agjs.gautham.rjsweets.Interface.RecyclerItemTouchHelperListener;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.user.PlaceOrder;
 import io.paperdb.Paper;
 

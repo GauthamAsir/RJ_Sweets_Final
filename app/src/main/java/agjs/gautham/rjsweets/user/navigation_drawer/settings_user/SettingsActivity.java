@@ -49,11 +49,11 @@ import com.mukesh.OtpView;
 
 import java.util.concurrent.TimeUnit;
 
-import agjs.gautham.rjsweets.Common;
-import agjs.gautham.rjsweets.Credits;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.UpdateActivity;
+import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.common.Credits;
+import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.login.Login;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

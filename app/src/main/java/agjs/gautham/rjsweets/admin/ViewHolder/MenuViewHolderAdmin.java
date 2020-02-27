@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 
 public class MenuViewHolderAdmin extends RecyclerView.ViewHolder implements View.OnClickListener,
         View.OnCreateContextMenuListener {

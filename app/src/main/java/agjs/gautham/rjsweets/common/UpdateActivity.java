@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.Manifest;
 import android.content.Context;
@@ -45,7 +45,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import agjs.gautham.rjsweets.BuildConfig;
 import agjs.gautham.rjsweets.Model.AppUpdate;
+import agjs.gautham.rjsweets.R;
 
 public class UpdateActivity extends AppCompatActivity {
 

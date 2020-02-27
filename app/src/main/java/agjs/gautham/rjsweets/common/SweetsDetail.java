@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets;
+package agjs.gautham.rjsweets.common;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,6 +42,7 @@ import java.util.List;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
 import agjs.gautham.rjsweets.user.PlaceOrder;
 import io.paperdb.Paper;

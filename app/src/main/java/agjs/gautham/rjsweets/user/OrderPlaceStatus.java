@@ -28,7 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.MyResponse;
 import agjs.gautham.rjsweets.Model.Notification;
@@ -38,6 +37,7 @@ import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
+import agjs.gautham.rjsweets.common.Common;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

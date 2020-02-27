@@ -20,10 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.DashboardAdmin;
+import agjs.gautham.rjsweets.common.Common;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 

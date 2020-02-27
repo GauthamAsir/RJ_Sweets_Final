@@ -21,9 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.UserDelivery;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.delivery.DashboardDelivery;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;

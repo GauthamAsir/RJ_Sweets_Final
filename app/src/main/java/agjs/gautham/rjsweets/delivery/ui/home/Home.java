@@ -16,9 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import agjs.gautham.rjsweets.Common;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
+import agjs.gautham.rjsweets.common.Common;
 
 public class Home extends Fragment {
 
