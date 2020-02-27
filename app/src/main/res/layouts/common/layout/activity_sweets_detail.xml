@@ -147,13 +147,14 @@
 
                         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
                             android:layout_width="120dp"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:id="@+id/number_button_user"
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginBottom="18dp"
                             app:textSize="8sp"
-                            app:backGroundColor="@color/colorPrimary"
+                            app:backGroundColor="@color/brown"
+                            app:textColor="@color/white"
                             app:initialNumber="1"
                             app:finalNumber="20">
 
@@ -162,10 +163,13 @@
                         <Button
                             android:id="@+id/bt_buyNow_user"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:text="@string/buy_now"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="12dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="18dp"
                             android:textColor="@color/white"
                             android:background="@drawable/button_background"/>
 
