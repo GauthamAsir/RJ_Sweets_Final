@@ -2,12 +2,14 @@ package agjs.gautham.rjsweets.delivery.ui.Home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -147,11 +149,6 @@ public class OrderPicked extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=l");
-                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                    mapIntent.setPackage("com.google.android.apps.maps");
-                                    startActivity(mapIntent);
-
                                 }
                             });
 
@@ -167,10 +164,32 @@ public class OrderPicked extends AppCompatActivity {
                                 }
                             });
 
-                            alertDialog.create();
-                            alertDialog.show();
+                            AlertDialog alertDialog1 = alertDialog.create();
+                            alertDialog1.show();
 
+                            alertDialog1.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
+                                    PackageManager pm = OrderPicked.this.getPackageManager();
+
+                                    if (isPackageInstalled("com.google.android.apps.maps",pm)){
+
+                                        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=l");
+                                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                        mapIntent.setPackage("com.google.android.apps.maps");
+                                        startActivity(mapIntent);
+
+                                    }else {
+
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+                                        startActivity(intent);
+                                        Toast.makeText(OrderPicked.this,"Please Install Google Maps",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+                            });
                         }
                     });
 
@@ -197,6 +216,14 @@ public class OrderPicked extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 
     @Override
     public void onBackPressed() {
