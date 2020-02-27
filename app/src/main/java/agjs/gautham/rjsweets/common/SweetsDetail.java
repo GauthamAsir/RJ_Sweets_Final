@@ -202,73 +202,76 @@ public class SweetsDetail extends AppCompatActivity {
 
                             if (savedAddress != null){
 
-                                final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
-                                savedAddresBuilder.setTitle("Saved Address");
+                                if (!savedAddress.isEmpty()){
 
-                                final View view2 = LayoutInflater.from(SweetsDetail.this)
-                                        .inflate(R.layout.saved_address, null);
+                                    final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
+                                    savedAddresBuilder.setTitle("Saved Address");
 
-                                savedAddresBuilder.setView(view2);
+                                    final View view2 = LayoutInflater.from(SweetsDetail.this)
+                                            .inflate(R.layout.saved_address, null);
 
-                                TextView addrs = view2.findViewById(R.id.addrs);
-                                ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
-                                ImageView new_adrs = view2.findViewById(R.id.new_adrs);
-                                Button select_adrs = view2.findViewById(R.id.select_adrs);
+                                    savedAddresBuilder.setView(view2);
 
-                                String a = savedAddress.replaceAll("\\s+","");
-                                String address = a.replace(",",",\n");
-                                addrs.setText(address);
+                                    TextView addrs = view2.findViewById(R.id.addrs);
+                                    ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
+                                    ImageView new_adrs = view2.findViewById(R.id.new_adrs);
+                                    Button select_adrs = view2.findViewById(R.id.select_adrs);
 
-                                final AlertDialog alertDialog = savedAddresBuilder.create();
+                                    String a = savedAddress.replaceAll("\\s+","");
+                                    String address = a.replace(",",",\n");
+                                    addrs.setText(address);
 
-                                alertDialog.show();
+                                    final AlertDialog alertDialog = savedAddresBuilder.create();
 
-                                delete_addrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                                    alertDialog.show();
 
-                                        Paper.book().delete(Common.USER_ADDRESS_SAVED);
-                                        Paper.book().delete(Common.USER_SAVED_LATLNG);
-                                        alertDialog.dismiss();
+                                    delete_addrs.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                    }
-                                });
-
-                                new_adrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        if (view1 != null){
-
-                                            ViewGroup parent = (ViewGroup) view1.getParent();
-                                            if (parent!= null){
-                                                parent.removeView(view1);
-                                            }
+                                            Paper.book().delete(Common.USER_ADDRESS_SAVED);
+                                            Paper.book().delete(Common.USER_SAVED_LATLNG);
+                                            alertDialog.dismiss();
 
                                         }
+                                    });
 
-                                        builder.setView(view1);
-                                        buy_now(currentSweet.getPrice());
+                                    new_adrs.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                    }
-                                });
+                                            if (view1 != null){
 
-                                select_adrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                                                ViewGroup parent = (ViewGroup) view1.getParent();
+                                                if (parent!= null){
+                                                    parent.removeView(view1);
+                                                }
 
-                                        Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
-                                        placeOrder.putExtra("Price",currentSweet.getPrice());
-                                        placeOrder.putExtra("Address",savedAddress);
-                                        placeOrder.putExtra("LatLng",savedLatlng);
+                                            }
 
-                                        alertDialog.dismiss();
-                                        startActivity(placeOrder);
-                                        Common.intentOpenAnimation(SweetsDetail.this);
+                                            builder.setView(view1);
+                                            buy_now(currentSweet.getPrice());
 
-                                    }
-                                });
+                                        }
+                                    });
 
+                                    select_adrs.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
+                                            placeOrder.putExtra("Price",currentSweet.getPrice());
+                                            placeOrder.putExtra("Address",savedAddress);
+                                            placeOrder.putExtra("LatLng",savedLatlng);
+
+                                            alertDialog.dismiss();
+                                            startActivity(placeOrder);
+                                            Common.intentOpenAnimation(SweetsDetail.this);
+
+                                        }
+                                    });
+
+                                }
                             }
                             else{
 
@@ -375,22 +378,40 @@ public class SweetsDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (enter_address!=null){
+                String ad = enter_address.getText().toString();
 
-                    Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
-                    placeOrder.putExtra("Price",price);
-                    placeOrder.putExtra("Address",enter_address.getText().toString());
-                    placeOrder.putExtra("LatLng",latlng);
+                if (latlng != null){
 
-                    if (checkBox.isChecked()){
+                    if (!ad.isEmpty()){
 
-                        Paper.book().write(Common.USER_ADDRESS_SAVED,enter_address.getText().toString());
-                        Paper.book().write(Common.USER_SAVED_LATLNG,latlng);
+                        Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
+                        placeOrder.putExtra("Price",price);
+                        placeOrder.putExtra("Address",enter_address.getText().toString());
+                        placeOrder.putExtra("LatLng",latlng);
+
+                        if (latlng!=null){
+
+                            if (!latlng.isEmpty()){
+
+                                if (checkBox.isChecked()){
+
+                                    Paper.book().write(Common.USER_ADDRESS_SAVED,enter_address.getText().toString());
+                                    Paper.book().write(Common.USER_SAVED_LATLNG,latlng);
+                                }
+
+                            }
+
+                        }
+
+                        alertDialog.dismiss();
+                        startActivity(placeOrder);
+                        Common.intentOpenAnimation(SweetsDetail.this);
+
                     }
 
-                    alertDialog.dismiss();
-                    startActivity(placeOrder);
-                    Common.intentOpenAnimation(SweetsDetail.this);
+                }else {
+
+                    enter_address.setError("Enter Valid Address");
 
                 }
 
