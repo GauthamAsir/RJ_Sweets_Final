@@ -125,8 +125,7 @@ public class OrderDetail extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsActivity.SettingsFragment()).commit();
-                                getSupportActionBar().setTitle(R.string.menu_settings);
+                                startActivity(new Intent(OrderDetail.this,SettingsActivity.class));
 
                             }
                         }).setNegativeButton("Ok", new DialogInterface.OnClickListener() {
