@@ -58,6 +58,8 @@ public class SignUp extends AppCompatActivity {
     private Button status1, status2, status3, status4;
     private Snackbar snackbar;
 
+    private AlertDialog alertDialog1;
+
     private String final_name, final_email, final_pass, final_pno;
 
     private FirebaseFirestore firestore;
@@ -145,9 +147,6 @@ public class SignUp extends AppCompatActivity {
 
                 String phoneNumber = "+" + "91" + final_pno;
                 sendVerificationCode(phoneNumber);
-                if (dialog.isShowing())
-                    dialog.dismiss();
-                showAlertDialog();
             }
 
         }else {
@@ -219,6 +218,9 @@ public class SignUp extends AppCompatActivity {
                                                     Paper.book().write(Common.USER_EMAIL,semail);
                                                     Paper.book().write(Common.USER_PASS,spass1);
                                                     Paper.book().write(Common.loginType,"0");
+                                                    Common.intentOpenAnimation(SignUp.this);
+                                                    alertDialog1.dismiss();
+                                                    finish();
                                                 }else {
                                                     if (dialog.isShowing()){
                                                         dialog.dismiss();
@@ -246,7 +248,6 @@ public class SignUp extends AppCompatActivity {
                 });
     }
 
-
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -254,6 +255,7 @@ public class SignUp extends AppCompatActivity {
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             verificationId = s;
+            showAlertDialog();
         }
 
         @Override
@@ -266,10 +268,11 @@ public class SignUp extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
+            if (dialog.isShowing())
+                dialog.dismiss();
             Toast.makeText(SignUp.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
-
 
     private void showAlertDialog() {
 
@@ -296,7 +299,9 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-        final AlertDialog alertDialog1 = alertDialog.create();
+        alertDialog1 = alertDialog.create();
+        if (dialog.isShowing())
+            dialog.dismiss();
         alertDialog1.show();
 
         alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
