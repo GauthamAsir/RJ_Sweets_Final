@@ -111,7 +111,11 @@ public class OrderRejectedAdmin extends AppCompatActivity {
                     orderViewHolder.order_id_info.setTextColor(ContextCompat.getColor(OrderRejectedAdmin.this,R.color.overlayBackground));
 
                     orderViewHolder.txtOrderRejectedInfo.setVisibility(View.VISIBLE);
-                    orderViewHolder.txtOrderRejectedInfo.setText(String.format("Rejected By :  %s",request.getPickedBy()));
+
+                    if (request.getPickedBy().equals("0"))
+                        orderViewHolder.txtOrderRejectedInfo.setText("Cancelled By User");
+                    else
+                        orderViewHolder.txtOrderRejectedInfo.setText(String.format("Rejected By :  %s",request.getPickedBy()));
 
                     orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -127,26 +131,6 @@ public class OrderRejectedAdmin extends AppCompatActivity {
                     if (dialog.isShowing()){
                         dialog.dismiss();
                     }
-
-                    //orderViewHolder.btnedit.setText("Reason");
-
-                    /*orderViewHolder.btnedit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderRejectedAdmin.this)
-                                    .setMessage(request.getReason())
-                                    .setCancelable(false)
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                    });
-                    orderViewHolder.btndirection.setVisibility(View.GONE);*/
 
                 }else {
                     orderViewHolder.itemView.setVisibility(View.GONE);
