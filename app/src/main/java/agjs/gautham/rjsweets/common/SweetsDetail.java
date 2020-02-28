@@ -36,7 +36,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import agjs.gautham.rjsweets.Database.Database;
@@ -181,112 +185,46 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View view) {
                         if (mUser != null) {
 
-                            builder.setTitle("Find Places");
-                            builder.setCancelable(false);
-                            builder.setView(view1);
-                            builder.setIcon(R.drawable.ic_place_black_24dp);
+                            Date dt = Calendar.getInstance().getTime();
+                            String pattern = "HH:mm a";
+                            SimpleDateFormat timeFormat = new SimpleDateFormat(pattern);
+                            String orderTime = timeFormat.format(dt);
 
-                            final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
-                            final String savedLatlng = Paper.book().read(Common.USER_SAVED_LATLNG);
+                            String startTime = "8:00 am";
 
-                            SweetOrder sweetOrder1 = new SweetOrder(
-                                    phone,
-                                    sweetId,
-                                    currentSweet.getName(),
-                                    numberButton.getNumber(),
-                                    currentSweet.getPrice(),
-                                    currentSweet.getDiscount(),
-                                    currentSweet.getImage());
+                            try {
+                                Date date1 = timeFormat.parse(orderTime);
+                                Date date2 = timeFormat.parse(startTime);
 
-                            Common.list.add(sweetOrder1);
+                                if (date1.before(date2)){
 
-                            if (savedAddress != null){
+                                    AlertDialog.Builder warn = new AlertDialog.Builder(SweetsDetail.this);
+                                    warn.setIcon(R.drawable.ic_warning_black_24dp);
+                                    warn.setTitle("Warning");
+                                    warn.setMessage("We wont deliver Orders between 12:00 am to 8:00 am, still you can place your Order. Your " +
+                                            "Order will be delivered between working time");
 
-                                if (!savedAddress.isEmpty()){
-
-                                    final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
-                                    savedAddresBuilder.setTitle("Saved Address");
-
-                                    final View view2 = LayoutInflater.from(SweetsDetail.this)
-                                            .inflate(R.layout.saved_address, null);
-
-                                    savedAddresBuilder.setView(view2);
-
-                                    TextView addrs = view2.findViewById(R.id.addrs);
-                                    ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
-                                    ImageView new_adrs = view2.findViewById(R.id.new_adrs);
-                                    Button select_adrs = view2.findViewById(R.id.select_adrs);
-
-                                    String a = savedAddress.replaceAll("\\s+","");
-                                    String address = a.replace(",",",\n");
-                                    addrs.setText(address);
-
-                                    final AlertDialog alertDialog = savedAddresBuilder.create();
-
-                                    alertDialog.show();
-
-                                    delete_addrs.setOnClickListener(new View.OnClickListener() {
+                                    warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(View v) {
-
-                                            Paper.book().delete(Common.USER_ADDRESS_SAVED);
-                                            Paper.book().delete(Common.USER_SAVED_LATLNG);
-                                            alertDialog.dismiss();
-
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            addrsDialog();
                                         }
                                     });
 
-                                    new_adrs.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
+                                    AlertDialog dialog = warn.create();
+                                    dialog.show();
 
-                                            if (view1 != null){
+                                }else {
 
-                                                ViewGroup parent = (ViewGroup) view1.getParent();
-                                                if (parent!= null){
-                                                    parent.removeView(view1);
-                                                }
-
-                                            }
-
-                                            builder.setView(view1);
-                                            buy_now(currentSweet.getPrice());
-
-                                        }
-                                    });
-
-                                    select_adrs.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
-                                            placeOrder.putExtra("Price",currentSweet.getPrice());
-                                            placeOrder.putExtra("Address",savedAddress);
-                                            placeOrder.putExtra("LatLng",savedLatlng);
-
-                                            alertDialog.dismiss();
-                                            startActivity(placeOrder);
-                                            Common.intentOpenAnimation(SweetsDetail.this);
-
-                                        }
-                                    });
-
-                                }
-                            }
-                            else{
-
-                                if (view1 != null){
-
-                                    ViewGroup parent = (ViewGroup) view1.getParent();
-                                    if (parent!= null){
-                                        parent.removeView(view1);
-                                    }
+                                    addrsDialog();
 
                                 }
 
-                                buy_now(currentSweet.getPrice());
-
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
+
 
                         } else {
                             Toast.makeText(SweetsDetail.this, "You Need to be Logged In !", Toast.LENGTH_LONG).show();
@@ -315,6 +253,117 @@ public class SweetsDetail extends AppCompatActivity {
                 Toast.makeText(SweetsDetail.this,"Please Check Your Internet Connection !", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void addrsDialog() {
+
+        builder.setTitle("Find Places");
+        builder.setCancelable(false);
+        builder.setView(view1);
+        builder.setIcon(R.drawable.ic_place_black_24dp);
+
+        final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
+        final String savedLatlng = Paper.book().read(Common.USER_SAVED_LATLNG);
+
+        SweetOrder sweetOrder1 = new SweetOrder(
+                phone,
+                sweetId,
+                currentSweet.getName(),
+                numberButton.getNumber(),
+                currentSweet.getPrice(),
+                currentSweet.getDiscount(),
+                currentSweet.getImage());
+
+        Common.list.add(sweetOrder1);
+
+        if (savedAddress != null){
+
+            if (!savedAddress.isEmpty()){
+
+                final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(SweetsDetail.this);
+                savedAddresBuilder.setTitle("Saved Address");
+
+                final View view2 = LayoutInflater.from(SweetsDetail.this)
+                        .inflate(R.layout.saved_address, null);
+
+                savedAddresBuilder.setView(view2);
+
+                TextView addrs = view2.findViewById(R.id.addrs);
+                ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
+                ImageView new_adrs = view2.findViewById(R.id.new_adrs);
+                Button select_adrs = view2.findViewById(R.id.select_adrs);
+
+                String a = savedAddress.replaceAll("\\s+","");
+                String address = a.replace(",",",\n");
+                addrs.setText(address);
+
+                final AlertDialog alertDialog = savedAddresBuilder.create();
+
+                alertDialog.show();
+
+                delete_addrs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Paper.book().delete(Common.USER_ADDRESS_SAVED);
+                        Paper.book().delete(Common.USER_SAVED_LATLNG);
+                        alertDialog.dismiss();
+
+                    }
+                });
+
+                new_adrs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (view1 != null){
+
+                            ViewGroup parent = (ViewGroup) view1.getParent();
+                            if (parent!= null){
+                                parent.removeView(view1);
+                            }
+
+                        }
+
+                        builder.setView(view1);
+                        buy_now(currentSweet.getPrice());
+
+                    }
+                });
+
+                select_adrs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
+                        placeOrder.putExtra("Price",currentSweet.getPrice());
+                        placeOrder.putExtra("Address",savedAddress);
+                        placeOrder.putExtra("LatLng",savedLatlng);
+
+                        alertDialog.dismiss();
+                        startActivity(placeOrder);
+                        Common.intentOpenAnimation(SweetsDetail.this);
+
+                    }
+                });
+
+            }
+        }
+        else{
+
+            if (view1 != null){
+
+                ViewGroup parent = (ViewGroup) view1.getParent();
+                if (parent!= null){
+                    parent.removeView(view1);
+                }
+
+            }
+
+            buy_now(currentSweet.getPrice());
+
+        }
+
     }
 
     private void buy_now(final String price) {
