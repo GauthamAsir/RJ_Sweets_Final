@@ -143,17 +143,19 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
 
                         <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                            android:layout_width="120dp"
+                            android:layout_width="100dp"
                             android:layout_height="40dp"
                             android:id="@+id/number_button_user"
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginBottom="18dp"
-                            app:textSize="8sp"
+                            app:textSize="6sp"
                             app:backGroundColor="@color/brown"
+                            android:layout_centerVertical="true"
                             app:textColor="@color/white"
                             app:initialNumber="1"
                             app:finalNumber="20">
@@ -165,7 +167,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:text="@string/buy_now"
+                            android:textSize="14sp"
+                            android:padding="6dp"
                             android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
                             android:layout_marginEnd="12dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="8dp"
