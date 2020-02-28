@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +33,8 @@ public class Shippers extends Fragment {
 
     private RecyclerView recycler_menu;
     private DatabaseReference shippers;
+
+    private FloatingActionButton addShipper;
 
     AlertDialog.Builder alertDialog;
 
@@ -57,10 +60,19 @@ public class Shippers extends Fragment {
                 .build();
 
         recycler_menu = root.findViewById(R.id.shippers_list);
+        addShipper = root.findViewById(R.id.add_shipper);
 
         recycler_menu.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recycler_menu.setLayoutManager(layoutManager);
+
+        addShipper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddShippers()).commit();
+                //getSupportActionBar().setTitle(R.string.menu_settings);
+            }
+        });
 
         adapter = new FirebaseRecyclerAdapter<agjs.gautham.rjsweets.Model.Shippers, ShipperViewHolder>(
                 agjs.gautham.rjsweets.Model.Shippers.class,

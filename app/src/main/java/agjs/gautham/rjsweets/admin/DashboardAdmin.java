@@ -18,12 +18,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import agjs.gautham.rjsweets.R;
-import agjs.gautham.rjsweets.admin.navigation_drawer.add_shippers.AddShippers;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.Home;
 import agjs.gautham.rjsweets.admin.navigation_drawer.notification.SendNotification;
 import agjs.gautham.rjsweets.admin.navigation_drawer.orders.Orders;
 import agjs.gautham.rjsweets.admin.navigation_drawer.settings.Settings;
 import agjs.gautham.rjsweets.admin.navigation_drawer.shippers.Shippers;
+import agjs.gautham.rjsweets.admin.navigation_drawer.sold_items.SoldItems;
 import agjs.gautham.rjsweets.login.Login;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
@@ -88,9 +88,9 @@ public class DashboardAdmin extends AppCompatActivity
                 getSupportActionBar().setTitle(R.string.shippers);
                 break;
 
-            case R.id.nav_add_shipper:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddShippers()).commit();
-                getSupportActionBar().setTitle(R.string.add_shipper);
+            case R.id.nav_soldItems:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SoldItems()).commit();
+                getSupportActionBar().setTitle(R.string.nav_soldItems);
                 break;
 
             case R.id.nav_settings:

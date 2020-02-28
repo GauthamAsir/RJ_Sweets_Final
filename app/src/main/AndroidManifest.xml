@@ -65,6 +65,7 @@
         <activity android:name=".delivery.ui.Home.OrderPlaced" />
         <activity android:name=".delivery.ui.Home.OrderRejected" />
         <activity android:name=".delivery.OrderDetailDelivery" /> <!-- End of Delivery Activities -->
+
         <!-- Start of Admin Activities -->
         <activity android:name=".admin.DashboardAdmin" />
         <activity android:name=".login.LoginAdmin" />
@@ -74,7 +75,10 @@
         <activity android:name=".admin.OrderDetailAdmin" />
         <activity android:name=".admin.RejectOrderReason" />
         <activity android:name=".admin.navigation_drawer.home.UpdateSweets" />
-        <activity android:name=".admin.OrderSearchAdmin" /> <!-- End of Admin Activities -->
+        <activity android:name=".admin.OrderSearchAdmin" />
+        <activity android:name=".admin.ViewSoldItems"/>
+        <!-- End of Admin Activities -->
+
         <!-- Start of User Activities -->
         <activity android:name=".user.DashboardUser" />
         <activity android:name=".common.SweetsDetail" />

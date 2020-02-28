@@ -21,9 +21,9 @@
             android:iconTint="@color/white"/>
 
         <item
-            android:id="@+id/nav_add_shipper"
+            android:id="@+id/nav_soldItems"
             android:icon="@drawable/ic_local_shipping_black_24dp"
-            android:title="@string/add_shipper"
+            android:title="@string/nav_soldItems"
             android:iconTint="@color/white"/>
 
         <item

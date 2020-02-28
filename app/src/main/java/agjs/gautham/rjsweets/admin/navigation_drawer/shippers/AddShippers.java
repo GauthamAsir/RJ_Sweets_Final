@@ -1,4 +1,4 @@
-package agjs.gautham.rjsweets.admin.navigation_drawer.add_shippers;
+package agjs.gautham.rjsweets.admin.navigation_drawer.shippers;
 
 import android.content.Context;
 import android.os.Bundle;
