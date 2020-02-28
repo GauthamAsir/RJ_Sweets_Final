@@ -43,7 +43,7 @@ public class OrderDetail extends AppCompatActivity {
     RecyclerView lstSweets;
     RecyclerView.LayoutManager layoutManager;
     FirebaseDatabase database;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, soldItems;
     Button cancelOrder;
 
     @Override
@@ -100,6 +100,7 @@ public class OrderDetail extends AppCompatActivity {
 
             database = FirebaseDatabase.getInstance();
             databaseReference = database.getReference("Requests");
+            soldItems = database.getReference("SoldItems");
 
             cancelOrder = findViewById(R.id.btnCancelOrder);
 
@@ -165,6 +166,8 @@ public class OrderDetail extends AppCompatActivity {
 
                                         Request request = dataSnapshot.child(order_id_value).getValue(Request.class);
 
+                                        final String order_date = request.getDate();
+
                                         List list = request.getSweetOrders();
 
                                         List<SweetOrder> myOrders = list;
@@ -175,9 +178,36 @@ public class OrderDetail extends AppCompatActivity {
 
                                             final String pid = sweetOrder.getProductId();
 
+                                            final String pname = sweetOrder.getProductName();
+
                                             final String Orderquantity = sweetOrder.getQuantity();
 
                                             final DatabaseReference databaseReference1 = database.getReference("Sweets");
+
+                                            soldItems.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                    if (dataSnapshot.child(order_date).child("Sweets").child(pname).exists()){
+
+                                                        String Aq = dataSnapshot.child(order_date).child("Sweets").child(pname)
+                                                                .getValue(String.class);
+
+                                                        if (Aq != null) {
+                                                            int q = Integer.parseInt(Aq) - Integer.parseInt(Orderquantity);
+                                                            soldItems.child(order_date).child("Sweets").child(pname)
+                                                                    .setValue(String.valueOf(q));
+                                                        }
+
+                                                    }
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
 
                                             databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override

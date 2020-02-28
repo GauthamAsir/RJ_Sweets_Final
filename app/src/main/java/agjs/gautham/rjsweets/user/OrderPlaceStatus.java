@@ -53,7 +53,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
     private List<SweetOrder> cart = new ArrayList<>();
 
-    private DatabaseReference requests, sweets;
+    private DatabaseReference requests, sweets, soldItemsDB;
 
     private APIService mService;
     private FirebaseUser mUser;
@@ -77,6 +77,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
         sweets = database.getReference("Sweets");
         requests = database.getReference("Requests");
+        soldItemsDB = database.getReference("SoldItems");
 
         parentLayout = findViewById(R.id.container_parent);
 
@@ -137,7 +138,22 @@ public class OrderPlaceStatus extends AppCompatActivity {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
         String orderTime = timeFormat.format(dt);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String orderDate = dateFormat.format(dt);
+        final String orderDate = dateFormat.format(dt);
+
+        //Assign SoldItem Date
+        soldItemsDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child(orderDate).exists()){
+                    soldItemsDB.child(orderDate).child("Sweets").push();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         Request request = new Request(
                 order_number,
@@ -159,6 +175,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
         for (int i=0; i<cart.size(); i++){
 
+            final String productName = cart.get(i).getProductName();
             final String id = cart.get(i).getProductId();
             final String orderQuantity = cart.get(i).getQuantity();
 
@@ -171,6 +188,31 @@ public class OrderPlaceStatus extends AppCompatActivity {
                     avaQuantity = dataSnapshot.child("avaQuantity").getValue(String.class);
 
                     if (Integer.parseInt(avaQuantity) >= Integer.parseInt(orderQuantity)){
+
+                        soldItemsDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                if (dataSnapshot.child(orderDate).child("Sweets").child(productName).exists()){
+
+                                    String Aq = dataSnapshot.child(orderDate).child("Sweets").child(productName).getValue(String.class);
+
+                                    int q = Integer.parseInt(Aq) + Integer.parseInt(orderQuantity);
+
+                                    soldItemsDB.child(orderDate).child("Sweets").child(productName).setValue(String.valueOf(q));
+                                }else {
+
+                                    soldItemsDB.child(orderDate).child("Sweets").child(productName).setValue(orderQuantity);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
 
                         finalQantity = Integer.parseInt(avaQuantity) - Integer.parseInt(orderQuantity);
                         Log.d("Final Quantity", String.valueOf(finalQantity));
@@ -191,6 +233,9 @@ public class OrderPlaceStatus extends AppCompatActivity {
 
         //Update to Firebase using milisec to key
         requests.child(order_number).setValue(request);
+
+        //Update Sold Items
+        soldItemsDB.child(orderDate).child("Requests").child(order_number).setValue(request);
 
         //Delete Cart After Updating
         if (checkCart){
