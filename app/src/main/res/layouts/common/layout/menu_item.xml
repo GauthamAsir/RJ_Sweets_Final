@@ -10,7 +10,7 @@
     app:cardCornerRadius="6dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/c1"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -20,20 +20,20 @@
             android:id="@+id/menu_image"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/menu_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Test"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:background="@color/overlayBackground"
-            android:gravity="center|start"
+            android:layout_alignParentBottom="true"
             android:textSize="24sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/menu_available_quantity"
