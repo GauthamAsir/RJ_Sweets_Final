@@ -19,10 +19,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import agjs.gautham.rjsweets.Model.AppUpdate;
 import agjs.gautham.rjsweets.admin.DashboardAdmin;
 import agjs.gautham.rjsweets.common.CheckUpdate;
 import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.common.MainActivity;
+import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.delivery.DashboardDelivery;
 import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.DashboardUser;
@@ -43,37 +45,69 @@ public class Splash extends AppCompatActivity {
         //Init Firebase
         database = FirebaseDatabase.getInstance();
 
-        //Check For App-Update
-        CheckUpdate.check_for_update(Splash.this);
-
         Paper.init(this);
 
-        String user = Paper.book().read(Common.USER_EMAIL);
-        String pwd = Paper.book().read(Common.USER_PASS);
-        String loginType = Paper.book().read(Common.loginType);
+        //Check For App-Update
+        CheckUpdate.check_for_update(Splash.this);
+        final String app_version =CheckUpdate.getAppVersion(Splash.this);
 
-        if (user != null && pwd != null){
+        DatabaseReference databaseReference = database.getReference("Updates");
 
-            if (!user.isEmpty() && !pwd.isEmpty()){
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if (loginType != null){
+                AppUpdate appUpdate = dataSnapshot.getValue(AppUpdate.class);
 
-                    if (loginType.equals("0"))
-                        logInUser(user, pwd);
+                Double update_version = appUpdate.getVersion();
+                Double appV = Double.parseDouble(app_version);
 
-                    if (loginType.equals("1"))
-                        logInAdmin(user,pwd);
+                if (appV<update_version){
 
-                    if (loginType.equals("2"))
-                        logInDelivery(user,pwd);
+                    progressBar.setProgress(100);
+                    startActivity(new Intent(Splash.this, UpdateActivity.class));
+                    Common.intentOpenAnimation(Splash.this);
+                    finish();
 
                 }else {
-                    defaultLogin();
+
+                    String user = Paper.book().read(Common.USER_EMAIL);
+                    String pwd = Paper.book().read(Common.USER_PASS);
+                    String loginType = Paper.book().read(Common.loginType);
+
+                    if (user != null && pwd != null){
+
+                        if (!user.isEmpty() && !pwd.isEmpty()){
+
+                            if (loginType != null){
+
+                                if (loginType.equals("0"))
+                                    logInUser(user, pwd);
+
+                                if (loginType.equals("1"))
+                                    logInAdmin(user,pwd);
+
+                                if (loginType.equals("2"))
+                                    logInDelivery(user,pwd);
+
+                            }else {
+                                defaultLogin();
+                            }
+                        }
+                    }else {
+                        defaultLogin();
+                    }
+
                 }
+
             }
-        }else {
-            defaultLogin();
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void defaultLogin(){
