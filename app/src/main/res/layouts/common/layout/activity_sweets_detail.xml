@@ -180,6 +180,19 @@
 
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/discount"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:padding="6dp"
+                        android:background="@drawable/border_shadow"
+                        android:layout_margin="6dp"
+                        android:backgroundTint="@android:color/holo_green_light"
+                        android:textColor="@color/white"/>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

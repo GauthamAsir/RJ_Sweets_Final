@@ -57,6 +57,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
 
         holder.bt_quantity.setNumber(listData.get(position).getQuantity());
 
+        if (!listData.get(position).getDiscount().equals("0")){
+
+            holder.discount_tv.setText(String.format("%s%% Discount Applied",listData.get(position).getDiscount()));
+            holder.discount_tv.setBackground(context.getResources().getDrawable(R.drawable.button_background_dark_green));
+
+        }else {
+
+            holder.discount_tv.setText("No Discount Applied");
+            holder.discount_tv.setBackground(context.getResources().getDrawable(R.drawable.button_background_dark_green));
+
+        }
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference sweets = database.getReference("Sweets");
         final List<String> q = new ArrayList<>();
@@ -88,9 +100,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 new Database(context).removeFromCart(sweetOrder.getProductId());
 
                 //Calculate Total Price
-                int total = 0;
+                double total = 0;
                 for (SweetOrder sweetOrder1 : listData) {
-                    total += (Integer.parseInt(sweetOrder1.getPrice())) * (Integer.parseInt(sweetOrder1.getQuantity()));
+
+                    String product_price = sweetOrder1.getPrice();
+                    String order_quan = sweetOrder1.getQuantity();
+                    String product_dis = sweetOrder1.getDiscount();
+
+                    int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+                    final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+                    final double dis_pirce = final_price - dis;
+
+                    total += dis_pirce;
                 }
                 Locale locale = new Locale("en", "IN");
                 NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
@@ -112,7 +134,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
                 int total = 0;
                 List<SweetOrder> orders = new Database(context).getCarts(Common.USER_Phone);
                 for (SweetOrder item : orders) {
-                    total += (Integer.parseInt(sweetOrder.getPrice())) * (Integer.parseInt(item.getQuantity()));
+
+                    String product_price = item.getPrice();
+                    String order_quan = item.getQuantity();
+                    String product_dis = item.getDiscount();
+
+                    int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+                    final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+                    final double dis_pirce = final_price - dis;
+
+                    total += dis_pirce;
                 }
                 Locale locale = new Locale("en", "IN");
                 NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
@@ -124,6 +156,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder>{
         Locale locale = new Locale("en", "IN");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         int price = (Integer.parseInt(listData.get(position).getPrice()));
+
         holder.txt_price.setText(fmt.format(price));
         holder.txt_cart_name.setText(listData.get(position).getProductName());
 

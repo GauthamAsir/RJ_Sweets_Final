@@ -53,7 +53,7 @@ import io.paperdb.Paper;
 
 public class SweetsDetail extends AppCompatActivity {
 
-    TextView sweet_name, sweet_price, sweet_description, outOfStock;
+    TextView sweet_name, sweet_price, sweet_description, outOfStock, discount;
     ImageView sweet_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton btnCart;
@@ -66,7 +66,7 @@ public class SweetsDetail extends AppCompatActivity {
 
     String latlng;
 
-    String sweetId="";
+    String sweetId="", dis;
     String phone = Common.USER_Phone;
     String avaQuantity="";
     String appType="";
@@ -117,6 +117,7 @@ public class SweetsDetail extends AppCompatActivity {
         sweet_name = findViewById(R.id.sweets_name_user);
         sweet_price = findViewById(R.id.sweets_price_user);
         sweet_image = findViewById(R.id.img_sweets_user);
+        discount = findViewById(R.id.discount);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing_user);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -276,6 +277,15 @@ public class SweetsDetail extends AppCompatActivity {
 
         Common.list.add(sweetOrder1);
 
+        String product_price = currentSweet.getPrice();
+        String order_quan = numberButton.getNumber();
+        String product_dis = currentSweet.getDiscount();
+
+        int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+        final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+        final double dis_pirce = final_price - dis;
+
         if (savedAddress != null){
 
             if (!savedAddress.isEmpty()){
@@ -326,7 +336,7 @@ public class SweetsDetail extends AppCompatActivity {
                         }
 
                         builder.setView(view1);
-                        buy_now(currentSweet.getPrice());
+                        buy_now(String.valueOf(dis_pirce));
 
                     }
                 });
@@ -336,7 +346,7 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View v) {
 
                         Intent placeOrder = new Intent(SweetsDetail.this, PlaceOrder.class);
-                        placeOrder.putExtra("Price",currentSweet.getPrice());
+                        placeOrder.putExtra("Price",String.valueOf(dis_pirce));
                         placeOrder.putExtra("Address",savedAddress);
                         placeOrder.putExtra("LatLng",savedLatlng);
 
@@ -360,7 +370,7 @@ public class SweetsDetail extends AppCompatActivity {
 
             }
 
-            buy_now(currentSweet.getPrice());
+            buy_now(String.valueOf(dis_pirce));
 
         }
 
@@ -378,6 +388,8 @@ public class SweetsDetail extends AppCompatActivity {
                 (getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment));
 
         autocompleteFragment.setPlaceFields(fields);
+        autocompleteFragment.setCountry("IN");
+        autocompleteFragment.setHint("Search Nearby Places");
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -469,7 +481,6 @@ public class SweetsDetail extends AppCompatActivity {
 
     }
 
-
     private void addToCart(){
 
         boolean isExists = new Database(getBaseContext()).checkSweetExists(sweetId, Common.USER_Phone);
@@ -508,6 +519,15 @@ public class SweetsDetail extends AppCompatActivity {
                 sweet_price.setText(currentSweet.getPrice());
                 sweet_name.setText(currentSweet.getName());
                 sweet_description.setText(currentSweet.getDescription());
+
+                if (!currentSweet.getDiscount().equals("0")){
+
+                    discount.setVisibility(View.VISIBLE);
+                    discount.setText(String.format("%s%% Discount Available",currentSweet.getDiscount()));
+                }else {
+                    discount.setVisibility(View.GONE);
+                }
+
             }
 
             @Override

@@ -237,6 +237,57 @@ public class Home extends Fragment {
                     Picasso.get().load(model.getImage())
                             .into(menuViewHolder.imageView);
 
+                    if (!model.getDiscount().equals("0")){
+
+                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                        switch (model.getDiscount()){
+
+                            case "10":
+                                Picasso.get().load(R.drawable.badge_10).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "20":
+                                Picasso.get().load(R.drawable.badge_20).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "30":
+                                Picasso.get().load(R.drawable.badge_30).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "40":
+                                Picasso.get().load(R.drawable.badge_40).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "50":
+                                Picasso.get().load(R.drawable.badge_50).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "60":
+                                Picasso.get().load(R.drawable.badge_60).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "70":
+                                Picasso.get().load(R.drawable.badge_70).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "80":
+                                Picasso.get().load(R.drawable.badge_80).into(menuViewHolder.discount_badge);
+                                break;
+
+                            case "90":
+                                Picasso.get().load(R.drawable.badge_90).into(menuViewHolder.discount_badge);
+                                break;
+
+                            default:
+                                menuViewHolder.discount_badge.setVisibility(View.GONE);
+                                break;
+
+                        }
+
+                    }else {
+                        menuViewHolder.discount_badge.setVisibility(View.GONE);
+                    }
+
                     if (dialog.isShowing()){
                         dialog.dismiss();
                     }
@@ -261,6 +312,7 @@ public class Home extends Fragment {
                             getActivity().overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                         }
                     });
+
                 }
             };
 

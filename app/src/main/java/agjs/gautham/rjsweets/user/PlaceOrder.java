@@ -162,7 +162,7 @@ public class PlaceOrder extends AppCompatActivity {
 
         orderId.setText(order_number);
         username.setText(Common.Name);
-        orderTotal.setText(price);
+        orderTotal.setText(String.format("%s ₹",price));
         pay_with.setText(getResources().getString(R.string.pay_on_delivery));
 
         OrderDetailAdapter orderDetailAdapter = new OrderDetailAdapter(cart);

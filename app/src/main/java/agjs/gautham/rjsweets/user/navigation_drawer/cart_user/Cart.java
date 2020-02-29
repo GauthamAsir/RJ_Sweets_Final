@@ -238,6 +238,8 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                 (getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment));
 
         autocompleteFragment.setPlaceFields(fields1);
+        autocompleteFragment.setCountry("IN");
+        autocompleteFragment.setHint("Search Nearby Places");
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -325,7 +327,17 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
         //Calculate Total Price
         int total = 0;
         for (SweetOrder sweetOrder : cart) {
-            total += (Integer.parseInt(sweetOrder.getPrice())) * (Integer.parseInt(sweetOrder.getQuantity()));
+
+            String product_price = sweetOrder.getPrice();
+            String order_quan = sweetOrder.getQuantity();
+            String product_dis = sweetOrder.getDiscount();
+
+            int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+            final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+            final double dis_pirce = final_price - dis;
+
+            total += dis_pirce;
         }
         Locale locale = new Locale("en", "IN");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
@@ -351,7 +363,17 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
             //Calculate Total Price
             int total = 0;
             for (SweetOrder sweetOrder : cart) {
-                total += (Integer.parseInt(sweetOrder.getPrice())) * (Integer.parseInt(sweetOrder.getQuantity()));
+
+                String product_price = sweetOrder.getPrice();
+                String order_quan = sweetOrder.getQuantity();
+                String product_dis = sweetOrder.getDiscount();
+
+                int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+                final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+                final double dis_pirce = final_price - dis;
+
+                total += dis_pirce;
             }
             Locale locale = new Locale("en", "IN");
             NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
@@ -371,7 +393,17 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                     //Calculate Total Price
                     int total2 = 0;
                     for (SweetOrder sweetOrder : cart) {
-                        total2 += (Integer.parseInt(sweetOrder.getPrice())) * (Integer.parseInt(sweetOrder.getQuantity()));
+
+                        String product_price = sweetOrder.getPrice();
+                        String order_quan = sweetOrder.getQuantity();
+                        String product_dis = sweetOrder.getDiscount();
+
+                        int final_price = Integer.parseInt(product_price) * Integer.parseInt(order_quan);
+
+                        final double dis = final_price * (Double.parseDouble(product_dis) / 100);
+                        final double dis_pirce = final_price - dis;
+
+                        total2 += dis_pirce;
                     }
                     Locale locale = new Locale("en", "IN");
                     NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
     android:id="@+id/cart_container">
 
     <TextView
@@ -14,6 +13,7 @@
         android:visibility="gone"
         android:gravity="center_horizontal"
         android:textSize="30sp"
+        android:padding="16dp"
         android:text="Cart is Empty"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,14 +21,16 @@
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/cardView"/>
+        android:layout_above="@+id/cardView"
+        android:padding="16dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        app:cardBackgroundColor="@color/overlayBackground"
-        android:layout_height="100dp">
+        app:cardBackgroundColor="@color/dark"
+        android:layout_height="100dp"
+        android:layout_margin="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,14 +46,14 @@
                 <TextView
                     android:text="Total: "
                     android:textSize="20sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/total"
                     android:textSize="24sp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -60,10 +62,11 @@
             <Button
                 android:id="@+id/btnPlaceOrder"
                 android:text="Place Order"
-                android:textColor="@color/colorText"
+                android:textColor="@color/white"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_alignParentBottom="true"
+                android:background="@drawable/button_background"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

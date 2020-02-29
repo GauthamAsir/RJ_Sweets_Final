@@ -29,9 +29,19 @@
             android:text="Test"
             android:textColor="@color/white"
             android:textAlignment="center"
+            android:padding="2dp"
             android:background="@color/overlayBackground"
             android:layout_alignParentBottom="true"
             android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/discount_badge"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/badge_10"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
