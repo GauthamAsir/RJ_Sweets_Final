@@ -170,4 +170,9 @@
     <string name="delete_address">Delete Address</string>
     <string name="enter_new_address">Enter New Address</string>
 
+    <string name="payment_summary">Payment Summary</string>
+    <string name="items">Items:</string>
+    <string name="packaging">Packaging:</string>
+    <string name="delivery_charge">Delivery Charge:</string>
+
 </resources>

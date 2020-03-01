@@ -35,7 +35,7 @@ import dmax.dialog.SpotsDialog;
 public class OrderDetail extends AppCompatActivity {
 
     TextView order_id, order_status, order_total,user_name, order_time, order_date
-            ,orderaddress_line1, orderPaymentMethod;
+            ,orderaddress_line1, orderPaymentMethod, items_total, packaging_charge, delivery_charge, order_total_final;
 
     NestedScrollView scrollView;
 
@@ -63,6 +63,11 @@ public class OrderDetail extends AppCompatActivity {
         order_date = findViewById(R.id.order_date);
         order_time = findViewById(R.id.order_time);
 
+        items_total = findViewById(R.id.items_total);
+        packaging_charge = findViewById(R.id.packaging_charge);
+        delivery_charge = findViewById(R.id.delivery_charge);
+        order_total_final = findViewById(R.id.order_total_final);
+
         orderPaymentMethod = findViewById(R.id.payment_method);
 
         orderaddress_line1 = findViewById(R.id.address_line);
@@ -86,8 +91,15 @@ public class OrderDetail extends AppCompatActivity {
             //Set Value to recycler view
             order_id.setText(String.format("Order Id : %s",order_id_value));
 
-            order_total.setText(String.format("%s Rs",orderTotal));
+            order_total.setText(String.format("%s ₹",orderTotal));
             order_status.setText(Common.convertCodeToStatus(orderStatus));
+
+            packaging_charge.setText("10.0 ₹");
+            delivery_charge.setText("40.0 ₹");
+
+            Double itemT = Double.parseDouble(orderTotal) - 40.0 - 10.0;
+            order_total_final.setText(String.format("%s ₹",String.valueOf(orderTotal)));
+            items_total.setText(String.format("%s ₹",itemT));
 
             user_name.setText(String.format(" %s,",orderName));
             order_time.setText(orderTime);

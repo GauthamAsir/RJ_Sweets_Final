@@ -47,7 +47,7 @@ public class PlaceOrder extends AppCompatActivity {
 
     boolean checkCart;
 
-    private TextView orderId, username, orderTotal, pay_with;
+    private TextView orderId, username, items_total, packaging_charge, delivery_charge, order_total;
     private Button changeAddress, back;
     private RadioGroup paymentGroup;
     private RecyclerView listSweets;
@@ -56,6 +56,7 @@ public class PlaceOrder extends AppCompatActivity {
     private RelativeLayout parent_layout;
 
     private String order_number;
+    private double orderT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +67,15 @@ public class PlaceOrder extends AppCompatActivity {
 
         orderId = findViewById(R.id.orderId);
         username = findViewById(R.id.username);
-        orderTotal = findViewById(R.id.orderTotal);
-        pay_with = findViewById(R.id.pay_with);
 
         changeAddress = findViewById(R.id.change_address);
         paymentGroup = findViewById(R.id.radio_group);
         back = findViewById(R.id.back);
+
+        items_total = findViewById(R.id.items_total);
+        packaging_charge = findViewById(R.id.packaging_charge);
+        delivery_charge = findViewById(R.id.delivery_charge);
+        order_total = findViewById(R.id.order_total);
 
         listSweets = findViewById(R.id.list_sweets);
         listSweets.setHasFixedSize(true);
@@ -141,7 +145,7 @@ public class PlaceOrder extends AppCompatActivity {
                 Intent intent = new Intent(PlaceOrder.this, OrderPlaceStatus.class);
                 intent.putExtra("OrderId",order_number);
                 intent.putExtra("Address",address);
-                intent.putExtra("Price",price);
+                intent.putExtra("Price",String.valueOf(orderT));
                 intent.putExtra("PaymentMode",paymentMode);
                 intent.putExtra("LatLng",latlng);
                 Common.intentOpenAnimation(PlaceOrder.this);
@@ -162,8 +166,13 @@ public class PlaceOrder extends AppCompatActivity {
 
         orderId.setText(order_number);
         username.setText(Common.Name);
-        orderTotal.setText(String.format("%s ₹",price));
-        pay_with.setText(getResources().getString(R.string.pay_on_delivery));
+
+        items_total.setText(String.format("%s ₹",price));
+        packaging_charge.setText("10.0 ₹");
+        delivery_charge.setText("40.0 ₹");
+
+        orderT = Double.parseDouble(price) + 40.0 + 10.0;
+        order_total.setText(String.format("%s ₹",String.valueOf(orderT)));
 
         OrderDetailAdapter orderDetailAdapter = new OrderDetailAdapter(cart);
         orderDetailAdapter.notifyDataSetChanged();

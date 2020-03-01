@@ -51,6 +51,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailHolder>{
 
             double dis = final_price * (Double.parseDouble(product_dis) / 100);
             double dis_pirce = final_price - dis;
+
+            //holder.discount_container.setBackground(context.getResources().getDrawable(R.drawable.button_background_dark_green));
             holder.product_dis_value.setText(String.format("%s%% Discount Applied",sweetOrder.getDiscount()));
             holder.product_dis_price.setText(String.format("%s ₹",String.valueOf(dis_pirce)));
 
@@ -58,9 +60,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailHolder>{
 
             holder.discount_container.setVisibility(View.VISIBLE);
             holder.discount_container.setBackground(context.getResources().getDrawable(R.drawable.button_background_dark_green));
-            holder.product_dis_value.setVisibility(View.GONE);
-            holder.product_dis_price.setTextSize(18);
-            holder.product_dis_price.setText("No Discounts Applied");
+            holder.product_dis_value.setText("No Discounts Applied");
+            holder.product_dis_price.setText(String.format("%s.0 ₹",sweetOrder.getPrice()));
 
         }
     }
