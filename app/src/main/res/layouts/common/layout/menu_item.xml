@@ -29,7 +29,6 @@
             android:text="Test"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:padding="2dp"
             android:background="@color/overlayBackground"
             android:layout_alignParentBottom="true"
             android:textSize="24sp" />
@@ -43,18 +42,18 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"/>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/menu_available_quantity"
+            android:scaleType="centerCrop"
+            android:background="@color/overlayBackground"
+            android:text="Out Of Stock"
+            android:layout_above="@+id/menu_name"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/menu_available_quantity"
-        android:scaleType="centerCrop"
-        android:background="@color/overlayBackground"
-        android:text="Out Of Stock"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        android:textSize="34sp"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

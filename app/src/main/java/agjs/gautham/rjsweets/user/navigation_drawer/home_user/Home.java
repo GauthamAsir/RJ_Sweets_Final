@@ -296,8 +296,10 @@ public class Home extends Fragment {
 
                     if (model.getAvaQuantity().equals("0")){
                         menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
+                        menuViewHolder.discount_badge.setVisibility(View.GONE);
                     }else {
                         menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
+                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
                     }
 
                     menuViewHolder.setItemClickListener(new ItemClickListener() {
