@@ -1,5 +1,6 @@
 package agjs.gautham.rjsweets.delivery;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,12 +8,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agik.AGIKSwipeButton.Controller.OnSwipeCompleteListener;
 import com.agik.AGIKSwipeButton.View.Swipe_Button_View;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,12 +37,15 @@ import retrofit2.Response;
 public class OrderDetailDelivery extends AppCompatActivity {
 
     TextView order_id, order_phone, order_address, order_total, user_name;
+    TextView items_total, packaging_charge, delivery_charge, order_total_final;
     String order_id_value="", user_mail_value, orderDate_value, order_total_value, user_name_value;
     String order_status="", user_phone_value;
     RecyclerView lstSweets;
     RecyclerView.LayoutManager layoutManager;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
+
+    FloatingActionButton report_order;
 
     Swipe_Button_View pickup;
     Request request;
@@ -57,6 +63,8 @@ public class OrderDetailDelivery extends AppCompatActivity {
         order_total = findViewById(R.id.order_total_delivery);
         user_name = findViewById(R.id.user_name_delivery);
 
+        report_order = findViewById(R.id.report_order);
+
         //Init Service
         mService = Common.getFCMClient();
 
@@ -67,6 +75,11 @@ public class OrderDetailDelivery extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         lstSweets.setLayoutManager(layoutManager);
 
+        items_total = findViewById(R.id.items_total_delivery);
+        packaging_charge = findViewById(R.id.packaging_charge_delivery);
+        delivery_charge = findViewById(R.id.delivery_charge_delivery);
+        order_total_final = findViewById(R.id.order_total_final_delivery);
+
         if (getIntent() != null){
             order_id_value = getIntent().getStringExtra("OrderId");
             order_status = getIntent().getStringExtra("OrderStatus");
@@ -75,7 +88,10 @@ public class OrderDetailDelivery extends AppCompatActivity {
         if (order_status.equals("0") || order_status.equals("1")){
 
             pickup.setVisibility(View.VISIBLE);
+
             if (order_status.equals("0")){
+
+                report_order.hide();
 
                 pickup.setOnSwipeCompleteListener_forward_reverse(new OnSwipeCompleteListener() {
                     @Override
@@ -95,6 +111,29 @@ public class OrderDetailDelivery extends AppCompatActivity {
             }else {
 
                 pickup.setText("Delivered");
+
+                report_order.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailDelivery.this);
+                        builder.setTitle("Contact Support");
+                        builder.setMessage("Call Support and tell your problem & Order number, " +
+                                "they will find a solution, " +
+                                "until that don't swipe it as delivered");
+
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.create();
+                        builder.show();
+
+                    }
+                });
 
                 pickup.setOnSwipeCompleteListener_forward_reverse(new OnSwipeCompleteListener() {
                     @Override
@@ -131,6 +170,15 @@ public class OrderDetailDelivery extends AppCompatActivity {
                 order_total.setText(String.format("Total : %s",request.getTotal()));
                 order_address.setText(String.format("Address : %s",request.getAddress()));
                 user_name.setText(String.format("Username : %s",request.getName()));
+
+                String orderTotal = request.getTotal();
+
+                packaging_charge.setText("10.0 ₹");
+                delivery_charge.setText("40.0 ₹");
+
+                Double itemT = Double.parseDouble(orderTotal) - 40.0 - 10.0;
+                order_total_final.setText(String.format("%s ₹",String.valueOf(orderTotal)));
+                items_total.setText(String.format("%s ₹",itemT));
 
                 user_mail_value = request.getMail();
                 orderDate_value = request.getDate();

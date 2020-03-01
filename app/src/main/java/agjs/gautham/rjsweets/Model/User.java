@@ -7,6 +7,8 @@ public class User {
     private String Phone;
     private String IsStaff;
     private String Email;
+    private String PendingPayment;
+    private String Blacklist;
 
     public User(){
 
@@ -18,6 +20,9 @@ public class User {
         Email = email;
         IsStaff="false";
         Phone = phone;
+        PendingPayment = "0";
+        Blacklist = "0";
+
     }
 
     public String getName() {
@@ -55,6 +60,22 @@ public class User {
     public String getIsStaff() { return IsStaff; }
 
     public void setIsStaff(String isStaff) { IsStaff = isStaff; }
+
+    public String getPendingPayment() {
+        return PendingPayment;
+    }
+
+    public void setPendingPayment(String pendingPayment) {
+        PendingPayment = pendingPayment;
+    }
+
+    public String getBlacklist() {
+        return Blacklist;
+    }
+
+    public void setBlacklist(String blacklist) {
+        Blacklist = blacklist;
+    }
 }
 
 
