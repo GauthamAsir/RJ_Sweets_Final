@@ -48,7 +48,6 @@ public class Splash extends AppCompatActivity {
         Paper.init(this);
 
         //Check For App-Update
-        CheckUpdate.check_for_update(Splash.this);
         final String app_version =CheckUpdate.getAppVersion(Splash.this);
 
         DatabaseReference databaseReference = database.getReference("Updates");
@@ -63,6 +62,9 @@ public class Splash extends AppCompatActivity {
                 Double appV = Double.parseDouble(app_version);
 
                 if (appV<update_version){
+
+                    CheckUpdate runner = new CheckUpdate(Splash.this);
+                    runner.execute();
 
                     progressBar.setProgress(100);
                     startActivity(new Intent(Splash.this, UpdateActivity.class));
