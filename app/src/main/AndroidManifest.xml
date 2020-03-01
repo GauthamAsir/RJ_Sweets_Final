@@ -95,8 +95,7 @@
         <activity android:name=".common.UpdateActivity"/>
         <activity android:name=".common.Credits"/>
         <activity
-            android:name=".Splash"
-            android:theme="@style/MainActivity">
+            android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
