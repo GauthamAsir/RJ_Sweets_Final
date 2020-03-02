@@ -41,20 +41,44 @@
         android:visibility="gone"
         android:background="@drawable/button_background"/>
 
-    <Button
-        android:id="@+id/bt_date"
+    <LinearLayout
+        android:id="@+id/report_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/view_report_details"
-        android:textAllCaps="false"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:textSize="24sp"
-        android:padding="12dp"
-        android:textColor="@color/white"
-        android:background="@drawable/button_background"
-        android:visibility="gone"/>
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/bt_month"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/view_monthly_report"
+            android:textAllCaps="false"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background" />
+
+        <Button
+            android:id="@+id/bt_date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/view_report_details"
+            android:textAllCaps="false"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background" />
+
+    </LinearLayout>
 
 </RelativeLayout>

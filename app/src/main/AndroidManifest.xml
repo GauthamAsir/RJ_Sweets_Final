@@ -77,6 +77,7 @@
         <activity android:name=".admin.navigation_drawer.home.UpdateSweets" />
         <activity android:name=".admin.OrderSearchAdmin" />
         <activity android:name=".admin.ViewSoldItems"/>
+        <activity android:name=".admin.SoldItemsMonthly"/>
         <!-- End of Admin Activities -->
 
         <!-- Start of User Activities -->

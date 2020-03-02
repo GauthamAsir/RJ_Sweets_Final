@@ -175,4 +175,6 @@
     <string name="packaging">Packaging:</string>
     <string name="delivery_charge">Delivery Charge:</string>
 
+    <string name="view_monthly_report">View Monthly Report</string>
+
 </resources>

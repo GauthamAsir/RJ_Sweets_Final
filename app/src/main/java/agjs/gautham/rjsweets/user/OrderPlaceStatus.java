@@ -139,13 +139,20 @@ public class OrderPlaceStatus extends AppCompatActivity {
         String orderTime = timeFormat.format(dt);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         final String orderDate = dateFormat.format(dt);
+        SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MM-yyyy");
+        final String orderMonth = dateFormatMonth.format(dt);
 
         //Assign SoldItem Date
         soldItemsDB.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child(orderDate).exists()){
-                    soldItemsDB.child(orderDate).child("Sweets").push();
+
+                if (!dataSnapshot.child(orderMonth).exists()){
+                    soldItemsDB.child(orderMonth).push();
+                }
+
+                if (!dataSnapshot.child(orderMonth).child(orderDate).exists()){
+                    soldItemsDB.child(orderMonth).child(orderDate).child("Sweets").push();
                 }
             }
 
@@ -193,16 +200,16 @@ public class OrderPlaceStatus extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                if (dataSnapshot.child(orderDate).child("Sweets").child(productName).exists()){
+                                if (dataSnapshot.child(orderMonth).child(orderDate).child("Sweets").child(productName).exists()){
 
-                                    String Aq = dataSnapshot.child(orderDate).child("Sweets").child(productName).getValue(String.class);
+                                    String Aq = dataSnapshot.child(orderMonth).child(orderDate).child("Sweets").child(productName).getValue(String.class);
 
                                     int q = Integer.parseInt(Aq) + Integer.parseInt(orderQuantity);
 
-                                    soldItemsDB.child(orderDate).child("Sweets").child(productName).setValue(String.valueOf(q));
+                                    soldItemsDB.child(orderMonth).child(orderDate).child("Sweets").child(productName).setValue(String.valueOf(q));
                                 }else {
 
-                                    soldItemsDB.child(orderDate).child("Sweets").child(productName).setValue(orderQuantity);
+                                    soldItemsDB.child(orderMonth).child(orderDate).child("Sweets").child(productName).setValue(orderQuantity);
 
                                 }
 
@@ -235,7 +242,7 @@ public class OrderPlaceStatus extends AppCompatActivity {
         requests.child(order_number).setValue(request);
 
         //Update Sold Items
-        soldItemsDB.child(orderDate).child("Requests").child(order_number).setValue(request);
+        soldItemsDB.child(orderMonth).child(orderDate).child("Requests").child(order_number).setValue(request);
 
         //Delete Cart After Updating
         if (checkCart){

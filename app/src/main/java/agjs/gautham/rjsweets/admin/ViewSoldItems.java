@@ -28,8 +28,7 @@ public class ViewSoldItems extends AppCompatActivity {
     private RecyclerView requests, items;
     private FirebaseRecyclerAdapter<Request, ViewSoldItemsHolderRequest> requestAdapter;
     private FirebaseRecyclerAdapter<String, ViewSoldItemsHolder> itemAdapter;
-    private AlertDialog dlg;
-    private String date;
+    private String date, month;
     private FirebaseDatabase database;
     private DatabaseReference itemsoldRequest, itemsSold;
 
@@ -43,20 +42,14 @@ public class ViewSoldItems extends AppCompatActivity {
         requests = findViewById(R.id.requests);
         items = findViewById(R.id.items);
 
-        dlg = new SpotsDialog.Builder()
-                .setContext(ViewSoldItems.this)
-                .setCancelable(false)
-                .setMessage("Fetching Details...")
-                .setTheme(R.style.DialogCustom)
-                .build();
-
         database = FirebaseDatabase.getInstance();
 
         if (getIntent()!=null){
 
+            month = getIntent().getStringExtra("Month");
             date = getIntent().getStringExtra("Date");
             itemsoldRequest = database.getReference("Requests");
-            itemsSold = database.getReference("SoldItems").child(date).child("Sweets");
+            itemsSold = database.getReference("SoldItems").child(month).child(date).child("Sweets");
         }
 
         requests.setHasFixedSize(true);
