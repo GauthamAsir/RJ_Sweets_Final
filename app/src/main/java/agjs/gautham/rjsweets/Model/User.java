@@ -9,6 +9,7 @@ public class User {
     private String Email;
     private String PendingPayment;
     private String Blacklist;
+    private String BlacklistCount;
 
     public User(){
 
@@ -75,6 +76,14 @@ public class User {
 
     public void setBlacklist(String blacklist) {
         Blacklist = blacklist;
+    }
+
+    public String getBlacklistCount() {
+        return BlacklistCount;
+    }
+
+    public void setBlacklistCount(String blacklistCount) {
+        BlacklistCount = blacklistCount;
     }
 }
 

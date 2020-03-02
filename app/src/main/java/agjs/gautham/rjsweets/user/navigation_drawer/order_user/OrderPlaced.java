@@ -1,6 +1,5 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.order_user;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -129,24 +127,6 @@ public class OrderPlaced extends AppCompatActivity {
                     if (dialog.isShowing()){
                         dialog.dismiss();
                     }
-
-                    orderViewHolder.bt_orderDetailsReason.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderPlaced.this)
-                                    .setMessage(request.getReason())
-                                    .setCancelable(false)
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-                            AlertDialog alert = builder.create();
-                            alert.show();
-                        }
-                    });
 
                     orderViewHolder.bt_orderDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
