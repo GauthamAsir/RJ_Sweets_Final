@@ -8,8 +8,8 @@ public class User {
     private String IsStaff;
     private String Email;
     private String PendingPayment;
-    private String Blacklist;
     private String BlacklistCount;
+    private String CancelDate;
 
     public User(){
 
@@ -22,7 +22,8 @@ public class User {
         IsStaff="false";
         Phone = phone;
         PendingPayment = "0";
-        Blacklist = "0";
+        BlacklistCount = "0";
+        CancelDate = "0";
 
     }
 
@@ -70,20 +71,20 @@ public class User {
         PendingPayment = pendingPayment;
     }
 
-    public String getBlacklist() {
-        return Blacklist;
-    }
-
-    public void setBlacklist(String blacklist) {
-        Blacklist = blacklist;
-    }
-
     public String getBlacklistCount() {
         return BlacklistCount;
     }
 
     public void setBlacklistCount(String blacklistCount) {
         BlacklistCount = blacklistCount;
+    }
+
+    public String getCancelDate() {
+        return CancelDate;
+    }
+
+    public void setCancelDate(String cancelDate) {
+        CancelDate = cancelDate;
     }
 }
 

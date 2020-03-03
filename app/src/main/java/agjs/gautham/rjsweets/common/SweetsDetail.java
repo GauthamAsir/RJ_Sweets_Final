@@ -46,6 +46,7 @@ import java.util.List;
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
 import agjs.gautham.rjsweets.user.PlaceOrder;
@@ -73,7 +74,7 @@ public class SweetsDetail extends AppCompatActivity {
     String img_url="";
 
     FirebaseDatabase database;
-    DatabaseReference sweet;
+    DatabaseReference sweet, users;
 
     Sweet currentSweet;
     Toolbar toolbar;
@@ -90,6 +91,7 @@ public class SweetsDetail extends AppCompatActivity {
         //Firebase
         database = FirebaseDatabase.getInstance();
         sweet = database.getReference("Sweets");
+        users = database.getReference("User");
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser mUser = mAuth.getCurrentUser();
 
@@ -186,46 +188,106 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View view) {
                         if (mUser != null) {
 
-                            Date dt = Calendar.getInstance().getTime();
-                            String pattern = "HH:mm a";
-                            SimpleDateFormat timeFormat = new SimpleDateFormat(pattern);
-                            String orderTime = timeFormat.format(dt);
+                            users.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            String startTime = "8:00 am";
+                                    User user = dataSnapshot.child(Common.USER_Phone).getValue(User.class);
 
-                            try {
-                                Date date1 = timeFormat.parse(orderTime);
-                                Date date2 = timeFormat.parse(startTime);
+                                    int count = Integer.parseInt(user.getBlacklistCount());
 
-                                if (date1.before(date2)){
+                                    if (user.getPendingPayment().equals("1")){
 
-                                    AlertDialog.Builder warn = new AlertDialog.Builder(SweetsDetail.this);
-                                    warn.setIcon(R.drawable.ic_warning_black_24dp);
-                                    warn.setTitle("Warning");
-                                    warn.setMessage("We wont deliver Orders between 12:00 am to 8:00 am, still you can place your Order. Your " +
-                                            "Order will be delivered between working time");
+                                        AlertDialog.Builder warn = new AlertDialog.Builder(SweetsDetail.this);
+                                        warn.setIcon(R.drawable.ic_warning_black_24dp);
+                                        warn.setTitle("Error");
+                                        warn.setMessage("You have't paid for your last orders, which you " +
+                                                "declined to accept from our delivery boy. Pay those Arrears to continue.");
 
-                                    warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            addrsDialog();
+                                        warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        warn.setNegativeButton("Pay", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Toast.makeText(SweetsDetail.this,"Temporarily Disabled",
+                                                        Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        warn.create();
+                                        warn.show();
+
+                                    } else {
+
+                                        Date dt = Calendar.getInstance().getTime();
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+                                        String current = dateFormat.format(dt);
+                                        String d = user.getCancelDate();
+                                        String da = d.replace(",", " ");
+
+                                        if (count>=3){
+
+                                            try {
+
+                                                Date ds = dateFormat.parse(da);
+
+                                                Calendar calendar = Calendar.getInstance();
+                                                calendar.setTime(ds);
+                                                calendar.add(Calendar.HOUR, 12);
+
+                                                String b = dateFormat.format(calendar.getTime());
+
+                                                Date doli = dateFormat.parse(b);
+                                                Date holi = dateFormat.parse(current);
+
+                                                if (holi.before(doli)){
+
+                                                    AlertDialog.Builder warn = new AlertDialog.Builder(SweetsDetail.this);
+                                                    warn.setIcon(R.drawable.ic_warning_black_24dp);
+                                                    warn.setTitle("Error");
+                                                    warn.setMessage("We detected that you have cancelled more than 3 orders in a day" +
+                                                            ", so you cant order for next 12 hours");
+
+                                                    warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+
+                                                    warn.create();
+                                                    warn.show();
+
+                                                }else {
+                                                    users.child(Common.USER_Phone).child("blacklistCount").setValue("0");
+                                                    users.child(Common.USER_Phone).child("cancelDate").setValue("0");
+                                                    initPurchase();
+                                                }
+
+                                                System.out.println("Time here "+doli + " | "+ holi);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                    });
-
-                                    AlertDialog dialog = warn.create();
-                                    dialog.show();
-
-                                }else {
-
-                                    addrsDialog();
+                                        else {
+                                            initPurchase();
+                                        }
+                                    }
 
                                 }
 
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                                }
+                            });
 
                         } else {
                             Toast.makeText(SweetsDetail.this, "You Need to be Logged In !", Toast.LENGTH_LONG).show();
@@ -254,6 +316,51 @@ public class SweetsDetail extends AppCompatActivity {
                 Toast.makeText(SweetsDetail.this,"Please Check Your Internet Connection !", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void initPurchase(){
+
+        Date dt = Calendar.getInstance().getTime();
+        String pattern = "HH:mm a";
+        SimpleDateFormat timeFormat = new SimpleDateFormat(pattern);
+
+        String orderTime = timeFormat.format(dt);
+
+        String startTime = "8:00 am";
+
+        try {
+            Date date1 = timeFormat.parse(orderTime);
+            Date date2 = timeFormat.parse(startTime);
+
+            if (date1.before(date2)){
+
+                AlertDialog.Builder warn = new AlertDialog.Builder(SweetsDetail.this);
+                warn.setIcon(R.drawable.ic_warning_black_24dp);
+                warn.setTitle("Warning");
+                warn.setMessage("We wont deliver Orders between 12:00 am to 8:00 am, still you can place your Order. Your " +
+                        "Order will be delivered between working time");
+
+                warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        addrsDialog();
+                    }
+                });
+
+                AlertDialog dialog = warn.create();
+                dialog.show();
+
+            }else {
+
+                addrsDialog();
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void addrsDialog() {

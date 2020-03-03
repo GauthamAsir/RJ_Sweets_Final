@@ -21,11 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.user.DashboardUser;
@@ -43,7 +47,7 @@ public class OrderDetail extends AppCompatActivity {
     RecyclerView lstSweets;
     RecyclerView.LayoutManager layoutManager;
     FirebaseDatabase database;
-    DatabaseReference databaseReference, soldItems;
+    DatabaseReference databaseReference, soldItems, users;
     Button cancelOrder;
 
     @Override
@@ -113,6 +117,7 @@ public class OrderDetail extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             databaseReference = database.getReference("Requests");
             soldItems = database.getReference("SoldItems");
+            users = database.getReference("User");
 
             cancelOrder = findViewById(R.id.btnCancelOrder);
 
@@ -196,6 +201,7 @@ public class OrderDetail extends AppCompatActivity {
 
                                             final DatabaseReference databaseReference1 = database.getReference("Sweets");
 
+                                            // Sold Items
                                             soldItems.addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -221,6 +227,35 @@ public class OrderDetail extends AppCompatActivity {
                                                 }
                                             });
 
+                                            // Increase BlackList count for user
+                                            users.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                    Date dt = Calendar.getInstance().getTime();
+                                                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                                                    String cancelTime = timeFormat.format(dt);
+                                                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                                    final String cancelDate = dateFormat.format(dt);
+
+                                                    User user = dataSnapshot.child(Common.USER_Phone).getValue(User.class);
+                                                        int c = Integer.parseInt(user.getBlacklistCount()) + 1;
+                                                    users.child(Common.USER_Phone).child("blacklistCount").setValue(String.valueOf(c));
+
+                                                    // For a Reason
+                                                    if (user.getBlacklistCount().equals("2")){
+                                                        users.child(Common.USER_Phone).child("cancelDate").setValue(cancelDate + "," + cancelTime);
+                                                    }
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                            // Available Quantity
                                             databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

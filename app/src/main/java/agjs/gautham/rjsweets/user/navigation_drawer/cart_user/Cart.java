@@ -31,10 +31,19 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,6 +51,7 @@ import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Helper.RecyclerItemTouchHelper;
 import agjs.gautham.rjsweets.Interface.RecyclerItemTouchHelperListener;
 import agjs.gautham.rjsweets.Model.SweetOrder;
+import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.user.PlaceOrder;
@@ -105,6 +115,8 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                 public void onClick(final View view) {
                     if (mUser != null) {
 
+                        final DatabaseReference users = FirebaseDatabase.getInstance().getReference("User");
+
                         if (cartAdapter.getItemCount() <= 0) {
                             Snackbar snackbar1 = Snackbar.make(getView(), "Press Again to Exit", Snackbar.LENGTH_SHORT);
                             View snackView = snackbar1.getView();
@@ -114,98 +126,107 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
                             snackbar1.show();
                         } else {
 
-                            builder.setTitle("Find Places");
-                            builder.setCancelable(false);
-                            builder.setView(view1);
-                            builder.setIcon(R.drawable.ic_place_black_24dp);
+                            users.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
+                                    User user = dataSnapshot.child(Common.USER_Phone).getValue(User.class);
 
-                            String price = txtTotalPrice.getText().toString();
-                            String price2 = price.replace("₹","");
+                                    int count = Integer.parseInt(user.getBlacklistCount());
 
-                            final String final_price = price2.replaceAll("\\s+","");
+                                    if (user.getPendingPayment().equals("1")){
 
-                            if (savedAddress != null){
+                                        AlertDialog.Builder warn = new AlertDialog.Builder(getActivity());
+                                        warn.setIcon(R.drawable.ic_warning_black_24dp);
+                                        warn.setTitle("Error");
+                                        warn.setMessage("You have't paid for your last orders, which you " +
+                                                "declined to accept from our delivery boy. Pay those Arrears to continue.");
 
-                                final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(getActivity());
-                                savedAddresBuilder.setTitle("Saved Address");
-
-                                final View view2 = LayoutInflater.from(getActivity())
-                                        .inflate(R.layout.saved_address, null);
-
-                                savedAddresBuilder.setView(view2);
-
-                                TextView addrs = view2.findViewById(R.id.addrs);
-                                ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
-                                ImageView new_adrs = view2.findViewById(R.id.new_adrs);
-                                Button select_adrs = view2.findViewById(R.id.select_adrs);
-
-                                String a = savedAddress.replaceAll("\\s+","");
-                                String address = a.replace(",",",\n");
-                                addrs.setText(address);
-
-                                final AlertDialog alertDialog = savedAddresBuilder.create();
-
-                                alertDialog.show();
-
-                                delete_addrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Paper.book().delete(Common.USER_ADDRESS_SAVED);
-                                        alertDialog.dismiss();
-
-                                    }
-                                });
-
-                                new_adrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        if (view1 != null){
-
-                                            ViewGroup parent = (ViewGroup) view1.getParent();
-                                            if (parent!= null){
-                                                parent.removeView(view1);
+                                        warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
                                             }
+                                        });
 
+                                        warn.setNegativeButton("Pay", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Toast.makeText(getActivity(),"Temporarily Disabled",
+                                                        Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        warn.create();
+                                        warn.show();
+
+                                    } else {
+
+                                        Date dt = Calendar.getInstance().getTime();
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+                                        String current = dateFormat.format(dt);
+                                        String d = user.getCancelDate();
+                                        String da = d.replace(",", " ");
+
+                                        if (count>=3){
+
+                                            try {
+
+                                                Date ds = dateFormat.parse(da);
+
+                                                Calendar calendar = Calendar.getInstance();
+                                                calendar.setTime(ds);
+                                                calendar.add(Calendar.HOUR, 12);
+
+                                                String b = dateFormat.format(calendar.getTime());
+
+                                                Date doli = dateFormat.parse(b);
+                                                Date holi = dateFormat.parse(current);
+
+                                                if (holi.before(doli)){
+
+                                                    AlertDialog.Builder warn = new AlertDialog.Builder(getActivity());
+                                                    warn.setIcon(R.drawable.ic_warning_black_24dp);
+                                                    warn.setTitle("Error");
+                                                    warn.setMessage("We detected that you have cancelled more than 3 orders in a day" +
+                                                            ", so you cant order for next 12 hours");
+
+                                                    warn.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+
+                                                    warn.create();
+                                                    warn.show();
+
+                                                }else {
+                                                    users.child(Common.USER_Phone).child("blacklistCount").setValue("0");
+                                                    users.child(Common.USER_Phone).child("cancelDate").setValue("0");
+                                                    initPurchase();
+                                                }
+
+                                                System.out.println("Time here "+doli + " | "+ holi);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-
-                                        builder.setView(view1);
-                                        buy_now(final_price);
-
-                                    }
-                                });
-
-                                select_adrs.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent placeOrder = new Intent(getActivity(), PlaceOrder.class);
-                                        placeOrder.putExtra("Price",final_price);
-                                        placeOrder.putExtra("Address",savedAddress);
-                                        Common.intentOpenAnimation(getActivity());
-                                        alertDialog.dismiss();
-                                        startActivity(placeOrder);
-
-                                    }
-                                });
-
-                            }
-                            else{
-
-                                if (view1 != null){
-
-                                    ViewGroup parent = (ViewGroup) view1.getParent();
-                                    if (parent!= null){
-                                        parent.removeView(view1);
+                                        else {
+                                            initPurchase();
+                                        }
                                     }
 
                                 }
-                                buy_now(final_price);
 
-                            }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                     }
                     else {
@@ -224,6 +245,103 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
         }
 
         return root;
+    }
+
+    private void initPurchase(){
+
+        builder.setTitle("Find Places");
+        builder.setCancelable(false);
+        builder.setView(view1);
+        builder.setIcon(R.drawable.ic_place_black_24dp);
+
+        final String savedAddress = Paper.book().read(Common.USER_ADDRESS_SAVED);
+
+        String price = txtTotalPrice.getText().toString();
+        String price2 = price.replace("₹","");
+
+        final String final_price = price2.replaceAll("\\s+","");
+
+        if (savedAddress != null){
+
+            final AlertDialog.Builder savedAddresBuilder = new AlertDialog.Builder(getActivity());
+            savedAddresBuilder.setTitle("Saved Address");
+
+            final View view2 = LayoutInflater.from(getActivity())
+                    .inflate(R.layout.saved_address, null);
+
+            savedAddresBuilder.setView(view2);
+
+            TextView addrs = view2.findViewById(R.id.addrs);
+            ImageView delete_addrs = view2.findViewById(R.id.delete_adrs);
+            ImageView new_adrs = view2.findViewById(R.id.new_adrs);
+            Button select_adrs = view2.findViewById(R.id.select_adrs);
+
+            String a = savedAddress.replaceAll("\\s+","");
+            String address = a.replace(",",",\n");
+            addrs.setText(address);
+
+            final AlertDialog alertDialog = savedAddresBuilder.create();
+
+            alertDialog.show();
+
+            delete_addrs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Paper.book().delete(Common.USER_ADDRESS_SAVED);
+                    alertDialog.dismiss();
+
+                }
+            });
+
+            new_adrs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (view1 != null){
+
+                        ViewGroup parent = (ViewGroup) view1.getParent();
+                        if (parent!= null){
+                            parent.removeView(view1);
+                        }
+
+                    }
+
+                    builder.setView(view1);
+                    buy_now(final_price);
+
+                }
+            });
+
+            select_adrs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent placeOrder = new Intent(getActivity(), PlaceOrder.class);
+                    placeOrder.putExtra("Price",final_price);
+                    placeOrder.putExtra("Address",savedAddress);
+                    Common.intentOpenAnimation(getActivity());
+                    alertDialog.dismiss();
+                    startActivity(placeOrder);
+
+                }
+            });
+
+        }
+        else{
+
+            if (view1 != null){
+
+                ViewGroup parent = (ViewGroup) view1.getParent();
+                if (parent!= null){
+                    parent.removeView(view1);
+                }
+
+            }
+            buy_now(final_price);
+
+        }
+
     }
 
     private void buy_now(final String price) {
