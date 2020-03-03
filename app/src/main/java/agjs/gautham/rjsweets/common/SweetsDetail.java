@@ -50,6 +50,7 @@ import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.UpdateSweets;
 import agjs.gautham.rjsweets.user.PlaceOrder;
+import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
 public class SweetsDetail extends AppCompatActivity {
@@ -188,6 +189,16 @@ public class SweetsDetail extends AppCompatActivity {
                     public void onClick(View view) {
                         if (mUser != null) {
 
+                            //Init Progress Dialog
+                            final android.app.AlertDialog dlg = new SpotsDialog.Builder()
+                                    .setContext(SweetsDetail.this)
+                                    .setCancelable(false)
+                                    .setMessage("Fetching Details...")
+                                    .setTheme(R.style.DialogCustom)
+                                    .build();
+
+                            dlg.show();
+
                             users.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -219,6 +230,9 @@ public class SweetsDetail extends AppCompatActivity {
                                                 dialog.dismiss();
                                             }
                                         });
+
+                                        if (dlg.isShowing())
+                                            dlg.dismiss();
 
                                         warn.create();
                                         warn.show();
@@ -262,12 +276,20 @@ public class SweetsDetail extends AppCompatActivity {
                                                         }
                                                     });
 
+                                                    if (dlg.isShowing())
+                                                        dlg.dismiss();
+
                                                     warn.create();
                                                     warn.show();
 
                                                 }else {
+
                                                     users.child(Common.USER_Phone).child("blacklistCount").setValue("0");
                                                     users.child(Common.USER_Phone).child("cancelDate").setValue("0");
+
+                                                    if (dlg.isShowing())
+                                                        dlg.dismiss();
+
                                                     initPurchase();
                                                 }
 
@@ -277,6 +299,9 @@ public class SweetsDetail extends AppCompatActivity {
                                             }
                                         }
                                         else {
+
+                                            if (dlg.isShowing())
+                                                dlg.dismiss();
                                             initPurchase();
                                         }
                                     }
