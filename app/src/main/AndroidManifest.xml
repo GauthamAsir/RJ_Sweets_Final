@@ -88,7 +88,10 @@
         <activity android:name=".user.navigation_drawer.order_user.OrderRejected" />
         <activity android:name=".user.navigation_drawer.order_user.OrderPlaced" />
         <activity android:name=".user.navigation_drawer.order_user.OrderDetail" />
-        <activity android:name=".user.OrderPlaceStatus" /> <!-- End of User Activities -->
+        <activity android:name=".user.OrderPlaceStatus" />
+        <activity android:name=".user.FeedbackActivity"/>
+        <!-- End of User Activities -->
+
         <!-- Start of Common Activities -->
         <activity android:name=".login.Login" />
         <activity android:name=".common.MainActivity" />

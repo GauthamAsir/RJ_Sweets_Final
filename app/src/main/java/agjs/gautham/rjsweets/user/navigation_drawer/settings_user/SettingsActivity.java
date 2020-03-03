@@ -55,6 +55,7 @@ import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.common.Credits;
 import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.login.Login;
+import agjs.gautham.rjsweets.user.FeedbackActivity;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 
@@ -77,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         private DatabaseReference databse_user, database_update;
         private FirebaseAuth mAuth;
         private FirebaseUser mUser;
-        private Preference change_pass, check_update, contact_us, logOut, contributor;
+        private Preference change_pass, check_update, contact_us, logOut, contributor, feedback;
         private SwitchPreferenceCompat noti;
         private FirebaseFirestore firestore;
         private OtpView otpView;
@@ -139,11 +140,20 @@ public class SettingsActivity extends AppCompatActivity {
             contact_us = findPreference(getString(R.string.contact_us));
             logOut = findPreference(getString(R.string.logout));
             contributor = findPreference(getString(R.string.contributors));
+            feedback = findPreference(getString(R.string.feedback));
 
             contributor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), Credits.class));
+                    return true;
+                }
+            });
+
+            feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), FeedbackActivity.class));
                     return true;
                 }
             });
