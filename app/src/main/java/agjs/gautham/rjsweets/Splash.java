@@ -19,12 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import agjs.gautham.rjsweets.Model.AppUpdate;
 import agjs.gautham.rjsweets.admin.DashboardAdmin;
-import agjs.gautham.rjsweets.common.CheckUpdate;
 import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.common.MainActivity;
-import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.delivery.DashboardDelivery;
 import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.DashboardUser;
@@ -47,8 +44,38 @@ public class Splash extends AppCompatActivity {
 
         Paper.init(this);
 
+        String user = Paper.book().read(Common.USER_EMAIL);
+        String pwd = Paper.book().read(Common.USER_PASS);
+        String loginType = Paper.book().read(Common.loginType);
+
+        if (user != null && pwd != null){
+
+            if (!user.isEmpty() && !pwd.isEmpty()){
+
+                if (loginType != null){
+
+                    if (loginType.equals("0"))
+                        logInUser(user, pwd);
+
+                    if (loginType.equals("1"))
+                        logInAdmin(user,pwd);
+
+                    if (loginType.equals("2"))
+                        logInDelivery(user,pwd);
+
+                }else {
+                    defaultLogin();
+                }
+            }
+        }else {
+            defaultLogin();
+        }
+
+        //CheckUpdate runner = new CheckUpdate(Splash.this);
+        //runner.execute();
+
         //Check For App-Update
-        final String app_version =CheckUpdate.getAppVersion(Splash.this);
+        /*final String app_version =CheckUpdate.getAppVersion(Splash.this);
 
         DatabaseReference databaseReference = database.getReference("Updates");
 
@@ -72,10 +99,6 @@ public class Splash extends AppCompatActivity {
                     finish();
 
                 }else {
-
-                    String user = Paper.book().read(Common.USER_EMAIL);
-                    String pwd = Paper.book().read(Common.USER_PASS);
-                    String loginType = Paper.book().read(Common.loginType);
 
                     if (user != null && pwd != null){
 
@@ -108,7 +131,7 @@ public class Splash extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
     }
 
