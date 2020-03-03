@@ -2,6 +2,7 @@ package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -237,6 +238,16 @@ public class Home extends Fragment {
                     Picasso.get().load(model.getImage())
                             .into(menuViewHolder.imageView);
 
+                    Log.d("test",model.getDiscount());
+
+                    if (model.getAvaQuantity().equals("0")){
+                        menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
+                        menuViewHolder.discount_badge.setVisibility(View.GONE);
+                    }else {
+                        menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
+                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                    }
+
                     if (!model.getDiscount().equals("0")){
 
                         menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
@@ -284,6 +295,14 @@ public class Home extends Fragment {
 
                         }
 
+                        if (model.getAvaQuantity().equals("0")){
+                            menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
+                            menuViewHolder.discount_badge.setVisibility(View.GONE);
+                        }else {
+                            menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
+                            menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                        }
+
                     }else {
                         menuViewHolder.discount_badge.setVisibility(View.GONE);
                     }
@@ -293,14 +312,6 @@ public class Home extends Fragment {
                     }
 
                     menuViewHolder.root.setAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.fade_scale_transmission));
-
-                    if (model.getAvaQuantity().equals("0")){
-                        menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
-                        menuViewHolder.discount_badge.setVisibility(View.GONE);
-                    }else {
-                        menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
-                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
-                    }
 
                     menuViewHolder.setItemClickListener(new ItemClickListener() {
                         @Override
