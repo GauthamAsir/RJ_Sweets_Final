@@ -183,7 +183,7 @@
     <string name="good">Good</string>
     <string name="neutral">Neutral</string>
     <string name="bad">Bad</string>
-    <string name="very_bad">Very Bad</string>
+    <string name="very_bad">VeryBad</string>
     <string name="submit">Submit</string>
 
 </resources>

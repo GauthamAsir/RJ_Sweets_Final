@@ -2,7 +2,6 @@ package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -237,8 +236,6 @@ public class Home extends Fragment {
                     menuViewHolder.txtMenuName.setText(model.getName());
                     Picasso.get().load(model.getImage())
                             .into(menuViewHolder.imageView);
-
-                    Log.d("test",model.getDiscount());
 
                     if (model.getAvaQuantity().equals("0")){
                         menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
