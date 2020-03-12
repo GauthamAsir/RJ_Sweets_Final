@@ -106,6 +106,7 @@ public class OrderPicked extends AppCompatActivity {
 
                 latlng = request.getLatLng();
 
+                assert  latlng!=null;
                 String[] spliter = latlng.split("\\(");
                 final String ll = spliter[1].replaceAll("\\)","");
                 final String l2[] = ll.split(",");

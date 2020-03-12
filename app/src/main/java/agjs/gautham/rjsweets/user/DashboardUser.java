@@ -94,6 +94,12 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
             }
         }
 
+        Paper.init(this);
+
+        if (Paper.book().read(Common.feedback_remember) == null){
+            Paper.book().write(Common.feedback_remember, "1");
+        }
+
         menu = navigationView.getMenu();
 
         if (Common.isConnectedToInternet(getBaseContext())) {

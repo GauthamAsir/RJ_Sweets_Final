@@ -142,6 +142,16 @@ public class SettingsActivity extends AppCompatActivity {
             contributor = findPreference(getString(R.string.contributors));
             feedback = findPreference(getString(R.string.feedback));
 
+            if (mUser==null){
+
+                name.setVisible(false);
+                noti.setVisible(false);
+                change_pass.setVisible(false);
+                feedback.setVisible(false);
+                Toast.makeText(getActivity(),"Login to view all features",Toast.LENGTH_SHORT).show();
+
+            }
+
             contributor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -153,7 +163,16 @@ public class SettingsActivity extends AppCompatActivity {
             feedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), FeedbackActivity.class));
+
+                    if (mUser!=null){
+
+                        startActivity(new Intent(getActivity(), FeedbackActivity.class));
+
+                    } else {
+
+                        Toast.makeText(getActivity(),"Please Login to Continue",Toast.LENGTH_SHORT).show();
+
+                    }
                     return true;
                 }
             });
@@ -175,10 +194,21 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+            if (mUser==null){
+                logOut.setTitle(getString(R.string.login));
+            }
+
             logOut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    logout();
+
+                    if (mUser!=null){
+                        logout();
+                    }
+                    else{
+                        startActivity(new Intent(getActivity(), Login.class));
+                        getActivity().finish();
+                    }
                     return true;
                 }
             });
@@ -517,7 +547,7 @@ public class SettingsActivity extends AppCompatActivity {
                         String email = mUser.getEmail();
 
                         Intent sendEmail = new Intent(Intent.ACTION_SENDTO);
-                        sendEmail.setData(Uri.parse("mailto:gauthamnadar12@gmail.com"));
+                        sendEmail.setData(Uri.parse("mailto:agjs.bros@gmail.com"));
                         sendEmail.putExtra(Intent.EXTRA_SUBJECT,"Support");
                         startActivity(sendEmail);
                     }else {

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:layout_margin="6dp"
+    app:cardBackgroundColor="@color/holo_orange">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="6dp"
+        android:layout_margin="6dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:textSize="18sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/header1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:text="@string/great"/>
+
+            <TextView
+                android:id="@+id/pg_percent_great"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_toEndOf="@+id/header1"
+                android:padding="6dp"
+                android:text="10%" />
+
+            <ProgressBar
+                android:id="@+id/pgbar_great"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/header1"
+                android:indeterminate="false"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="6dp"
+                android:progress="10"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/header2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:text="@string/good"/>
+
+            <ProgressBar
+                android:id="@+id/pgbar_good"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/header2"
+                android:indeterminate="false"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="6dp"
+                android:progress="10"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/pg_percent_good"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_toEndOf="@+id/header2"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="10%" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/header3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:padding="6dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="@string/neutral"/>
+
+            <ProgressBar
+                android:id="@+id/pgbar_neutral"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/header3"
+                android:indeterminate="false"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="6dp"
+                android:progress="10"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/pg_percent_neutral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_toEndOf="@+id/header3"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="10%" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/header4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textSize="16sp"
+                android:text="@string/bad"/>
+
+            <ProgressBar
+                android:id="@+id/pgbar_bad"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/header4"
+                android:indeterminate="false"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="6dp"
+                android:progress="10"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/pg_percent_bad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/header4"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:gravity="center"
+                android:text="10%" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_border"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/header5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:padding="6dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="@string/very_bad"/>
+
+            <ProgressBar
+                android:id="@+id/pgbar_very_bad"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/header5"
+                android:indeterminate="false"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="6dp"
+                android:progress="10"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/pg_percent_very_bad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:layout_toEndOf="@+id/header5"
+                android:gravity="center"
+                android:text="10%" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

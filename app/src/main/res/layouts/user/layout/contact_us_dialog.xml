@@ -28,7 +28,7 @@
                 android:id="@+id/contact_telegram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/telegram"
+                android:src="@drawable/telegram_logo"
                 android:scaleType="centerInside"
                 android:padding="4dp"
                 android:clickable="true" />
@@ -47,7 +47,7 @@
                 android:id="@+id/contact_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_email_contact_us"
+                android:src="@drawable/gmail"
                 android:scaleType="centerInside"
                 android:padding="4dp"
                 android:clickable="true"/>

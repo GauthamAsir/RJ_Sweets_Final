@@ -25,6 +25,8 @@ public class Common {
     public static String USER_Phone = "123";
     public static String Name = "RJ Sweets Staff";
 
+    public static String feedback_remember = "1";
+
     public static String topicName = "News";
 
     private static String sender_mail = "agjs.bros@gmail.com";

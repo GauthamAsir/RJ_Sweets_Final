@@ -1,15 +1,19 @@
 package agjs.gautham.rjsweets.user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +42,7 @@ import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.common.Common;
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +76,8 @@ public class OrderPlaceStatus extends AppCompatActivity {
         //Firebase
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
+        Paper.init(this);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mService = Common.getFCMService();
@@ -109,17 +116,80 @@ public class OrderPlaceStatus extends AppCompatActivity {
             checkCart = true;
         }
 
+        final String feedback_check = Paper.book().read(Common.feedback_remember);
+
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (feedback_check !=null){
+
+                    if (feedback_check.equals("1")){
+
+                        feedback();
+
+                    }else {
+
+                        startActivity(new Intent(OrderPlaceStatus.this,DashboardUser.class));
+                        Common.intentOpenAnimation(OrderPlaceStatus.this);
+                        finish();
+
+                    }
+
+                }else {
+
+                    startActivity(new Intent(OrderPlaceStatus.this,DashboardUser.class));
+                    Common.intentOpenAnimation(OrderPlaceStatus.this);
+                    finish();
+                }
+            }
+        });
+
+        init();
+        makeOrder();
+
+    }
+
+    private void feedback(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.feedback));
+        builder.setMessage("Enjoying the app, would you mind to give us a feedback");
+        builder.setCancelable(false);
+
+        View checkBoxView = View.inflate(this, R.layout.feedback_checkbox_user, null);
+        CheckBox checkBox =  checkBoxView.findViewById(R.id.checkbox_feed);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Paper.book().write(Common.feedback_remember,"0");
+            }
+        });
+
+        builder.setView(checkBoxView);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                startActivity(new Intent(OrderPlaceStatus.this,FeedbackActivity.class));
+                Common.intentOpenAnimation(OrderPlaceStatus.this);
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
                 startActivity(new Intent(OrderPlaceStatus.this,DashboardUser.class));
                 Common.intentOpenAnimation(OrderPlaceStatus.this);
                 finish();
             }
         });
 
-        init();
-        makeOrder();
+        builder.show();
 
     }
 
