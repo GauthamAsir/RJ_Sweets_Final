@@ -25,6 +25,7 @@ import agjs.gautham.rjsweets.Model.Request;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.delivery.DashboardDelivery;
 import agjs.gautham.rjsweets.delivery.OrderDetailDelivery;
 import dmax.dialog.SpotsDialog;
 
@@ -167,7 +168,7 @@ public class OrderPlaced extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        startActivity(new Intent(OrderPlaced.this, DashboardDelivery.class));
     }
 
     @Override

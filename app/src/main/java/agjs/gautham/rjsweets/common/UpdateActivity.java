@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -95,7 +96,14 @@ public class UpdateActivity extends AppCompatActivity {
         alertDialog.setTitle("Downloading...");
         alertDialog.setIcon(R.drawable.ic_phone_iphone);
         alertDialog.setView(progressBar);
-        alertDialog.setCancelable(true);
+        alertDialog.setCancelable(false);
+
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
 
         pgDialog = alertDialog.create();
         pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
@@ -224,9 +232,9 @@ public class UpdateActivity extends AppCompatActivity {
             downloadTask.execute(updateUrl);
             Toast.makeText(UpdateActivity.this,"Downloading Update",Toast.LENGTH_SHORT).show();
 
-            pgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            pgDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCancel(DialogInterface dialog) {
+                public void onClick(View v) {
                     Toast.makeText(UpdateActivity.this,"Download Canceled",Toast.LENGTH_SHORT).show();
                     downloadTask.cancel(true);
                     pgDialog.dismiss();
