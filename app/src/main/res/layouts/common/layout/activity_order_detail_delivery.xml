@@ -233,8 +233,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@+id/order_payment_summary"
-                android:layout_above="@+id/pickup_delivery"
                 android:layout_margin="10dp">
 
                 <TextView
@@ -256,18 +254,38 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <com.agik.AGIKSwipeButton.View.Swipe_Button_View
-        android:id="@+id/pickup_delivery"
+    
+    <LinearLayout
+        android:id="@+id/c4"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/report_order"
-        android:layout_margin="16dp"
-        app:sb_swipe_text="Pick Up"
-        app:sb_swipe_animate_text="true"
-        app:sb_thumb_image="@drawable/ic_arrow_forward_white" />
+        android:orientation="vertical"
+        android:layout_toStartOf="@+id/report_order">
 
+        <com.agik.AGIKSwipeButton.View.Swipe_Button_View
+            android:id="@+id/pickup_delivery"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            app:sb_swipe_text="Pick Up"
+            app:sb_swipe_animate_text="true"
+            app:sb_thumb_image="@drawable/ic_arrow_forward_white" />
+
+        <Button
+            android:id="@+id/go_to_picked"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:text="@string/go_to_picked"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:background="@drawable/button_background"/>
+
+    </LinearLayout>
+    
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/report_order"
         android:layout_width="wrap_content"

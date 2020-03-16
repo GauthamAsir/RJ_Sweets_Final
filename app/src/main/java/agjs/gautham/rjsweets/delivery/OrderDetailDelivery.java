@@ -1,9 +1,11 @@
 package agjs.gautham.rjsweets.delivery;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.Remote.APIService;
 import agjs.gautham.rjsweets.common.Common;
+import agjs.gautham.rjsweets.delivery.ui.Home.OrderPicked;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +40,7 @@ import retrofit2.Response;
 public class OrderDetailDelivery extends AppCompatActivity {
 
     TextView order_id, order_phone, order_address, order_total, user_name;
+    Button go_to_picked;
     TextView items_total, packaging_charge, delivery_charge, order_total_final;
     String order_id_value="", user_mail_value, orderDate_value, order_total_value, user_name_value;
     String order_status="", user_phone_value;
@@ -62,6 +66,7 @@ public class OrderDetailDelivery extends AppCompatActivity {
         order_address = findViewById(R.id.order_address_delivery);
         order_total = findViewById(R.id.order_total_delivery);
         user_name = findViewById(R.id.user_name_delivery);
+        go_to_picked = findViewById(R.id.go_to_picked);
 
         report_order = findViewById(R.id.report_order);
 
@@ -204,7 +209,8 @@ public class OrderDetailDelivery extends AppCompatActivity {
         databaseReference.child(order_id_value).child("status").setValue("2");
 
         sendOrderStatusToUser(order_id_value, "2");
-        //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));  Makes user as server
+        startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));
+        finish();
 
         Common.sendMail(user_mail_value, order_id_value, user_name_value, orderDate_value, order_total_value,
                 user_phone_value, "2", Common.Name + "(" + Common.USER_Phone + ")");
@@ -213,11 +219,21 @@ public class OrderDetailDelivery extends AppCompatActivity {
 
     private void pickUp() {
 
+        go_to_picked.setVisibility(View.VISIBLE);
+        pickup.setVisibility(View.GONE);
+
         sendOrderStatusToUser(order_id_value,"1");
         databaseReference.child(order_id_value).child("picked").setValue("1");
         databaseReference.child(order_id_value).child("pickedBy").setValue(Common.USER_Phone);
         databaseReference.child(order_id_value).child("status").setValue("1");
-        //startActivity(new Intent(OrderDetailDelivery.this,DashboardDelivery.class));   Makes user as server
+
+        go_to_picked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OrderDetailDelivery.this, OrderPicked.class));
+                finish();
+            }
+        });
 
         Common.sendMail(user_mail_value, order_id_value, user_name_value, orderDate_value, order_total_value,
                 user_phone_value, "1", Common.Name + "(" + Common.USER_Phone + ")");
