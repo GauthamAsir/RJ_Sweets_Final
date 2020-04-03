@@ -1,5 +1,6 @@
 package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,7 @@ import java.util.Map;
 
 import agjs.gautham.rjsweets.Database.Database;
 import agjs.gautham.rjsweets.Interface.ItemClickListener;
+import agjs.gautham.rjsweets.Model.Flags;
 import agjs.gautham.rjsweets.Model.Sweet;
 import agjs.gautham.rjsweets.Model.Token;
 import agjs.gautham.rjsweets.R;
@@ -74,7 +77,7 @@ public class Home extends Fragment {
         final View root = inflater.inflate(R.layout.nav_home_user, container, false);
 
         //Init Firebase
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         sweets = database.getReference("Sweets");
         internetStatus = root.findViewById(R.id.no_internet_user);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -137,22 +140,6 @@ public class Home extends Fragment {
                     //Load menu
                     loadMenu(root);
                 }
-            }
-        });
-
-        DatabaseReference ipv4 = database.getReference("IPv4");
-
-        ipv4.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String ip = dataSnapshot.getValue(String.class);
-                Common.IP = ip;
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
@@ -219,11 +206,57 @@ public class Home extends Fragment {
         }
     }
 
-    private void loadMenu(View root) {
+    private void loadMenu(final View root) {
 
         internetStatus = root.findViewById(R.id.no_internet_user);
 
         if (Common.isConnectedToInternet(getActivity())) {
+
+            // Show A Reason For Not Accepting Orders like Server Under Maintainence or due to COVID-19
+            DatabaseReference flags = FirebaseDatabase.getInstance().getReference("flags");
+            flags.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Common.flags = dataSnapshot.getValue(Flags.class);
+
+                    TextView make_no_orders = root.findViewById(R.id.make_no_order_reason);
+                    if (Common.flags.isMakeOrders()){
+                        make_no_orders.setVisibility(View.GONE);
+                    }else {
+                        make_no_orders.setText(Common.flags.getMakeOrdersReason());
+                        make_no_orders.setVisibility(View.VISIBLE);
+                        make_no_orders.setSelected(true);
+                    }
+
+                    make_no_orders.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            AlertDialog.Builder builder_no_order = new  AlertDialog.Builder(getActivity());
+                            builder_no_order.setTitle("Message from server");
+                            builder_no_order.setIcon(R.drawable.ic_error_outline);
+                            builder_no_order.setMessage(Common.flags.getMakeOrdersReason());
+
+                            builder_no_order.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            builder_no_order.show();
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
             internetStatus.setVisibility(View.GONE);
 

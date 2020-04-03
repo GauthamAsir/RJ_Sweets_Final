@@ -169,6 +169,18 @@ public class SweetsDetail extends AppCompatActivity {
             }
         });
 
+        if (!Common.flags.isMakeOrders()){
+
+            TextView textView = findViewById(R.id.make_no_order_reason_sweets);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(Common.flags.getMakeOrdersReason());
+            textView.setSelected(true);
+
+            numberButton.setVisibility(View.GONE);
+            buyNow.setVisibility(View.GONE);
+            btnCart.hide();
+        }
+
         if (avaQuantity.equals("0")){
             buyNow.setEnabled(false);
             btnCart.hide();

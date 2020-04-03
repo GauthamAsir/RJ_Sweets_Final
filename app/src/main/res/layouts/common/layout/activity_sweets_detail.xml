@@ -37,9 +37,27 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
+                <TextView
+                    android:id="@+id/make_no_order_reason_sweets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar_sweets_user"
+                    android:background="@color/red"
+                    android:textColor="@color/white"
+                    android:padding="6dp"
+                    android:text="@string/no_internet"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:clickable="true"/>
+
                 <ImageView
                     android:id="@+id/img_sweets_user"
-                    android:layout_below="@+id/toolbar_sweets_user"
+                    android:layout_below="@+id/make_no_order_reason_sweets"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@null"

@@ -1,13 +1,16 @@
 package agjs.gautham.rjsweets;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,9 +22,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import agjs.gautham.rjsweets.Model.Flags;
 import agjs.gautham.rjsweets.admin.DashboardAdmin;
+import agjs.gautham.rjsweets.common.CheckUpdate;
 import agjs.gautham.rjsweets.common.Common;
 import agjs.gautham.rjsweets.common.MainActivity;
+import agjs.gautham.rjsweets.common.UpdateActivity;
 import agjs.gautham.rjsweets.delivery.DashboardDelivery;
 import agjs.gautham.rjsweets.login.Login;
 import agjs.gautham.rjsweets.user.DashboardUser;
@@ -29,20 +35,101 @@ import io.paperdb.Paper;
 
 public class Splash extends AppCompatActivity {
 
-    private ProgressBar progressBar;
+    private TextView progress;
     private FirebaseDatabase database;
+
+    private String CHANNEL_ID = "CHANNEL_1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        progressBar = findViewById(R.id.pg);
+        progress = findViewById(R.id.pg);
 
         //Init Firebase
         database = FirebaseDatabase.getInstance();
 
         Paper.init(this);
+
+        DatabaseReference flags = database.getReference("flags");
+        flags.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Common.flags = dataSnapshot.getValue(Flags.class);
+
+                if (Common.flags.isSplashUpdateCheck()){
+
+                    //Check For App-Update
+                    final String app_version =CheckUpdate.getAppVersion(Splash.this);
+                    Double update_version = Common.flags.getLatestVersion();
+                    Double appV = Double.parseDouble(app_version);
+
+                    if (appV<update_version){
+
+                        if (Common.flags.isMandatoryLatestUpdate()){
+
+                            CheckUpdate runner = new CheckUpdate(Splash.this);
+                            runner.execute();
+
+                            progress.setText(R.string.connection_established);
+                            startActivity(new Intent(Splash.this, UpdateActivity.class));
+                            Common.intentOpenAnimation(Splash.this);
+                            finish();
+
+                        }else {
+                            showNotification();
+                            init();
+                        }
+
+                    }else {
+                        showNotification();
+                        init();
+                    }
+                }else {
+                    init();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showNotification(){
+
+        makeNotificationChannel();
+
+        NotificationCompat.Builder notification =
+                new NotificationCompat.Builder(this, CHANNEL_ID);
+
+        NotificationManager notificationManager =
+                (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        notification
+                .setSmallIcon(R.mipmap.ic_launcher) // can use any other icon
+                .setContentTitle("New Update Available!")
+                .setContentText("You can update the app from Settings or from our Github Releases");
+
+        assert notificationManager != null;
+        notificationManager.notify(1, notification.build());
+
+    }
+
+    private void makeNotificationChannel(){
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Update Available", NotificationManager.IMPORTANCE_HIGH );
+        channel.setShowBadge(true); // set false to disable badges, Oreo exclusive
+
+        NotificationManager notificationManager =
+                (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        assert notificationManager != null;
+        notificationManager.createNotificationChannel(channel);
+    }
+
+    private void init() {
 
         String user = Paper.book().read(Common.USER_EMAIL);
         String pwd = Paper.book().read(Common.USER_PASS);
@@ -54,84 +141,30 @@ public class Splash extends AppCompatActivity {
 
                 if (loginType != null){
 
-                    if (loginType.equals("0"))
+                    if (loginType.equals("0")){
+                        progress.setText(R.string.connection_established);
                         logInUser(user, pwd);
+                    }
 
-                    if (loginType.equals("1"))
-                        logInAdmin(user,pwd);
+                    if (loginType.equals("1")){
+                        progress.setText(R.string.connection_established);
+                        logInAdmin(user);
+                    }
 
-                    if (loginType.equals("2"))
-                        logInDelivery(user,pwd);
+                    if (loginType.equals("2")){
+                        progress.setText(R.string.connection_established);
+                        logInDelivery(user);
+                    }
 
                 }else {
+                    progress.setText(R.string.connection_established);
                     defaultLogin();
                 }
             }
         }else {
+            progress.setText(R.string.connection_established);
             defaultLogin();
         }
-
-        //CheckUpdate runner = new CheckUpdate(Splash.this);
-        //runner.execute();
-
-        //Check For App-Update
-        /*final String app_version =CheckUpdate.getAppVersion(Splash.this);
-
-        DatabaseReference databaseReference = database.getReference("Updates");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                AppUpdate appUpdate = dataSnapshot.getValue(AppUpdate.class);
-
-                Double update_version = appUpdate.getVersion();
-                Double appV = Double.parseDouble(app_version);
-
-                if (appV<update_version){
-
-                    CheckUpdate runner = new CheckUpdate(Splash.this);
-                    runner.execute();
-
-                    progressBar.setProgress(100);
-                    startActivity(new Intent(Splash.this, UpdateActivity.class));
-                    Common.intentOpenAnimation(Splash.this);
-                    finish();
-
-                }else {
-
-                    if (user != null && pwd != null){
-
-                        if (!user.isEmpty() && !pwd.isEmpty()){
-
-                            if (loginType != null){
-
-                                if (loginType.equals("0"))
-                                    logInUser(user, pwd);
-
-                                if (loginType.equals("1"))
-                                    logInAdmin(user,pwd);
-
-                                if (loginType.equals("2"))
-                                    logInDelivery(user,pwd);
-
-                            }else {
-                                defaultLogin();
-                            }
-                        }
-                    }else {
-                        defaultLogin();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 
     }
 
@@ -141,7 +174,6 @@ public class Splash extends AppCompatActivity {
             @Override
             public void run() {
 
-                progressBar.setProgress(100);
                 Intent intent = new Intent(Splash.this, MainActivity.class);
                 startActivity(intent);
                 Common.intentOpenAnimation(Splash.this);
@@ -151,7 +183,7 @@ public class Splash extends AppCompatActivity {
 
     }
 
-    private void logInAdmin(final String phone, final String pwd){
+    private void logInAdmin(final String phone){
 
         //Init Firebase For Admin
         final DatabaseReference databaseReference = database.getReference("User");
@@ -163,7 +195,7 @@ public class Splash extends AppCompatActivity {
                 //Check phone existence
                 if (dataSnapshot.child(phone).exists()) {
 
-                    progressBar.setProgress(100);
+                    progress.setText(R.string.logging_in);
 
                     Intent intent = new Intent(Splash.this, DashboardAdmin.class);
                     Common.USER_Phone = phone;
@@ -174,7 +206,6 @@ public class Splash extends AppCompatActivity {
                     finish();
 
                 } else {
-                    progressBar.setProgress(100);
                     startActivity(new Intent(Splash.this, MainActivity.class));
                     Common.intentOpenAnimation(Splash.this);
                     finish();
@@ -188,7 +219,7 @@ public class Splash extends AppCompatActivity {
         });
     }
 
-    private void logInDelivery(final String phone, final String pwd){
+    private void logInDelivery(final String phone){
 
         //Init Firebase For Delivery
         final DatabaseReference databaseReference = database.getReference("Shippers");
@@ -200,7 +231,7 @@ public class Splash extends AppCompatActivity {
                 //Check phone existence
                 if (dataSnapshot.child(phone).exists()) {
 
-                    progressBar.setProgress(100);
+                    progress.setText(R.string.logging_in);
 
                     Common.USER_Phone = phone;
                     Common.Name = dataSnapshot.child(phone).child("name").getValue(String.class);
@@ -212,7 +243,6 @@ public class Splash extends AppCompatActivity {
                     finish();
 
                 } else {
-                    progressBar.setProgress(100);
                     startActivity(new Intent(Splash.this, MainActivity.class));
                     Common.intentOpenAnimation(Splash.this);
                     finish();
@@ -236,7 +266,7 @@ public class Splash extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
 
-                    progressBar.setProgress(100);
+                    progress.setText(R.string.logging_in);
 
                     Intent intent = new Intent(Splash.this, DashboardUser.class);
                     Common.loginType = "0";
@@ -245,9 +275,6 @@ public class Splash extends AppCompatActivity {
                     Common.intentOpenAnimation(Splash.this);
                     finish();
                 }else {
-
-                    progressBar.setProgress(100);
-
                     Intent intent = new Intent(Splash.this, Login.class);
                     startActivity(intent);
                     Common.intentOpenAnimation(Splash.this);

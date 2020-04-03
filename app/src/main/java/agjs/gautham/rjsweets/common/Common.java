@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import agjs.gautham.rjsweets.Helper.GMailSender;
+import agjs.gautham.rjsweets.Model.Flags;
 import agjs.gautham.rjsweets.Model.SweetOrder;
 import agjs.gautham.rjsweets.Model.User;
 import agjs.gautham.rjsweets.R;
@@ -19,6 +20,7 @@ import agjs.gautham.rjsweets.Remote.RetroFitClient;
 public class Common {
 
     public static User currentUser = new User();
+    public static Flags flags = new Flags();
 
     public static String USER_EMAIL = "Email";
     public static String USER_PASS = "Pass";

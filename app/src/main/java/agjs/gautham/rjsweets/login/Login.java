@@ -55,9 +55,7 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextInputLayout sEmail_Phone, sPass, reset_email;
 
-    private Button forgotPass;
     private long back_pressed;
-
     int phone_flag = 0;
 
     android.app.AlertDialog pdialog, pdialog2;
@@ -96,7 +94,7 @@ public class Login extends AppCompatActivity {
         sEmail_Phone = findViewById(R.id.signInEmail);
         sPass = findViewById(R.id.signInPass);
 
-        forgotPass = findViewById(R.id.forgot_pass);
+        Button forgotPass = findViewById(R.id.forgot_pass);
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -372,7 +370,7 @@ public class Login extends AppCompatActivity {
             return false;
         }else {
             sEmail_Phone.setError(null);
-            sPass.clearFocus();
+            sEmail_Phone.clearFocus();
             return true;
         }
     }

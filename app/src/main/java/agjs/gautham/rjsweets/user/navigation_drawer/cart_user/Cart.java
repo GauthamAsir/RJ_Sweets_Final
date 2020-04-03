@@ -111,6 +111,10 @@ public class Cart extends Fragment implements RecyclerItemTouchHelperListener {
             cartStatus.setVisibility(View.GONE);
             cartStatus.setText(null);
 
+            if (!Common.flags.isMakeOrders()){
+                btnPlace.setEnabled(false);
+            }
+
             btnPlace.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
