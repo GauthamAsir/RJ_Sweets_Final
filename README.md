@@ -13,11 +13,11 @@ Basic   | Spec Sheet
 Os      | Android    
 Android | 8.0 and above
 
-##Developed by Gautham
+## Developed by Gautham
 [Telegram](https://t.me/Mellow04)
 [Github](https://github.com/GauthamAsir)
 
-##Features
+## Features
 * User, Admin, Delivery in a single app
 * Using Firebase Easy to retrieve & update
 * User blacklist (if any pending payment)
@@ -28,9 +28,9 @@ Android | 8.0 and above
 * Admin can add delivery boy
 * More than enough for a college project xD
 
-##Usage
+## Usage
 
-###Prerequisite
+### Prerequisite
 Download the project from the repo & locate it in Android Studio
 Connect the app to your firebase & place the google-services.json in project (Google it for more info)
 [Go to this link and copy the json into a new file and save it](https://raw.githubusercontent.com/GauthamAsir/My-Releases/master/agjsproject-export.json)
@@ -41,7 +41,7 @@ Upload the saved json file to the database by clicking that three dot
 Go to google cloud platform and get your api key for places and google maps
 Thats it you are done build the app and test it
 
-##Credits
+## Credits
 
 OFC ME xD (Gautham)
 App is using many of the custom libraries my many developers, A huge thanks to them
