@@ -53,7 +53,7 @@ App is using many of the custom libraries my many developers, A huge thanks to t
 
 [Counter Floating Action Button](https://github.com/andremion/CounterFab)
 
-[Spots Dialog]9https://github.com/dybarsky/spots-dialog0
+[Spots Dialog](9https://github.com/dybarsky/spots-dialog0)
 
 [Otp View](https://github.com/mukeshsolanki/android-otpview-pinview)
 
