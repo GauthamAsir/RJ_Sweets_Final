@@ -19,7 +19,6 @@
             android:background="@color/red"
             android:textColor="@color/white"
             android:padding="6dp"
-            android:text="@string/no_internet"
             android:gravity="center_horizontal"
             android:textSize="18sp"
             android:visibility="gone"

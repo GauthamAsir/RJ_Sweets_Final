@@ -183,6 +183,14 @@
     <string name="view_monthly_report">View Monthly Report</string>
 
     <string name="feedback">Feedback</string>
+    <string name="flags">Flags</string>
+    <string name="latest_version">Latest Version</string>
+    <string name="make_orders">Make Orders</string>
+    <string name="make_no_orders_reason">Reason</string>
+    <string name="mandatory_update">Mandatory Update</string>
+    <string name="splash_update_check">Splash Update Check</string>
+    <string name="_true">True</string>
+    <string name="_false">False</string>
 
     <string name="great">Great</string>
     <string name="good">Good</string>

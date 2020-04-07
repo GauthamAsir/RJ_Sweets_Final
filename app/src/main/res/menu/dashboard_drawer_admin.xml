@@ -33,6 +33,12 @@
             android:iconTint="@color/white"/>
 
         <item
+            android:id="@+id/nav_flags"
+            android:icon="@drawable/ic_flag_black_24dp"
+            android:title="@string/flags"
+            android:iconTint="@color/white"/>
+
+        <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_feedback_black_24dp"
             android:title="@string/feedback"

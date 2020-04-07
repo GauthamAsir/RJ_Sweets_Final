@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import agjs.gautham.rjsweets.R;
 import agjs.gautham.rjsweets.admin.navigation_drawer.feedback.FeedbackAdmin;
+import agjs.gautham.rjsweets.admin.navigation_drawer.flags.FlagsAdmin;
 import agjs.gautham.rjsweets.admin.navigation_drawer.home.Home;
 import agjs.gautham.rjsweets.admin.navigation_drawer.notification.SendNotification;
 import agjs.gautham.rjsweets.admin.navigation_drawer.orders.Orders;
@@ -87,6 +88,11 @@ public class DashboardAdmin extends AppCompatActivity
             case R.id.nav_shippers:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Shippers()).commit();
                 getSupportActionBar().setTitle(R.string.shippers);
+                break;
+
+            case R.id.nav_flags:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FlagsAdmin()).commit();
+                getSupportActionBar().setTitle(R.string.flags);
                 break;
 
             case R.id.nav_feedback:

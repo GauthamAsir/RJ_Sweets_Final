@@ -11,6 +11,14 @@ public class Flags {
     public Flags() {
     }
 
+    public Flags(boolean splashUpdateCheck, boolean makeOrders, Double latestVersion, boolean mandatoryLatestUpdate, String makeOrdersReason) {
+        this.splashUpdateCheck = splashUpdateCheck;
+        this.makeOrders = makeOrders;
+        this.latestVersion = latestVersion;
+        this.mandatoryLatestUpdate = mandatoryLatestUpdate;
+        this.makeOrdersReason = makeOrdersReason;
+    }
+
     public boolean isSplashUpdateCheck() {
         return splashUpdateCheck;
     }
