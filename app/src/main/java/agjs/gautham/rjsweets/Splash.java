@@ -3,6 +3,7 @@ package agjs.gautham.rjsweets;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
@@ -12,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +37,11 @@ public class Splash extends AppCompatActivity {
     private FirebaseDatabase database;
 
     private String CHANNEL_ID = "CHANNEL_1";
+    private Handler handler = new Handler();
+
+    private String user;
+    private String pwd;
+    private String loginType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,51 +54,83 @@ public class Splash extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         Paper.init(this);
+        LoadFlags loadFlags = new LoadFlags();
+        loadFlags.execute();
 
-        DatabaseReference flags = database.getReference("flags");
-        flags.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Common.flags = dataSnapshot.getValue(Flags.class);
+    }
 
-                if (Common.flags.isSplashUpdateCheck()){
+    private class LoadFlags extends AsyncTask{
 
-                    //Check For App-Update
-                    final String app_version =CheckUpdate.getAppVersion(Splash.this);
-                    Double update_version = Common.flags.getLatestVersion();
-                    Double appV = Double.parseDouble(app_version);
+        @Override
+        protected Object doInBackground(Object[] objects) {
 
-                    if (appV<update_version){
+            user = Paper.book().read(Common.USER_EMAIL);
+            pwd = Paper.book().read(Common.USER_PASS);
+            loginType = Paper.book().read(Common.loginType);
 
-                        if (Common.flags.isMandatoryLatestUpdate()){
+            DatabaseReference flags = database.getReference("flags");
+            flags.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Common.flags = dataSnapshot.getValue(Flags.class);
+                }
 
-                            CheckUpdate runner = new CheckUpdate(Splash.this);
-                            runner.execute();
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            progress.setText(R.string.connection_established);
-                            startActivity(new Intent(Splash.this, UpdateActivity.class));
-                            Common.intentOpenAnimation(Splash.this);
-                            finish();
+                }
+            });
 
-                        }else {
-                            showNotification();
-                            init();
-                        }
+            if (Common.flags.isSplashUpdateCheck()){
+
+                //Check For App-Update
+                final String app_version =CheckUpdate.getAppVersion(Splash.this);
+                final Double update_version = Common.flags.getLatestVersion();
+                final Double appV = Double.parseDouble(app_version);
+
+                if (appV<update_version){
+
+                    if (Common.flags.isMandatoryLatestUpdate()){
+
+                        CheckUpdate runner = new CheckUpdate(Splash.this);
+                        runner.execute();
+
+                        progress.setText(R.string.connection_established);
+                        startActivity(new Intent(Splash.this, UpdateActivity.class));
+                        Common.intentOpenAnimation(Splash.this);
+                        finish();
 
                     }else {
-                        showNotification();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showNotification();
+                                init();
+                            }
+                        });
+                    }
+
+                }else {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            init();
+                        }
+                    });
+                }
+
+            }else {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
                         init();
                     }
-                }else {
-                    init();
-                }
+                });
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+            return null;
+        }
     }
 
     private void showNotification(){
@@ -131,40 +166,38 @@ public class Splash extends AppCompatActivity {
 
     private void init() {
 
-        String user = Paper.book().read(Common.USER_EMAIL);
-        String pwd = Paper.book().read(Common.USER_PASS);
-        String loginType = Paper.book().read(Common.loginType);
-
         if (user != null && pwd != null){
 
             if (!user.isEmpty() && !pwd.isEmpty()){
 
                 if (loginType != null){
 
+                    progress.setText(R.string.connection_established);
+
                     if (loginType.equals("0")){
-                        progress.setText(R.string.connection_established);
-                        logInUser(user, pwd);
+                        logInUser();
+                        return;
                     }
 
                     if (loginType.equals("1")){
-                        progress.setText(R.string.connection_established);
                         logInAdmin(user);
+                        return;
                     }
 
                     if (loginType.equals("2")){
-                        progress.setText(R.string.connection_established);
                         logInDelivery(user);
+                        return;
                     }
 
-                }else {
-                    progress.setText(R.string.connection_established);
-                    defaultLogin();
                 }
+
+                progress.setText(R.string.connection_established);
+                defaultLogin();
+                return;
             }
-        }else {
-            progress.setText(R.string.connection_established);
-            defaultLogin();
         }
+        progress.setText(R.string.connection_established);
+        defaultLogin();
 
     }
 
@@ -204,12 +237,13 @@ public class Splash extends AppCompatActivity {
                     startActivity(intent);
                     Common.intentOpenAnimation(Splash.this);
                     finish();
+                    return;
 
-                } else {
-                    startActivity(new Intent(Splash.this, MainActivity.class));
-                    Common.intentOpenAnimation(Splash.this);
-                    finish();
                 }
+
+                startActivity(new Intent(Splash.this, MainActivity.class));
+                Common.intentOpenAnimation(Splash.this);
+                finish();
             }
 
             @Override
@@ -241,12 +275,13 @@ public class Splash extends AppCompatActivity {
                     startActivity(intent);
                     Common.intentOpenAnimation(Splash.this);
                     finish();
+                    return;
 
-                } else {
-                    startActivity(new Intent(Splash.this, MainActivity.class));
-                    Common.intentOpenAnimation(Splash.this);
-                    finish();
                 }
+
+                startActivity(new Intent(Splash.this, MainActivity.class));
+                Common.intentOpenAnimation(Splash.this);
+                finish();
             }
 
             @Override
@@ -257,31 +292,38 @@ public class Splash extends AppCompatActivity {
 
     }
 
-    private void logInUser(final String phone, final String pwd) {
+    private void logInUser() {
+
+        progress.setText(R.string.logging_in);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        mAuth.signInWithEmailAndPassword(phone,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+        if (Paper.book().read(Common.PHONE_KEY)==null ||
+                Paper.book().read(Common.PHONE_KEY).toString().isEmpty()){
+            Intent intent = new Intent(Splash.this, Login.class);
+            startActivity(intent);
+            Common.intentOpenAnimation(Splash.this);
+            finish();
+            return;
+        }
 
-                    progress.setText(R.string.logging_in);
+        if (mAuth.getCurrentUser()!=null){
 
-                    Intent intent = new Intent(Splash.this, DashboardUser.class);
-                    Common.loginType = "0";
-                    Common.USER_Phone = Paper.book().read(Common.PHONE_KEY);
-                    startActivity(intent);
-                    Common.intentOpenAnimation(Splash.this);
-                    finish();
-                }else {
-                    Intent intent = new Intent(Splash.this, Login.class);
-                    startActivity(intent);
-                    Common.intentOpenAnimation(Splash.this);
-                    finish();
-                }
-            }
-        });
+            Intent intent = new Intent(Splash.this, DashboardUser.class);
+            Common.loginType = "0";
+            Common.USER_Phone = Paper.book().read(Common.PHONE_KEY);
+            startActivity(intent);
+            Common.intentOpenAnimation(Splash.this);
+            finish();
+            return;
+
+        }
+
+        Intent intent = new Intent(Splash.this, Login.class);
+        startActivity(intent);
+        Common.intentOpenAnimation(Splash.this);
+        finish();
+
     }
 
 }

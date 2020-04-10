@@ -2,7 +2,9 @@ package agjs.gautham.rjsweets.user.navigation_drawer.home_user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,12 +71,15 @@ public class Home extends Fragment {
 
     private FirebaseUser mUser;
 
+    private Handler handler = new Handler();
+    private View root;
+
     private android.app.AlertDialog dialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        final View root = inflater.inflate(R.layout.nav_home_user, container, false);
+        root = inflater.inflate(R.layout.nav_home_user, container, false);
 
         //Init Firebase
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -115,7 +120,7 @@ public class Home extends Fragment {
                     internetStatus.setVisibility(View.GONE);
                 }else {
                     internetStatus.setVisibility(View.VISIBLE);
-                    toast("No Internet Connection");
+                    toast("No Internet Connection",Toast.LENGTH_SHORT);
                 }
 
                 recycler_menu = root.findViewById(R.id.recycle_menu_user);
@@ -123,7 +128,7 @@ public class Home extends Fragment {
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 recycler_menu.setLayoutManager(layoutManager);
 
-                loadMenu(root);
+                loadMenu();
             }
         });
 
@@ -138,7 +143,7 @@ public class Home extends Fragment {
                     recycler_menu.setLayoutManager(layoutManager);
 
                     //Load menu
-                    loadMenu(root);
+                    loadMenu();
                 }
             }
         });
@@ -206,11 +211,146 @@ public class Home extends Fragment {
         }
     }
 
-    private void loadMenu(final View root) {
+    private void loadMenu() {
 
         internetStatus = root.findViewById(R.id.no_internet_user);
 
         if (Common.isConnectedToInternet(getActivity())) {
+
+            recycler_menu.setVisibility(View.VISIBLE);
+            internetStatus.setVisibility(View.GONE);
+            loadFlags loadFlags = new loadFlags();
+            loadFlags.execute();
+            dialog.show();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    adapter = new FirebaseRecyclerAdapter<Sweet, MenuViewHolder>
+                            (Sweet.class, R.layout.menu_item, MenuViewHolder.class, sweets) {
+                        @Override
+                        protected void populateViewHolder(final MenuViewHolder menuViewHolder, final Sweet model, final int i) {
+
+                            menuViewHolder.txtMenuName.setText(model.getName());
+                            Picasso.get().load(model.getImage())
+                                    .into(menuViewHolder.imageView);
+
+                            if (model.getAvaQuantity().equals("0")){
+                                menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
+                                menuViewHolder.discount_badge.setVisibility(View.GONE);
+                            }else {
+                                menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
+                                menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                            }
+
+                            if (!model.getDiscount().equals("0")){
+
+                                menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                                switch (model.getDiscount()){
+
+                                    case "10":
+                                        Picasso.get().load(R.drawable.badge_10).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "20":
+                                        Picasso.get().load(R.drawable.badge_20).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "30":
+                                        Picasso.get().load(R.drawable.badge_30).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "40":
+                                        Picasso.get().load(R.drawable.badge_40).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "50":
+                                        Picasso.get().load(R.drawable.badge_50).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "60":
+                                        Picasso.get().load(R.drawable.badge_60).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "70":
+                                        Picasso.get().load(R.drawable.badge_70).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "80":
+                                        Picasso.get().load(R.drawable.badge_80).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    case "90":
+                                        Picasso.get().load(R.drawable.badge_90).into(menuViewHolder.discount_badge);
+                                        break;
+
+                                    default:
+                                        menuViewHolder.discount_badge.setVisibility(View.GONE);
+                                        break;
+
+                                }
+
+                                if (model.getAvaQuantity().equals("0")){
+                                    menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
+                                    menuViewHolder.discount_badge.setVisibility(View.GONE);
+                                }else {
+                                    menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
+                                    menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
+                                }
+
+                            }else {
+                                menuViewHolder.discount_badge.setVisibility(View.GONE);
+                            }
+
+                            if (dialog.isShowing()){
+                                dialog.dismiss();
+                            }
+
+                            menuViewHolder.root.setAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.fade_scale_transmission));
+
+                            menuViewHolder.setItemClickListener(new ItemClickListener() {
+                                @Override
+                                public void onClick(View view, final int position, boolean isLongClick) {
+                                    Intent sweetsDetail = new Intent(getActivity(), SweetsDetail.class);
+                                    sweetsDetail.putExtra("SweetId", adapter.getRef(position).getKey());
+                                    sweetsDetail.putExtra("AvailableQuantity",model.getAvaQuantity());
+
+                                    Common.intentOpenAnimation(getActivity());
+                                    startActivity(sweetsDetail);
+                                    getActivity().overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                                }
+                            });
+
+                        }
+                    };
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            fab.setCount(new Database(getActivity()).getCountCart());
+                            recycler_menu.setHasFixedSize(true);
+                            recycler_menu.setAdapter(adapter);
+                        }
+                    });
+
+                }
+            }).start();
+        }else {
+            recycler_menu.setVisibility(View.GONE);
+            internetStatus.setVisibility(View.VISIBLE);
+            if (dialog.isShowing()){
+                dialog.dismiss();
+            }
+            toast("No Internet Connection",Toast.LENGTH_SHORT);
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private class loadFlags extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
 
             // Show A Reason For Not Accepting Orders like Server Under Maintainence or due to COVID-19
             DatabaseReference flags = FirebaseDatabase.getInstance().getReference("flags");
@@ -221,6 +361,14 @@ public class Home extends Fragment {
 
                     TextView make_no_orders = root.findViewById(R.id.make_no_order_reason);
                     if (Common.flags.isMakeOrders()){
+                        make_no_orders.setVisibility(View.GONE);
+                    }else {
+                        make_no_orders.setText(Common.flags.getMakeOrdersReason());
+                        make_no_orders.setVisibility(View.VISIBLE);
+                        make_no_orders.setSelected(true);
+                    }
+
+                    if (Common.flags.getMakeOrdersReason().equals("default")){
                         make_no_orders.setVisibility(View.GONE);
                     }else {
                         make_no_orders.setText(Common.flags.getMakeOrdersReason());
@@ -243,9 +391,7 @@ public class Home extends Fragment {
                                     dialog.dismiss();
                                 }
                             });
-
                             builder_no_order.show();
-
                         }
                     });
 
@@ -257,123 +403,11 @@ public class Home extends Fragment {
                 }
             });
 
-
-            internetStatus.setVisibility(View.GONE);
-
-            dialog.show();
-            adapter = new FirebaseRecyclerAdapter<Sweet, MenuViewHolder>
-                    (Sweet.class, R.layout.menu_item, MenuViewHolder.class, sweets) {
-                @Override
-                protected void populateViewHolder(final MenuViewHolder menuViewHolder, final Sweet model, final int i) {
-
-                    menuViewHolder.txtMenuName.setText(model.getName());
-                    Picasso.get().load(model.getImage())
-                            .into(menuViewHolder.imageView);
-
-                    if (model.getAvaQuantity().equals("0")){
-                        menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
-                        menuViewHolder.discount_badge.setVisibility(View.GONE);
-                    }else {
-                        menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
-                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
-                    }
-
-                    if (!model.getDiscount().equals("0")){
-
-                        menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
-                        switch (model.getDiscount()){
-
-                            case "10":
-                                Picasso.get().load(R.drawable.badge_10).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "20":
-                                Picasso.get().load(R.drawable.badge_20).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "30":
-                                Picasso.get().load(R.drawable.badge_30).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "40":
-                                Picasso.get().load(R.drawable.badge_40).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "50":
-                                Picasso.get().load(R.drawable.badge_50).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "60":
-                                Picasso.get().load(R.drawable.badge_60).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "70":
-                                Picasso.get().load(R.drawable.badge_70).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "80":
-                                Picasso.get().load(R.drawable.badge_80).into(menuViewHolder.discount_badge);
-                                break;
-
-                            case "90":
-                                Picasso.get().load(R.drawable.badge_90).into(menuViewHolder.discount_badge);
-                                break;
-
-                            default:
-                                menuViewHolder.discount_badge.setVisibility(View.GONE);
-                                break;
-
-                        }
-
-                        if (model.getAvaQuantity().equals("0")){
-                            menuViewHolder.txtAvailableQuantity.setVisibility(View.VISIBLE);
-                            menuViewHolder.discount_badge.setVisibility(View.GONE);
-                        }else {
-                            menuViewHolder.txtAvailableQuantity.setVisibility(View.GONE);
-                            menuViewHolder.discount_badge.setVisibility(View.VISIBLE);
-                        }
-
-                    }else {
-                        menuViewHolder.discount_badge.setVisibility(View.GONE);
-                    }
-
-                    if (dialog.isShowing()){
-                        dialog.dismiss();
-                    }
-
-                    menuViewHolder.root.setAnimation(AnimationUtils.loadAnimation(getActivity(),R.anim.fade_scale_transmission));
-
-                    menuViewHolder.setItemClickListener(new ItemClickListener() {
-                        @Override
-                        public void onClick(View view, final int position, boolean isLongClick) {
-                            Intent sweetsDetail = new Intent(getActivity(), SweetsDetail.class);
-                            sweetsDetail.putExtra("SweetId", adapter.getRef(position).getKey());
-                            sweetsDetail.putExtra("AvailableQuantity",model.getAvaQuantity());
-
-                            Common.intentOpenAnimation(getActivity());
-                            startActivity(sweetsDetail);
-                            getActivity().overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                        }
-                    });
-
-                }
-            };
-
-            fab.setCount(new Database(getActivity()).getCountCart());
-            recycler_menu.setHasFixedSize(true);
-            recycler_menu.setAdapter(adapter);
-        }else {
-            recycler_menu.setAdapter(null);
-            internetStatus.setVisibility(View.VISIBLE);
-            if (dialog.isShowing()){
-                dialog.dismiss();
-            }
-            toast("No Internet Connection");
+            return null;
         }
-        swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void toast(String msg){
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
+    private void toast(String msg, int length){
+        Toast.makeText(getActivity(),msg,length).show();
     }
 }
