@@ -115,12 +115,12 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/forgot_password"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="14sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textAlignment="textStart"
                 android:layout_gravity="center|start"
-                android:textColor="@color/brown"
                 style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
