@@ -1,20 +1,23 @@
 package agjs.gautham.rjsweets.delivery.ui.Home;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +42,17 @@ public class OrderPicked extends AppCompatActivity {
     private DatabaseReference requests;
     private RecyclerView recyclerView;
 
-    private EditText editText;
+    private final static int LOCATION_PERMISSION_REQUEST = 1001;
+    private static String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+
+    };
+    private static String[] PERMISSIONS_Q_ABOVE = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    };
     TextView textView;
 
     RecyclerView.LayoutManager layoutManager;
@@ -85,6 +98,16 @@ public class OrderPicked extends AppCompatActivity {
             textView.setText(getResources().getString(R.string.no_internet));
             if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==LOCATION_PERMISSION_REQUEST){
+            if (arePermissionDenied()){
+                Toast.makeText(this, "Grant Permissions", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -231,9 +254,48 @@ public class OrderPicked extends AppCompatActivity {
         }
     }
 
+    private boolean arePermissionDenied(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+
+            for (String permissions : PERMISSIONS_Q_ABOVE){
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(),permissions) != PackageManager.PERMISSION_GRANTED){
+                    return true;
+                }
+            }
+            return false;
+        }else {
+            for (String permissions : PERMISSIONS) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), permissions) != PackageManager.PERMISSION_GRANTED) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    }
+
     @Override
     public void onBackPressed() {
         startActivity(new Intent(OrderPicked.this, DashboardDelivery.class));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (arePermissionDenied()){
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                requestPermissions(PERMISSIONS_Q_ABOVE, LOCATION_PERMISSION_REQUEST);
+                Toast.makeText(this, "Please Grant Permissions", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+            Toast.makeText(this, "Please Grant Permissions", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
