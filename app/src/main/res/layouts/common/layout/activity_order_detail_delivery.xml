@@ -10,7 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pickup_delivery"
+        android:layout_above="@+id/c4"
         android:layout_alignParentTop="true">
 
         <LinearLayout

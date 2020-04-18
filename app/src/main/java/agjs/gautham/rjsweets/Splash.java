@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +74,64 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Common.flags = dataSnapshot.getValue(Flags.class);
+
+                    if (Common.flags.isSplashUpdateCheck()){
+
+                        Log.d("SPlash",String.valueOf(Common.flags.isSplashUpdateCheck()));
+
+                        //Check For App-Update
+                        final String app_version =CheckUpdate.getAppVersion(Splash.this);
+                        final Double update_version = Common.flags.getLatestVersion();
+                        final Double appV = Double.parseDouble(app_version);
+
+                        if (appV<update_version){
+
+                            if (Common.flags.isMandatoryLatestUpdate()){
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        CheckUpdate runner = new CheckUpdate(Splash.this);
+                                        runner.execute();
+
+                                        progress.setText(R.string.connection_established);
+                                        startActivity(new Intent(Splash.this, UpdateActivity.class));
+                                        Common.intentOpenAnimation(Splash.this);
+                                        finish();
+
+                                    }
+                                });
+
+                            }else {
+
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showNotification();
+                                        init();
+                                    }
+                                });
+                            }
+
+                        }else {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    init();
+                                }
+                            });
+                        }
+
+                    }else {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                init();
+                            }
+                        });
+                    }
+
                 }
 
                 @Override
@@ -81,53 +140,7 @@ public class Splash extends AppCompatActivity {
                 }
             });
 
-            if (Common.flags.isSplashUpdateCheck()){
 
-                //Check For App-Update
-                final String app_version =CheckUpdate.getAppVersion(Splash.this);
-                final Double update_version = Common.flags.getLatestVersion();
-                final Double appV = Double.parseDouble(app_version);
-
-                if (appV<update_version){
-
-                    if (Common.flags.isMandatoryLatestUpdate()){
-
-                        CheckUpdate runner = new CheckUpdate(Splash.this);
-                        runner.execute();
-
-                        progress.setText(R.string.connection_established);
-                        startActivity(new Intent(Splash.this, UpdateActivity.class));
-                        Common.intentOpenAnimation(Splash.this);
-                        finish();
-
-                    }else {
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showNotification();
-                                init();
-                            }
-                        });
-                    }
-
-                }else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            init();
-                        }
-                    });
-                }
-
-            }else {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        init();
-                    }
-                });
-            }
 
             return null;
         }

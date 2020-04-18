@@ -56,7 +56,7 @@ public class UpdateActivity extends AppCompatActivity {
     private Button check_update, update;
     private ListView listView;
     private FirebaseDatabase database;
-    private DatabaseReference databse_user, database_update;
+    private DatabaseReference database_update;
     private android.app.AlertDialog pgDialog;
     private ProgressBar pg;
     private String updateUrl;
@@ -65,6 +65,11 @@ public class UpdateActivity extends AppCompatActivity {
     private String app_name;
     private String cureent_version;
     private TextView percent_pg;
+    private static int REQUEST_PERMISSIONS = 1234;
+    private static String[] PERMISSIONS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +89,6 @@ public class UpdateActivity extends AppCompatActivity {
 
         //Init Firebase
         database = FirebaseDatabase.getInstance();
-        databse_user = database.getReference("User");
         database_update = database.getReference("Updates");
 
         View progressBar = LayoutInflater.from(UpdateActivity.this).inflate(R.layout.progress_bar, null);
@@ -111,22 +115,39 @@ public class UpdateActivity extends AppCompatActivity {
         cureent_version = getAppVersion(UpdateActivity.this);
         status_version.setText("v"+cureent_version);
 
-        requestPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (arePermissionDenied()){
+            requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
+            Toast.makeText(this, "Please Grant Permission", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         checkForUpdate();
 
     }
 
-    private void requestPermission() {
-
-        if (ContextCompat.checkSelfPermission(UpdateActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED){
-        }else {
-            ActivityCompat.requestPermissions(UpdateActivity.this,new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
-            },1);
+    private boolean arePermissionDenied(){
+        for (String permissions : PERMISSIONS){
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(),permissions) != PackageManager.PERMISSION_GRANTED){
+                return true;
+            }
         }
+        return false;
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==REQUEST_PERMISSIONS && grantResults.length>0){
+            if (arePermissionDenied()){
+                finish();
+            }
+        }
     }
 
     private void checkForUpdate() {
@@ -215,7 +236,6 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     public void bt_check_agian_update(View view) {
-        requestPermission();
         checkForUpdate();
     }
 
@@ -286,7 +306,7 @@ public class UpdateActivity extends AppCompatActivity {
                 input = connection.getInputStream();
                 output = new FileOutputStream(UpdateActivity.this.getExternalFilesDir(null).getAbsolutePath() + "/"+app_name);
 
-                byte data[] = new byte[4096];
+                byte[] data = new byte[4096];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {
@@ -333,7 +353,7 @@ public class UpdateActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
 
-            percent_pg.setText(String.valueOf(progress[0] + "%"));
+            percent_pg.setText(progress[0] + "%");
 
             // if we get here, length is known, now set indeterminate to false
             pg.setIndeterminate(false);
