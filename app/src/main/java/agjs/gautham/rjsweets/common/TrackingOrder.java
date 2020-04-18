@@ -1,10 +1,14 @@
 package agjs.gautham.rjsweets.common;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -201,6 +205,12 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
 
             requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST);
             Toast.makeText(this, "Please Grant Permissions", Toast.LENGTH_SHORT).show();
+        }
+
+        LocationManager lm = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
         }
 
         if (!checkPlayServices()){
