@@ -105,98 +105,102 @@ public class OrderPicked extends AppCompatActivity {
                 OrderId = adapter.getRef(i).getKey();
                 OrderUserName = request.getName();
 
-                latlng = request.getLatLng();
-
-                assert  latlng!=null;
-                String[] spliter = latlng.split("\\(");
-                final String ll = spliter[1].replaceAll("\\)","");
-                final String l2[] = ll.split(",");
-                final String lat = l2[0];
-                final String lng = l2[1];
-
                 if (request.getStatus().equals("1") && request.getPickedBy().equals(Common.USER_Phone)){
 
                     textView.setVisibility(View.GONE);
 
-                    orderViewHolder.itemView.setVisibility(View.VISIBLE);
-                    orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    latlng = request.getLatLng();
+                    final String lat;
+                    final String lng;
 
-                    orderViewHolder.order_detail_container.setVisibility(View.GONE);
-                    orderViewHolder.order_id_info.setVisibility(View.VISIBLE);
-                    orderViewHolder.order_id_info.setText(OrderId);
-                    orderViewHolder.order_id_info.setTextColor(ContextCompat.getColor(OrderPicked.this,R.color.overlayBackground));
+                    if (latlng!=null){
+                        String[] spliter = latlng.split("\\(");
+                        final String ll = spliter[1].replaceAll("\\)","");
+                        final String[] l2 = ll.split(",");
+                        lat = l2[0];
+                        lng = l2[1];
 
-                    orderViewHolder.txtOrderRejectedInfo.setVisibility(View.VISIBLE);
-                    orderViewHolder.txtOrderRejectedInfo.setText(String.format("Name :  %s",OrderUserName));
+                        orderViewHolder.itemView.setVisibility(View.VISIBLE);
+                        orderViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-                    orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent orderDetail = new Intent(OrderPicked.this, OrderDetailDelivery.class);
-                            orderDetail.putExtra("OrderId",OrderId);
-                            orderDetail.putExtra("OrderStatus",request.getStatus());
-                            startActivity(orderDetail);
+                        orderViewHolder.order_detail_container.setVisibility(View.GONE);
+                        orderViewHolder.order_id_info.setVisibility(View.VISIBLE);
+                        orderViewHolder.order_id_info.setText(OrderId);
+                        orderViewHolder.order_id_info.setTextColor(ContextCompat.getColor(OrderPicked.this,R.color.overlayBackground));
 
-                        }
-                    });
+                        orderViewHolder.txtOrderRejectedInfo.setVisibility(View.VISIBLE);
+                        orderViewHolder.txtOrderRejectedInfo.setText(String.format("Name :  %s",OrderUserName));
 
-                    orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        orderViewHolder.btndetails.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent orderDetail = new Intent(OrderPicked.this, OrderDetailDelivery.class);
+                                orderDetail.putExtra("OrderId",OrderId);
+                                orderDetail.putExtra("OrderStatus",request.getStatus());
+                                startActivity(orderDetail);
 
-                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPicked.this);
-                            alertDialog.setTitle("Select an Option");
+                            }
+                        });
 
-                            alertDialog.setPositiveButton("Show in Maps", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                        orderViewHolder.btndirection.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                                }
-                            });
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(OrderPicked.this);
+                                alertDialog.setTitle("Select an Option");
 
-                            alertDialog.setNegativeButton("In App", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    Intent trackingOrder = new Intent(OrderPicked.this, TrackingOrder.class);
-                                    trackingOrder.putExtra("Lat",lat);
-                                    trackingOrder.putExtra("Lng",lng);
-                                    startActivity(trackingOrder);
-
-                                }
-                            });
-
-                            AlertDialog alertDialog1 = alertDialog.create();
-                            alertDialog1.show();
-
-                            alertDialog1.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                    PackageManager pm = OrderPicked.this.getPackageManager();
-
-                                    if (isPackageInstalled("com.google.android.apps.maps",pm)){
-
-                                        Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=l");
-                                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                        mapIntent.setPackage("com.google.android.apps.maps");
-                                        startActivity(mapIntent);
-
-                                    }else {
-
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
-                                        startActivity(intent);
-                                        Toast.makeText(OrderPicked.this,"Please Install Google Maps",Toast.LENGTH_SHORT).show();
+                                alertDialog.setPositiveButton("Show in Maps", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
                                     }
+                                });
 
-                                }
-                            });
+                                alertDialog.setNegativeButton("In App", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Intent trackingOrder = new Intent(OrderPicked.this, TrackingOrder.class);
+                                        trackingOrder.putExtra("Lat",lat);
+                                        trackingOrder.putExtra("Lng",lng);
+                                        startActivity(trackingOrder);
+
+                                    }
+                                });
+
+                                AlertDialog alertDialog1 = alertDialog.create();
+                                alertDialog1.show();
+
+                                alertDialog1.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        PackageManager pm = OrderPicked.this.getPackageManager();
+
+                                        if (isPackageInstalled("com.google.android.apps.maps",pm)){
+
+                                            Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+ "&mode=l");
+                                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                            mapIntent.setPackage("com.google.android.apps.maps");
+                                            startActivity(mapIntent);
+
+                                        }else {
+
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+                                            startActivity(intent);
+                                            Toast.makeText(OrderPicked.this,"Please Install Google Maps",Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
                         }
-                    });
 
-                    if (dialog.isShowing()){
-                        dialog.dismiss();
                     }
 
                 }else {

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -53,7 +54,7 @@
         -->
         <meta-data
             android:name="com.google.android.libraries.places.widget.Autocomplete.API_KEY_PLACES"
-            android:value="AIzaSyB9S4ISvY9m71CVEP0yQEfsjTUq8lZRYfU"/>
+            android:value="AIzaSyAhziR4XoP230Obef_f3WC_4b4Dyqf_ldY"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

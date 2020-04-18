@@ -11,60 +11,81 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.Objects;
+
+import agjs.gautham.rjsweets.Helper.FetchURL;
+import agjs.gautham.rjsweets.Helper.TaskLoadedCallback;
 import agjs.gautham.rjsweets.R;
 
-public class TrackingOrder extends FragmentActivity implements OnMapReadyCallback{
+public class TrackingOrder extends FragmentActivity implements OnMapReadyCallback,
+        TaskLoadedCallback {
 
     private GoogleMap mMap;
 
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private final static int LOCATION_PERMISSION_REQUEST = 1001;
+    private static String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    };
+    private MarkerOptions place1, place2;
+    private Polyline currentPolyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking_order);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
-            requestRuntimePermission();
-        }
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        if (getIntent() != null){
+
+            double lat = Double.parseDouble(Objects.requireNonNull(getIntent().getStringExtra("Lat")));
+            double lng = Double.parseDouble(Objects.requireNonNull(getIntent().getStringExtra("Lng")));
+
+            LatLng o_Location = new LatLng(lat,lng);
+
+            place2 = new MarkerOptions().title("Order Location")
+                    .position(o_Location)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+        }
+
     }
 
-    private void requestRuntimePermission() {
-        ActivityCompat.requestPermissions(this, new String[]
-                {
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                }, LOCATION_PERMISSION_REQUEST);
+    private boolean arePermissionDenied(){
+        for (String permissions : PERMISSIONS){
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(),permissions) != PackageManager.PERMISSION_GRANTED){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this, PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                toast("Google Play Service Not Found");
-                finish();
+
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int status = googleApiAvailability.isGooglePlayServicesAvailable(this);
+
+        if (status != ConnectionResult.SUCCESS){
+            if(googleApiAvailability.isUserResolvableError(status)) {
+                googleApiAvailability.getErrorDialog(this, status, 2404).show();
             }
             return false;
         }
@@ -74,17 +95,11 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (checkPlayServices()) {
-                        //buildGoogleApiClient();
-                        //createLocationRequest();
-
-                        //displayLocation();
-                    }
-                }
-                break;
+        if (requestCode==LOCATION_PERMISSION_REQUEST && grantResults.length>0){
+            if (arePermissionDenied()){
+                toast("Permission Denied");
+                finish();
+            }
         }
     }
 
@@ -101,10 +116,6 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
         mMap.setMyLocationEnabled(true);
 
         mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
@@ -114,46 +125,63 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
 
-                LatLng yourLocation = new LatLng(latitude, longitude);
-
-                final CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(yourLocation)       // Sets the center of the map to Mountain View
-                        .zoom(15)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                        .build();
                 mMap.clear();
+                place1 = new MarkerOptions().position(new LatLng(latitude,longitude)).title("My Location");
+                mMap.addMarker(place1);
+                mMap.addMarker(place2);
 
-                MarkerOptions mp = new MarkerOptions();
-
-                mp.position(new LatLng(latitude, longitude));
-                mp.title("my position");
-
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                if (getIntent() != null){
-
-                    Double lat = Double.valueOf(getIntent().getStringExtra("Lat"));
-                    Double lng = Double.valueOf(getIntent().getStringExtra("Lng"));
-
-                    LatLng o_Location = new LatLng(lat,lng);
-
-                    MarkerOptions marker2 = new MarkerOptions().title("Order Location")
-                            .position(o_Location)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-                    mMap.addMarker(marker2);
-
-                }
+                new FetchURL(TrackingOrder.this).execute(getUrl(place1.getPosition(),
+                        place2.getPosition()),"driving");
+                showAllMarkers();
 
             }
         });
+
+    }
+
+    private void showAllMarkers(){
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        builder.include(place1.getPosition());
+        builder.include(place2.getPosition());
+
+        LatLngBounds bounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.30);
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,width,height,padding);
+        mMap.animateCamera(cu);
+
+    }
+
+    private String getUrl(LatLng origin, LatLng dest){
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        String str_mode = "mode="+ "1";
+        String parameter = str_origin + "&" + str_dest + "&" + str_mode;
+        String format = "json";
+        String url = "https://maps.googleapis.com/maps/api/directions/" + format + "?"
+                + parameter + "&key=" + getString(R.string.gmaps_key);
+        return url;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkPlayServices();
+
+        if (arePermissionDenied()){
+            requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+            toast("Please Grant Permissions");
+            return;
+        }
+
+        if (!checkPlayServices()){
+            toast("No G-APPS INSTALLED");
+            finish();
+        }
     }
 
     @Override
@@ -165,4 +193,13 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
         Toast.makeText(TrackingOrder.this,msg,Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onTaskDone(Object... values) {
+
+        if (currentPolyline != null){
+            currentPolyline.remove();
+        }
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+
+    }
 }
