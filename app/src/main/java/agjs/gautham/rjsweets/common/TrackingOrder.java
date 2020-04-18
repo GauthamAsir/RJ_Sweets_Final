@@ -3,6 +3,7 @@ package agjs.gautham.rjsweets.common;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -39,8 +40,14 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     private static String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
+
+    };
+    private static String[] PERMISSIONS_Q_ABOVE = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_BACKGROUND_LOCATION
     };
+
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
 
@@ -49,17 +56,16 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking_order);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(TrackingOrder.this);
 
-        if (getIntent() != null){
+        if (getIntent() != null) {
 
             double lat = Double.parseDouble(Objects.requireNonNull(getIntent().getStringExtra("Lat")));
             double lng = Double.parseDouble(Objects.requireNonNull(getIntent().getStringExtra("Lng")));
 
-            LatLng o_Location = new LatLng(lat,lng);
+            LatLng o_Location = new LatLng(lat, lng);
 
             place2 = new MarkerOptions().title("Order Location")
                     .position(o_Location)
@@ -70,12 +76,24 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private boolean arePermissionDenied(){
-        for (String permissions : PERMISSIONS){
-            if (ActivityCompat.checkSelfPermission(getApplicationContext(),permissions) != PackageManager.PERMISSION_GRANTED){
-                return true;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+
+            for (String permissions : PERMISSIONS_Q_ABOVE){
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(),permissions) != PackageManager.PERMISSION_GRANTED){
+                    return true;
+                }
             }
+            return false;
+        }else {
+            for (String permissions : PERMISSIONS) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), permissions) != PackageManager.PERMISSION_GRANTED) {
+                    return true;
+                }
+            }
+            return false;
         }
-        return false;
+
     }
 
     private boolean checkPlayServices() {
@@ -122,11 +140,12 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
             @Override
             public void onMyLocationChange(Location location) {
 
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-
                 mMap.clear();
-                place1 = new MarkerOptions().position(new LatLng(latitude,longitude)).title("My Location");
+
+                LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+
+                place1 = new MarkerOptions().position(latLng).title("My Location");
+
                 mMap.addMarker(place1);
                 mMap.addMarker(place2);
 
@@ -173,9 +192,15 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
         super.onResume();
 
         if (arePermissionDenied()){
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                requestPermissions(PERMISSIONS_Q_ABOVE, LOCATION_PERMISSION_REQUEST);
+                Toast.makeText(this, "Please Grant Permissions", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             requestPermissions(PERMISSIONS, LOCATION_PERMISSION_REQUEST);
-            toast("Please Grant Permissions");
-            return;
+            Toast.makeText(this, "Please Grant Permissions", Toast.LENGTH_SHORT).show();
         }
 
         if (!checkPlayServices()){
@@ -202,4 +227,5 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
     }
+
 }

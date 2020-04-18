@@ -58,7 +58,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" /> <!-- Start of Delivery Activities -->
+            android:value="@string/gmaps_key" /> <!-- Start of Delivery Activities -->
         <activity android:name=".common.TrackingOrder" />
         <activity android:name=".delivery.DashboardDelivery" />
         <activity android:name=".login.DeliveryLogin" />
