@@ -99,67 +99,83 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (Common.isConnectedToInternet(getBaseContext())){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                    final View exp = LayoutInflater.from(Login.this).inflate(R.layout.pasword_reset,null);
+                        if (Common.isConnectedToInternet(getBaseContext())){
 
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
-                    alertDialog.setTitle("Reset Password !");
-                    alertDialog.setMessage("We will Send an E-Mail To Reset your Password");
-                    alertDialog.setIcon(R.drawable.ic_email_black_24dp);
-                    alertDialog.setView(exp);
-                    alertDialog.setCancelable(false);
+                            final View exp = LayoutInflater.from(Login.this).inflate(R.layout.pasword_reset,null);
 
-                    reset_email = exp.findViewById(R.id.PassResetEmail);
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Login.this);
+                            alertDialog.setTitle("Reset Password !");
+                            alertDialog.setMessage("We will Send an E-Mail To Reset your Password");
+                            alertDialog.setIcon(R.drawable.ic_email_black_24dp);
+                            alertDialog.setView(exp);
+                            alertDialog.setCancelable(false);
 
-                    alertDialog.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                            reset_email = exp.findViewById(R.id.PassResetEmail);
 
-                        }
-                    });
-                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    final AlertDialog dialog = alertDialog.create();
-                    dialog.show();
+                            alertDialog.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            pdialog2.show();
-                            final String email = reset_email.getEditText().getText().toString();
-
-                            if (validateOnlyEmail(email)){
-
-                                hideKeyboard();
-                                View login = findViewById(R.id.login_container);
-                                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    toast("Please Check Your E-Mail");
-                                                    phone_flag = 1;
-                                                }
-                                            }
-                                        });
-                                snack(login,"Note: Please Login with E-Mail after changing Password");
-
-                                if (pdialog2.isShowing()){
-                                    pdialog2.dismiss();
                                 }
-                                dialog.dismiss();
-                            }
+                            });
+                            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    final AlertDialog dialog = alertDialog.create();
+                                    dialog.show();
+                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            pdialog2.show();
+                                            final String email = reset_email.getEditText().getText().toString();
+
+                                            if (validateOnlyEmail(email)){
+
+                                                hideKeyboard();
+                                                View login = findViewById(R.id.login_container);
+                                                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    toast("Please Check Your E-Mail");
+                                                                    phone_flag = 1;
+                                                                }
+                                                            }
+                                                        });
+                                                snack(login,"Note: Please Login with E-Mail after changing Password");
+
+                                                if (pdialog2.isShowing()){
+                                                    pdialog2.dismiss();
+                                                }
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                    });
+
+                                }
+                            });
+
+
+                        } else {
+                            toast("No Internet Connection");
                         }
-                    });
-                } else {
-                    toast("No Internet Connection");
-                }
+
+                    }
+                }).start();
             }
         });
 
@@ -180,85 +196,92 @@ public class Login extends AppCompatActivity {
                     hideKeyboard();
                     pdialog.show();
 
-                    final String pass = sPass.getEditText().getText().toString();
-
-                    mAuth.signInWithEmailAndPassword(mail, pass.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    new Thread(new Runnable() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        public void run() {
 
-                            if (task.isSuccessful()){
+                            final String pass = sPass.getEditText().getText().toString();
 
-                                //Init Firebase
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                final DatabaseReference databaseReference = database.getReference("User");
+                            mAuth.signInWithEmailAndPassword(mail, pass.trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                final FirebaseFirestore firestore;
+                                    if (task.isSuccessful()){
 
-                                firestore = FirebaseFirestore.getInstance();
-                                firestore.collection("users")
-                                        .document(mail)
-                                        .update("Pass",pass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task2) {
-                                        if (task2.isSuccessful()){
+                                        //Init Firebase
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        final DatabaseReference databaseReference = database.getReference("User");
 
-                                            DocumentReference documentReference = firestore.collection("users").document(mail);
-                                            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        final FirebaseFirestore firestore;
 
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot documentSnapshot = task.getResult();
-                                                        assert documentSnapshot != null;
-                                                        if (documentSnapshot.exists()) {
-                                                            Map<String, Object> userInfo = documentSnapshot.getData();
-                                                            assert userInfo != null;
-                                                            String uPhone = (String) userInfo.get("Number");
-                                                            databaseReference.child(uPhone).child("password").setValue(pass);
+                                        firestore = FirebaseFirestore.getInstance();
+                                        firestore.collection("users")
+                                                .document(mail)
+                                                .update("Pass",pass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task2) {
+                                                if (task2.isSuccessful()){
 
-                                                            Common.USER_Phone = uPhone;
-                                                            Paper.book().write(Common.PHONE_KEY,uPhone);
+                                                    DocumentReference documentReference = firestore.collection("users").document(mail);
+                                                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot documentSnapshot = task.getResult();
+                                                                assert documentSnapshot != null;
+                                                                if (documentSnapshot.exists()) {
+                                                                    Map<String, Object> userInfo = documentSnapshot.getData();
+                                                                    assert userInfo != null;
+                                                                    String uPhone = (String) userInfo.get("Number");
+                                                                    databaseReference.child(uPhone).child("password").setValue(pass);
+
+                                                                    Common.USER_Phone = uPhone;
+                                                                    Paper.book().write(Common.PHONE_KEY,uPhone);
+                                                                }
+                                                            }
                                                         }
-                                                    }
+                                                    });
+                                                }else {
+                                                    toast(""+task2.getException().getMessage());
                                                 }
-                                            });
-                                        }else {
-                                            toast(""+task2.getException().getMessage());
+                                            }
+                                        });
+
+                                        Paper.book().destroy();
+                                        Paper.book().write(Common.loginType,"0");
+                                        Paper.book().write(Common.USER_EMAIL,mail);
+                                        Paper.book().write(Common.USER_PASS,pass);
+                                        Paper.book().write("sub_new","true");
+
+                                        FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
+
+                                        if (pdialog.isShowing()){
+                                            pdialog.dismiss();
                                         }
+
+                                        Intent intent = new Intent(Login.this, DashboardUser.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        Common.loginType = "0";
+                                        Common.intentOpenAnimation(Login.this);
+
+                                        startActivity(intent);
+                                        finish();
+                                        overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
+                                    } else {
+                                        if (pdialog.isShowing()){
+                                            pdialog.dismiss();
+                                        }
+                                        Paper.book().destroy();
+                                        Paper.book().delete(Common.USER_EMAIL);
+                                        Paper.book().delete(Common.USER_PASS);
+                                        Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
-                                });
-
-                                Paper.book().destroy();
-                                Paper.book().write(Common.loginType,"0");
-                                Paper.book().write(Common.USER_EMAIL,mail);
-                                Paper.book().write(Common.USER_PASS,pass);
-                                Paper.book().write("sub_new","true");
-
-                                FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
-
-                                if (pdialog.isShowing()){
-                                    pdialog.dismiss();
                                 }
+                            });
 
-                                Intent intent = new Intent(Login.this, DashboardUser.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                Common.loginType = "0";
-                                Common.intentOpenAnimation(Login.this);
-
-                                startActivity(intent);
-                                finish();
-                                overridePendingTransition(R.anim.activity_open_enter, R.anim.activity_open_exit);
-                            } else {
-                                if (pdialog.isShowing()){
-                                    pdialog.dismiss();
-                                }
-                                Paper.book().destroy();
-                                Paper.book().delete(Common.USER_EMAIL);
-                                Paper.book().delete(Common.USER_PASS);
-                                Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
                         }
-                    });
+                    }).start();
                 }
             }else {
                 if (pdialog.isShowing()){
@@ -277,78 +300,86 @@ public class Login extends AppCompatActivity {
                 hideKeyboard();
                 pdialog.show();
 
-                //Init Firebase
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference databaseReference = database.getReference("User");
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                new Thread(new Runnable() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void run() {
 
-                        if (dataSnapshot.child(email_phone).exists()){
-                            User user = dataSnapshot.child(email_phone).getValue(User.class);
-                            if (user.getPassword().equals(pass)){
+                        //Init Firebase
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        final DatabaseReference databaseReference = database.getReference("User");
 
-                                final String mail = user.getEmail();
-                                mAuth = FirebaseAuth.getInstance();
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()){
+                                if (dataSnapshot.child(email_phone).exists()){
+                                    User user = dataSnapshot.child(email_phone).getValue(User.class);
+                                    if (user.getPassword().equals(pass)){
 
-                                            if (pdialog.isShowing()){
-                                                pdialog.dismiss();
+                                        final String mail = user.getEmail();
+                                        mAuth = FirebaseAuth.getInstance();
+
+                                        mAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()){
+
+                                                    if (pdialog.isShowing()){
+                                                        pdialog.dismiss();
+                                                    }
+
+                                                    Paper.book().destroy();
+                                                    Paper.book().write(Common.loginType,"0");
+                                                    Paper.book().write(Common.USER_EMAIL,mail);
+                                                    Paper.book().write(Common.USER_PASS,pass);
+
+                                                    Common.loginType = "0";
+                                                    Common.USER_Phone = mail;
+                                                    Paper.book().write(Common.PHONE_KEY,mail);
+
+                                                    Paper.book().write("sub_new","true");
+                                                    FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
+
+                                                    Intent intent = new Intent(Login.this, DashboardUser.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(intent);
+                                                    Common.intentOpenAnimation(Login.this);
+                                                    finish();
+                                                } else {
+                                                    if (pdialog.isShowing()){
+                                                        pdialog.dismiss();
+                                                    }
+                                                    Paper.book().delete(Common.USER_EMAIL);
+                                                    Paper.book().delete(Common.USER_PASS);
+                                                    Paper.book().destroy();
+                                                    Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-
-                                            Paper.book().destroy();
-                                            Paper.book().write(Common.loginType,"0");
-                                            Paper.book().write(Common.USER_EMAIL,mail);
-                                            Paper.book().write(Common.USER_PASS,pass);
-
-                                            Common.loginType = "0";
-                                            Common.USER_Phone = mail;
-                                            Paper.book().write(Common.PHONE_KEY,mail);
-
-                                            Paper.book().write("sub_new","true");
-                                            FirebaseMessaging.getInstance().subscribeToTopic(Common.topicName);
-
-                                            Intent intent = new Intent(Login.this, DashboardUser.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            Common.intentOpenAnimation(Login.this);
-                                            finish();
-                                        } else {
-                                            if (pdialog.isShowing()){
-                                                pdialog.dismiss();
-                                            }
-                                            Paper.book().delete(Common.USER_EMAIL);
-                                            Paper.book().delete(Common.USER_PASS);
-                                            Paper.book().destroy();
-                                            Toast.makeText(Login.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                                    } else {
+                                        if (pdialog.isShowing()){
+                                            pdialog.dismiss();
                                         }
+                                        snack(view,"Wrong Password");
+
                                     }
-                                });
-                            } else {
-                                if (pdialog.isShowing()){
-                                    pdialog.dismiss();
+                                } else {
+                                    if (pdialog.isShowing()){
+                                        pdialog.dismiss();
+                                    }
+                                    snack(view,"User doesnt exists");
                                 }
-                                snack(view,"Wrong Password");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
-                        } else {
-                            if (pdialog.isShowing()){
-                                pdialog.dismiss();
-                            }
-                            snack(view,"User doesnt exists");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        });
 
                     }
-                });
+                }).start();
+
             } else {
                 snack(view,"Enter Valid Details");
             }
