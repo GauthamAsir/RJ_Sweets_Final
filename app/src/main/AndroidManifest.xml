@@ -61,7 +61,7 @@
             android:value="@string/gmaps_key" /> <!-- Start of Delivery Activities -->
         <activity android:name=".common.TrackingOrder" />
         <activity android:name=".delivery.DashboardDelivery" />
-        <activity android:name=".login.DeliveryLogin" />
+        <activity android:name=".login.DeliveryLogin" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".delivery.ui.Home.OrderPicked" />
         <activity android:name=".delivery.ui.Home.OrderDelivered" />
         <activity android:name=".delivery.ui.Home.OrderPlaced" />
@@ -70,7 +70,7 @@
 
         <!-- Start of Admin Activities -->
         <activity android:name=".admin.DashboardAdmin" />
-        <activity android:name=".login.LoginAdmin" />
+        <activity android:name=".login.LoginAdmin" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".admin.OrderDeliveredAdmin" />
         <activity android:name=".admin.OrderPlacedAdmin" />
         <activity android:name=".admin.OrderRejectedAdmin" />
@@ -95,9 +95,9 @@
         <!-- End of User Activities -->
 
         <!-- Start of Common Activities -->
-        <activity android:name=".login.Login" />
+        <activity android:name=".login.Login" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".common.MainActivity" />
-        <activity android:name=".common.SignUp" />
+        <activity android:name=".common.SignUp" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".common.UpdateActivity"/>
         <activity android:name=".common.Credits"/>
         <activity
