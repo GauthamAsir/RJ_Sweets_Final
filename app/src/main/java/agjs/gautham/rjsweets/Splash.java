@@ -53,6 +53,7 @@ public class Splash extends AppCompatActivity {
 
         //Init Firebase
         database = FirebaseDatabase.getInstance();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Paper.init(this);
         LoadFlags loadFlags = new LoadFlags();
