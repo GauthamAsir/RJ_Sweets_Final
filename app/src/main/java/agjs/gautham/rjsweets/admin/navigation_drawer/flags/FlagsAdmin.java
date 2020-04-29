@@ -112,6 +112,10 @@ public class FlagsAdmin extends Fragment {
                             mandatory_value,
                             reason);
 
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Updates")
+                            .child("version");
+                    reference.setValue(Double.parseDouble(lv));
+
                     flags.setValue(flags1);
                     back_();
                     load();

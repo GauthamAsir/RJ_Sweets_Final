@@ -585,7 +585,7 @@ public class SweetsDetail extends AppCompatActivity {
 
                 String ad = enter_address.getText().toString();
 
-                if (latlng != null){
+                if (latlng != null && !latlng.isEmpty()){
 
                     if (!ad.isEmpty()){
 
