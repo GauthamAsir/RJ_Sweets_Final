@@ -10,6 +10,9 @@ android {
         targetSdkVersion 29
         versionCode 5
         versionName "5.0"
+        Date date = new Date()
+        String d = date.format('_ddMMYYYY')
+        setProperty("archivesBaseName", "rj_sweets_v$versionName$d")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
